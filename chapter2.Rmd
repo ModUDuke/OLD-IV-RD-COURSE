@@ -217,14 +217,14 @@ success_msg("Good work! From the looks of it, the quadratic specification of hal
 ```
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:5a2a1cae28
 ## Using RDD to Study Neighborhoods and Schools
 *** =video_link
 //player.vimeo.com/video/218503634
 
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:da321f7194
 ## Thinking about confounders in an RD design
 Suppose your friend says "I don’t believe the results in Black (1999) because she doesn't control for whether there is a public park nearby the house. Having a park nearby increases the value of a house. Also, districts that have high test scores also tend to have more parks. So this test score effect might just be because of this unobserved confounder!"
 
@@ -242,7 +242,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:2781eb8177
 ## Using geographical borders more generally in RD designs
 True or False: As in the Black (1999) paper, anytime there is a geographical border where treatment changes across the border, we can use RDD analysis to learn the causal effect of treatment.
 
