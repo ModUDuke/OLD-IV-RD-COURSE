@@ -93,6 +93,7 @@ In this exercise, you will compute the treatment effect of being ahead at halfti
 
 *** =pre_exercise_code
 ```{r}
+install.packages("rdd")
 require(rdd)
 
 set.seed(1)
