@@ -245,14 +245,14 @@ msg2 = "Correct! It is true that geographical borders are *often* used to learn 
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:504416b121
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
 ## "Fuzzy" Regression Discontinuity: Addressing Blurry Lines Between Groups
 *** =video_link
 //player.vimeo.com/video/218504968
 
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:43f638d1c1
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
 ## Identifying fuzzy and sharp RDDs
 Consider the following examples. Which is an example of a fuzzy RDD and which is a sharp RDD?
 
@@ -280,12 +280,12 @@ msg4 = "Try again"
 msg5 = "Try again"
 msg6 = "Try again"
 msg7 = "Try again"
-msg8 = "Correct! Often the distinction between sharp and fuzzy hinges on the definition of treatment. For (1) and (2), treatment is defined as **eligibility** rather than takeup. A similar idea explains why (3) is sharp: all regions with a certain population have the same number of representatives allocated."
+msg8 = "Correct! Often the distinction between sharp and fuzzy hinges on the definition of treatment. For (1) and (2), treatment is defined as **eligibility** rather than takeup. A similar idea explains why (3) is sharp: all regions with a certain population have the same number of representatives allocated, and there's no way for a region to send more or fewer representatives. In this way, it's helpful to think of fuzzy RDDs as having a non-compliance problem."
 test_mc(correct = 8, feedback_msgs = c(msg1,msg2,msg3,msg4,msg5,msg6,msg7,msg8))
 ```
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:e64dfce37b
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
 ## Fuzzy RDD and Swiss Religion: Checking the Numbers
 *** =video_link
 //player.vimeo.com/video/218505946
