@@ -245,3 +245,50 @@ msg2 = "Correct! It is true that geographical borders are *often* used to learn 
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## "Fuzzy" Regression Discontinuity: Addressing Blurry Lines Between Groups
+*** =video_link
+//player.vimeo.com/video/218504968
+
+
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+## Identifying fuzzy and sharp RDDs
+Consider the following examples. Which is an example of a fuzzy RDD and which is a sharp RDD?
+
+1. Running variable: Age. Treatment: You become eligible for senior citizen welfare programs once you are 65 are older.
+
+2. Running variable: A region's poverty rate. Treatment: Regions become eligible for Federal assistance once their poverty rate is above a certain cutoff.
+
+3. Running variable: Population. Treatment variable: Number of seats a region gets in government (e.g., number of representatives in the U.S. House of Representatives).
+
+*** =instructions
+- All are fuzzy
+- (1) and (3) are sharp; (2) is fuzzy
+- (1) and (2) are sharp; (3) is fuzzy
+- (1) is fuzzy; (2) and (3) are sharp
+- (1) and (2) are fuzzy; (3) is sharp
+- (1) is sharp; (2) and (3) are fuzzy
+- (1) and (3) are fuzzy; (2) is sharp
+- All are sharp
+*** =sct
+```{r}
+msg1 = "Try again"
+msg2 = "Try again"
+msg3 = "Try again"
+msg4 = "Try again"
+msg5 = "Try again"
+msg6 = "Try again"
+msg7 = "Try again"
+msg8 = "Correct! Often the distinction between sharp and fuzzy hinges on the definition of treatment. For (1) and (2), treatment is defined as **eligibility** rather than takeup. A similar idea explains why (3) is sharp: all regions with a certain population have the same number of representatives allocated."
+test_mc(correct = 8, feedback_msgs = c(msg1,msg2,msg3,msg4,msg5,msg6,msg7,msg8))
+```
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Fuzzy RDD and Swiss Religion: Checking the Numbers
+*** =video_link
+//player.vimeo.com/video/218505946
+
+
+
