@@ -66,7 +66,7 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:1a5dfd94ba
 ## How to Compute Causal Effects in a Regression Discontinuity Analysis
 *** =video_link
 //player.vimeo.com/video/218502963
