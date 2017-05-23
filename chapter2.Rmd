@@ -66,17 +66,11 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:1112d937d2
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
 ## How to Compute Causal Effects in a Regression Discontinuity Analysis
 *** =video_link
 //player.vimeo.com/video/218502963
 
-
-
-
-# To Do:
-#--------------
-# Visualize RD validity!
 
 
 --- type:NormalExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:8dfb92fd8e
@@ -93,8 +87,7 @@ In this exercise, you will compute the treatment effect of being ahead at halfti
 
 *** =pre_exercise_code
 ```{r}
-install.packages("rdd")
-require(rdd)
+# require(rdd)
 
 set.seed(1)
 n <- 18060
@@ -194,9 +187,6 @@ NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.
 
 # The function we will use is called RDestimate. Without getting into too many details, copy and paste the following syntax as your answer to Question 4: summary(RDestimate(home.team.final.margin ~ home.team.halftime.margin | home.team.qual+away.team.qual,data=NBA))
 
-#---- Question 4-------------------------------------#
-      Solution4<-summary(RDestimate())
-#----------------------------------------------------#
 
 # Now compare the results of our three causal effect estimates. Which estimate do you think most closely captures the true causal effect of being behind (or ahead) at halftime on the final margin of victory?
 
@@ -206,14 +196,12 @@ NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.
     Solution1<- NBA$home.team.halftime.margin<0
     Solution2<-summary(lm(home.team.final.margin ~ home.team.winning.at.half+home.team.halftime.margin+home.team.qual+away.team.qual,data=NBA))
     Solution3<-summary(lm(home.team.final.margin ~ home.team.winning.at.half+home.team.halftime.margin+I(home.team.halftime.margin^2)+home.team.qual+away.team.qual,data=NBA))
-    Solution4<-summary(RDestimate(home.team.final.margin ~ home.team.halftime.margin | home.team.qual+away.team.qual,data=NBA))
 ```
 *** =sct
 ```{r}
 test_object("Solution1")
 test_object("Solution2")
 test_object("Solution3")
-test_object("Solution4")
 success_msg("Good work! From the looks of it, the quadratic specification of halftime margin looks very similar to the nonparametric estimate (4.8 points versus 4.4 points). The linear specification seems to not capture the true relationship between halftime margin and final margin, as it only estimates an effect of 2.5 points.")
 ```
 
