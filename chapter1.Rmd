@@ -8,12 +8,12 @@ description : "This chapter will introduce you to instrumental variables (IV) an
 *** =video_link
 //player.vimeo.com/video/219558904
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:8a1c462927
 ## Visual Logic of Instrumental Variables
 *** =video_link
 //player.vimeo.com/video/219559011
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:8c410956e7
 ## Assumptions of instrumental variables
 Which of the following is *not* a key identifying assumption/condition of instrumental variables?
 
@@ -31,12 +31,12 @@ msg4 = "The instrument needs to be correlated with the outcome. Try again"
 test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:953b93e528
 ## Instrumental Variables in Action: Education and Wages (graphs)
 *** =video_link
 //player.vimeo.com/video/219559159
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:16cf760443
 ## Correlation and causation in instrumental variables
 True or False: If you see that there is a zero correlation between the treatment variable and the outcome variable, then the treatment cannot have a causal effect on outcomes---there must be correlation between those two variables if we are to have any hope of using instrumental variables to learn about causality.
 
@@ -50,19 +50,19 @@ msg2 = "Correct! The amount or sign of correlation between treatments and outcom
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:116a9fd6fa
 ## Instrumental Variables in Action: Education and Wages (tables)
 *** =video_link
 //player.vimeo.com/video/219559305
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:3ae8d65d96
 ## Some Instrumental Variables Terminology
 *** =video_link
 //player.vimeo.com/video/219565557
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:5ad3dddd73
 ## Instrumental variables in practice
 Suppose you have data on where students live once they graduate from college. You want to know the causal effect of living in a rural versus urban area on their wages. So you categorize locations as either urban or rural, giving you a binary treatment variable. What kind of variation is in that variable and why?
 
@@ -78,13 +78,13 @@ msg3 = "Correct! Locations are not exogenously determined because people choose 
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:b70179796d
 ## The Three Instrumental Variables Assumptions
 *** =video_link
 //player.vimeo.com/video/219559447
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f9981cd29c
 ## Logical arguments about instrumental variables
 Let's say that you have data on the impact of bike riding on child happiness, and you want to use the brand of bicycle as your instrument. What's the best argument that the brand of bike does not affect child happiness directly?
 
@@ -103,13 +103,13 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:9cc4cfa847
 ## Refutability and nonrefutability of the instrumental variables assumptions
 *** =video_link
 //player.vimeo.com/video/219559377
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:db21106fcb
 ## Questioning the validity of instrumental variables results
 Many researchers have found the distance-to-college instrument questionable. What do you think is the most plausible reason?
 
