@@ -8,4 +8,116 @@ description : "This chapter will introduce you to instrumental variables (IV) an
 *** =video_link
 //player.vimeo.com/video/216023860
  
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:9c7273586e
+## Visual Logic of Instrumental Variables
+*** =video_link
+//player.vimeo.com/video/?????????
  
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+## Assumptions of instrumental variables
+Which of the following is *not* a key identifying assumption/condition of instrumental variables?
+
+*** =instructions
+- Instrument has a causal effect on the outcome
+- Instrument is randomly assigned
+- Instrument has a causal effect on the treatment
+- Instrument is correlated with the outcome
+*** =sct
+```{r}
+msg1 = "Correct! The instrument cannot have a causal effect on the outcome."
+msg2 = "The instrument must be randomly assigned. Try again"
+msg3 = "The instrument must have a causal effect on the treatment. Try again"
+msg4 = "The instrument needs to be correlated with the outcome. Try again"
+test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
+```
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Instrumental Variables in Action: Education and Wages (graphs)
+*** =video_link
+//player.vimeo.com/video/?????????
+
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+## Correlation and causation in instrumental variables
+True or False: If you see that there is a zero correlation between the treatment variable and the outcome variable, then the treatment cannot have a causal effect on outcomes---there must be correlation between those two variables if we are to have any hope of using instrumental variables to learn about causality.
+
+*** =instructions
+- True
+- False
+*** =sct
+```{r}
+msg1 = "Try again"
+msg2 = "Correct! The amount or sign of correlation between treatments and outcomes is completely irrelevant for instrumental variables analysis. That is because we are considering the case where treatments are *not* randomly assigned, so we know that correlation (or the lack thereof) does not imply causation (or the lack thereof). For instrumental variables analysis, all the assumptions are about how the instrument itself relates to the other variables."
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
+```
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Some Instrumental Variables Terminology
+*** =video_link
+//player.vimeo.com/video/?????????
+
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+## Instrumental variables in practice
+Suppose you have data on where students live once they graduate from college. You want to know the causal effect of living in a rural versus urban area on their wages. So you categorize locations as either urban or rural, giving you a binary treatment variable. What kind of variation is in that variable and why?
+
+*** =instructions
+- Exogenous
+- Endogenous
+- Both
+*** =sct
+```{r}
+msg1 = "Not quite. Try again"
+msg2 = "Not quite. Try again"
+msg3 = "Correct! Locations are not exogenously determined because people choose where they want to live. If their choices are related to some other unobserved variables (like if people who desire more money choose to live in urban areas), then this produces endogenous variation. The reason it is likely both is that there might be other reasons that affect people's choice of where to live, like perhaps where their family is from, which might be unrelated to any variables that affect how much someone earns."
+test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
+```
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## The Three Instrumental Variables Assumptions
+*** =video_link
+//player.vimeo.com/video/?????????
+
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+## Logical arguments about instrumental variables
+Let's say that you have data on the impact of bike riding on child happiness, and you want to use the brand of bicycle as your instrument. What's the best argument that the brand of bike does not affect child happiness directly?
+
+*** =instructions
+- Kids don't have brand awareness like adults do
+- Once they are on the bike, the brand doesn't matter
+- Bike brands may be sized differently, but kids always adjust as needed
+- Bike brands differ mostly in color patterns, and kids' preferences cancel each other out
+*** =sct
+```{r}
+msg1 = "Correct! This is the best argument because, if kids are very brand aware, then simply owning a specific brand may make them very happy, independently of whether they actually ride the bike or not."
+msg2 = "Not quite. Try again"
+msg3 = "Not quite. Try again"
+msg4 = "Not quite. Try again"
+test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
+```
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Refutability and nonrefutability of the instrumental variables assumptions
+*** =video_link
+//player.vimeo.com/video/?????????
+
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+## Questioning the validity of instrumental variables results
+Many researchers have found the distance-to-college instrument questionable. What do you think is the most plausible reason?
+
+*** =instructions
+- Researchers think the relevance assumption does not hold---whether you live close to a college or not doesn't actually affect whether you go to college or not.
+- Researchers think the exclusion restriction does not hold---employers are willing to pay people more money if students went to high school in a town that was close to a college.
+- Researchers think the exogeneity assumption does not hold---there are unobserved variables like ability which are correlated with distance-to-college and which affect how much income you'll make.
+*** =sct
+```{r}
+msg1 = "Not quite. Remember: relevance is refutable, so people don't usually complain about this because it can be checked in the data. Try again"
+msg2 = "This is not the most common complaint. Try again"
+msg3 = "Correct! This is the most common complaint."
+test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3))
+```
+
