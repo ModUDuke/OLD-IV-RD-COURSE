@@ -6,13 +6,13 @@ description : "This chapter will introduce you to instrumental variables (IV) an
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:9c7273586e
 ## The Logic of Instrumental Variables
 *** =video_link
-//player.vimeo.com/video/216023860
- 
+//player.vimeo.com/video/219558904
+
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:9c7273586e
 ## Visual Logic of Instrumental Variables
 *** =video_link
-//player.vimeo.com/video/?????????
- 
+//player.vimeo.com/video/219559011
+
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
 ## Assumptions of instrumental variables
 Which of the following is *not* a key identifying assumption/condition of instrumental variables?
@@ -34,8 +34,7 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
 ## Instrumental Variables in Action: Education and Wages (graphs)
 *** =video_link
-//player.vimeo.com/video/?????????
-
+//player.vimeo.com/video/219559159
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
 ## Correlation and causation in instrumental variables
@@ -51,11 +50,16 @@ msg2 = "Correct! The amount or sign of correlation between treatments and outcom
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Instrumental Variables in Action: Education and Wages (tables)
+*** =video_link
+//player.vimeo.com/video/219559305
+
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
 ## Some Instrumental Variables Terminology
 *** =video_link
-//player.vimeo.com/video/?????????
+//player.vimeo.com/video/219565557
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
@@ -77,7 +81,7 @@ test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
 ## The Three Instrumental Variables Assumptions
 *** =video_link
-//player.vimeo.com/video/?????????
+//player.vimeo.com/video/219559447
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
@@ -102,7 +106,7 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
 ## Refutability and nonrefutability of the instrumental variables assumptions
 *** =video_link
-//player.vimeo.com/video/?????????
+//player.vimeo.com/video/219559377
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
