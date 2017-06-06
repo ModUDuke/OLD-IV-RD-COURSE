@@ -125,3 +125,85 @@ msg3 = "Correct! This is the most common complaint."
 test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Indirect Inference
+*** =video_link
+//player.vimeo.com/video/219559540
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Two Stage Least Squares (2SLS)
+*** =video_link
+//player.vimeo.com/video/219559617
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Solving Noncompliance in Experiments with Instrumental Variables
+*** =video_link
+//player.vimeo.com/video/219559688
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Using IV to Solve Noncompliance in the Oregon Heathcare Insurance Experiment
+*** =video_link
+//player.vimeo.com/video/219559775
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## The Problem of Weak Instruments
+*** =video_link
+//player.vimeo.com/video/219559996
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Where Do Instruments Come From?
+*** =video_link
+//player.vimeo.com/video/219560424
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Which Causal Effects Are We Actually Getting with Instrumental Variables?
+*** =video_link
+//player.vimeo.com/video/219560614
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Defining LATE: The Local Average Treatment Effect
+*** =video_link
+//player.vimeo.com/video/219560681
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## The "No Defiers" Assumption
+*** =video_link
+//player.vimeo.com/video/219560834
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Computing LATE, Part 1: Dividing the Population
+*** =video_link
+//player.vimeo.com/video/219561008
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Computing LATE, Part 2: Finding the Compliers
+*** =video_link
+//player.vimeo.com/video/219561095
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## Computing LATE, Part 3: Getting a Result
+*** =video_link
+//player.vimeo.com/video/219561285
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## The Pros & Cons of LATE
+*** =video_link
+//player.vimeo.com/video/219561575
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+## ATEs, CATEs, and LATEs: What's the Difference?
+*** =video_link
+//player.vimeo.com/video/219561649
