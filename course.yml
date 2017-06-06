@@ -5,7 +5,7 @@ instructors      :
  - tyler.ransom@duke.edu
  - bdaronson@gmail.com
  - cooper@duke.edu
-description      : Prototype for Causal Inference methods course
+description      : A look at using Instrumental Variables and Regression Discontinuity to estimate causal effects
 university       : DataCamp
 difficulty_level : 4
 time_needed      : 10 hours
