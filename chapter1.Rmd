@@ -103,6 +103,121 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
 
+--- type:NormalExercise lang:r xp:100 skills:1 key:
+## Practice using instrumental variables: CreditCo
+In the experiments course, you assessed the validity of a natural experiment using data from CreditCo. Let's revisit that analysis, framing it in the logic of instrumental variables.
+
+As you may recall, CreditCo sent out offers in the mail to increase their customers' credit limits. We are worried that the customers who took up the offer might not have randomly done so, which causes an endogeneity problem. We proposed to solve this problem by using the weather on the day the credit offers were delivered as an instrument for treatment. 
+
+Included on the workspace is a data set from CreditCo. The data are a sample of CreditCo customers who were offered the credit limit increase. We will focus on the variable `rainy`, which we will use as an instrument for `opt_in`, which we suspect is endogenous to our outcomes of interest.
+
+*** =instructions
+- Using a linear regression, test whether rain satisfies the relevance assumption.
+- What is the sign of the correlation between rain and opt-in?
+
+*** =hint
+- Remember to be aware of selecting the correct subsample
+
+*** =pre_exercise_code
+```{r}
+  set.seed(1)
+  n             <- 9e5
+  frac_treated  <- .5
+  frac_female   <- .5656
+  frac_white    <- .688
+
+# Initialize dataframe
+  CreditCo <- as.data.frame(matrix(0, ncol=11,nrow=n))
+  colnames(CreditCo) <- c("id","offered","opt_in","FICO","age","female","race_white","default_pre","default_post","balance_pre","balance_post")
+
+# Simulate baseline data
+  CreditCo$id         <- seq(1,n,1)
+  CreditCo$offered    <- as.integer(runif(n)<frac_treated)
+  CreditCo$opt_in     <- rep.int(0,n)
+  CreditCo$FICO       <- rnorm(n, mean=736, sd=300)
+  CreditCo$age        <- sample(18:55, n, replace=T)
+  CreditCo$female     <- as.integer(runif(n)<frac_female)
+  CreditCo$race_white <- as.integer(runif(n)<frac_white)
+
+# make FICO score intelligible
+  CreditCo$FICO[CreditCo$FICO>850] <- 850
+  CreditCo$FICO[CreditCo$FICO<300] <- 300
+  CreditCo$FICO                    <- round(CreditCo$FICO)
+
+# simulate pre-experiment default rate
+  draw <- runif(n)
+  xb   <- -1.82-0.2*CreditCo$FICO/100+.046*(CreditCo$FICO^2)/10000-5.1*CreditCo$female-7*CreditCo$race_white
+  p    <- exp(xb)/(1+exp(xb))
+  CreditCo$default_pre <- as.integer(draw<p)
+
+# simulate pre-experiment balance level
+  draw <- rnorm(n, mean=0, sd=0.5)
+  CreditCo$balance_pre <- 8.5-0.2*CreditCo$FICO/100+.046*(CreditCo$FICO^2)/10000-0.15*CreditCo$female-0.85*CreditCo$race_white + draw
+  CreditCo$balance_pre <- exp(CreditCo$balance_pre)
+
+# Simulate opt-in behavior based on weather
+  draw <- runif(n)
+  draw2 <- runif(n)
+  CreditCo$rainy <- draw>0.5
+  xb   <- 1.5-3*CreditCo$rainy+.2*CreditCo$female
+  p    <- exp(xb)/(1+exp(xb))
+  CreditCo$opt_in[CreditCo$offered==1] <- as.integer(draw2[CreditCo$offered==1]<p[CreditCo$offered==1])
+
+# Simulate post outcomes
+  draw <- runif(n)
+  xb   <- -1.82-0.2*CreditCo$FICO/100+.046*(CreditCo$FICO^2)/10000-5.1*CreditCo$female-7*CreditCo$race_white+4*CreditCo$offered*CreditCo$opt_in
+  p    <- exp(xb)/(1+exp(xb))
+  CreditCo$default_post <- as.integer(draw<p)
+
+# balance
+  draw <- rnorm(n, mean=0, sd=0.5)
+  CreditCo$balance_post <- 8.5-0.2*CreditCo$FICO/100+.046*(CreditCo$FICO^2)/10000-0.15*CreditCo$female-0.85*CreditCo$race_white + 1*CreditCo$offered*CreditCo$opt_in + draw
+  CreditCo$balance_post <- exp(CreditCo$balance_post)
+
+# Remove elements and variables from environment
+  rm(draw,frac_female,frac_treated,frac_white,n,p,xb)
+  CreditCo <- CreditCo[CreditCo$offered==1,c("id","opt_in","FICO","female","race_white","default_pre","default_post","balance_pre","balance_post","rainy")]
+```
+
+*** =sample_code
+```{r}
+# The dataset `CreditCo` is available in your workspace
+
+# Question 1: Using a linear regression, compute the correlation between rain and opt-in status.
+#---- Question 1-------------------------------------#
+    Solution1<-lm( ~ ,data=CreditCo)
+#----------------------------------------------------#
+
+# Question 2: What is the p-value associated with the t-test on the coefficient of rain?
+#---- Question 2-------------------------------------#
+    Solution2<-summary(Solution1$coefficients[2,4])
+#----------------------------------------------------#
+
+# Question 3: What is the sign of the correlation between rain and opt-in?
+#---- Question 3-------------------------------------#
+    Solution3<-sign(Solution1$coefficients[2])
+#----------------------------------------------------#
+
+```
+
+*** =solution
+```{r}
+Solution1 <- lm(opt_in~rainy,data=CreditCo)
+Solution2 <- summary(Solution1$coefficients[2,4])
+Solution3 <- sign(Solution1$coefficients[2])
+```
+
+*** =sct
+```{r}
+test_object("Solution1")
+test_object("Solution2")
+success_msg("Good work!")
+```
+
+
+
+
+
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:9cc4cfa847
 ## Refutability and nonrefutability of the instrumental variables assumptions
 *** =video_link
