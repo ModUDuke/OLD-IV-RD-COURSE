@@ -275,7 +275,7 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
 
 # Question 2: What is the p-value associated with the t-test on the coefficient of rain?
 #---- Question 2-------------------------------------#
-    Solution2<-summary(Solution1$coefficients[2,4])
+    Solution2<-summary(Solution1)$coefficients[2,4]
 #----------------------------------------------------#
 
 # Question 3: What is the sign of the correlation between rain and opt-in?
