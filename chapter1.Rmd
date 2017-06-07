@@ -103,7 +103,7 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
 
---- type:NormalExercise lang:r xp:100 skills:1 key:
+--- type:NormalExercise lang:r xp:100 skills:1 key:80186483d8
 ## Practice using instrumental variables: CreditCo
 In the experiments course, you assessed the validity of a natural experiment using data from CreditCo. Let's revisit that analysis, framing it in the logic of instrumental variables.
 
