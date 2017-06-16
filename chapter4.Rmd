@@ -1,0 +1,45 @@
+--- 
+title       : "Instrumental Variables Deep Dive"
+description : "This chapter explores deeper concepts and applications related to IV"
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:d8ab603518
+## Defining LATE: The Local Average Treatment Effect
+*** =video_link
+//player.vimeo.com/video/219560681
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:44c9ebbb15
+## The "No Defiers" Assumption
+*** =video_link
+//player.vimeo.com/video/219560834
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:1606faf89a
+## Computing LATE, Part 1: Dividing the Population
+*** =video_link
+//player.vimeo.com/video/219561008
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:d64d8a91b4
+## Computing LATE, Part 2: Finding the Compliers
+*** =video_link
+//player.vimeo.com/video/219561095
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:a25130be8d
+## Computing LATE, Part 3: Getting a Result
+*** =video_link
+//player.vimeo.com/video/219561285
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:edfd010726
+## The Pros & Cons of LATE
+*** =video_link
+//player.vimeo.com/video/219561575
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:162436a553
+## ATEs, CATEs, and LATEs: What's the Difference?
+*** =video_link
+//player.vimeo.com/video/219561649
