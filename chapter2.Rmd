@@ -388,7 +388,7 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
 ```{r}
 Solution1 <- lm(balance_post~rainy,data=CreditCo)
 Solution2 <- lm(opt_in~rainy,data=CreditCo)
-Solution3 <- Solution1$coefficients[2,1]/Solution2$coefficients[2,1]
+Solution3 <- Solution1$coefficients[2]/Solution2$coefficients[2]
 Solution4 <- c("increased")
 ```
 
