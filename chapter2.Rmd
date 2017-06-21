@@ -403,7 +403,7 @@ success_msg("Good work!")
 //player.vimeo.com/video/219559617
 
 
---- type:NormalExercise lang:r xp:100 skills:1 key:
+--- type:NormalExercise lang:r xp:100 skills:1 key:415cb190e2
 ## Practice computing causal effects using Two-Stage Least Squares (2SLS): CreditCo
 Now let's repeat the previous CreditCo analysis, but now use 2SLS to compute the causal effect instead of indirect inference.
 
