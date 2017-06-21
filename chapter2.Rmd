@@ -371,7 +371,7 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
     Solution3<-Solution1$coefficients[2]/Solution2$coefficients[2]
 #----------------------------------------------------#
 
-# Question 4: Did opting in to the credit offer increase or decrease credit balances? (type "increased" or "decreased")
+# Question 4: Did opting in to the credit offer increase or decrease credit balances? (type "increased" if Solution3 is positive or "decreased" if Solution3 is negative)
 #---- Question 3-------------------------------------#
     Solution4<-c("")
 #----------------------------------------------------#
