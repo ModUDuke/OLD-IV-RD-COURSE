@@ -486,7 +486,7 @@ Now let's repeat the previous CreditCo analysis, but now use 2SLS to compute the
     Solution1<-lm( ~ ,data=CreditCo)
 #----------------------------------------------------#
 
-# Question 2: Compute the predicted opt-in rate for each person
+# Question 2: Compute the predicted opt-in rate for each person and include it as a variable in the `CreditCo` data frame
 #---- Question 2-------------------------------------#
     Solution2<-predict(Solution1,data=CreditCo)
     CreditCo$prediction <- Solution2
@@ -508,6 +508,7 @@ Now let's repeat the previous CreditCo analysis, but now use 2SLS to compute the
 ```{r}
 Solution1 <- lm(opt_in~rainy,data=CreditCo)
 Solution2 <- predict(Solution1,data=CreditCo)
+CreditCo$prediction <- Solution2
 Solution3 <- lm(balance_post ~ prediction,data=CreditCo)
 Solution4 <- c("increased")
 ```
