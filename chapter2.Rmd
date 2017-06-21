@@ -356,12 +356,6 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
 ```{r}
 # The dataset `CreditCo` is available in your workspace
 
-- Using a linear regression, compute the reduced-form effect (i.e. correlation between credit balance and rain)
-- Using a linear regression, compute the first-stage effect (i.e. correlation between opting in and rain)
-- Now compute the causal effect, which is equal to (reduced form)/(first stage)
-- Did opting in to the credit offer increase or decrease credit balances?
-
-
 # Question 1: Using a linear regression, compute the reduced-form effect (i.e. correlation between `balance_post` and `rainy`).
 #---- Question 1-------------------------------------#
     Solution1<-lm( ~ ,data=CreditCo)
