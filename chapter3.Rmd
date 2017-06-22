@@ -73,7 +73,7 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f1b89ac666
 ## Visualizing RD designs
 Most analyses using the RDD approach graphically show the causal effect at the discontinuity. The graph on the right hand part of your screen displays this for the NBA game data mentioned in a previous exercise of this chapter.
 
