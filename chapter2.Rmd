@@ -522,6 +522,26 @@ test_object("Solution4")
 success_msg("Good work!")
 ```
 
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+## Comparing the estimates from indirect inference and 2SLS
+The previous two coding exercises used two separate methods to estimate a causal effect using instrumental variables. 
+
+The estimate from the indirect inference method yielded an effect of $16,319. The 2SLS method estimate was an identical $16,319.
+
+In general, do you think that these two methods will always yield the same results?
+
+*** =instructions
+- Yes
+- No
+*** =sct
+```{r}
+msg1 = "Try again"
+msg2 = "Correct! The previous coding examples happened to yield identical results because of the specific situation. In general, the results should yield numbers that are statistically similar (i.e. the confidence interval of one should contain the other)."
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
+```
+
+
+
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:25532d1a49
 ## Solving Noncompliance in Experiments with Instrumental Variables
 *** =video_link
