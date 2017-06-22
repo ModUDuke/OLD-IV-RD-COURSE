@@ -203,7 +203,9 @@ NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.
       geom_vline(aes(xintercept = 0), color = 'grey', size = 1, linetype = 'dashed') +  # verticle line at discontinuity
       geom_point(size=3) + # adjust point size to your liking
       geom_segment(aes(x = df$margins[1], xend = 0, y = y1.1, yend = y1.2), size = 1)+
-      geom_segment(aes(x = 0, xend = df$margins[16], y = y2.1, yend = y2.2), size = 1)
+      geom_segment(aes(x = 0, xend = df$margins[16], y = y2.1, yend = y2.2), size = 1)+
+      labs(x = "Margin of victory")+
+      labs(y = "Probability of winning")
 ```
 *** =sct
 ```{r}
