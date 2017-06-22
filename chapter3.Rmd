@@ -77,9 +77,9 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ## Visualizing RD designs
 Most analyses using the RDD approach graphically show the causal effect at the discontinuity. The graph on the right hand part of your screen displays this for the NBA game data mentioned in a previous exercise of this chapter.
 
-Each dot on the plot corresponds to the average winning percentage for a large number of games that had the same halftime points margin of the home team. 
+Each dot on the plot corresponds to the average margin of victory for the home team taken from a large number of games that had the same halftime margin for the home team. 
 
-As you can see, there is a slight break in the two lines right at a margin of zero, implying that teams who are slightly behind at halftime are slightly more likely (than otherwise expected) to win the game.
+As you can see, there is a slight break in the two lines right at a margin of zero, implying that teams who are slightly behind at halftime are slightly more likely (than otherwise expected) to end the game with a positive margin (i.e. win the game).
 
 Why do you think the lines in this graph are sloping upward?
 
