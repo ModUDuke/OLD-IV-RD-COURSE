@@ -47,7 +47,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3,msg4))
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:7977c48f95
 ## Practice identifying key variables in an RD design
-A pair of researchers named Jonah Berger and Devin Pope recently published a study that found that losing can lead to winning. As part of the study, the researchers documented this phenomenon in National Basketball Association (NBA) games. The researchers studied thousands of NBA game outcomes and found that teams that were just behind at halftime were more likely to win the game, after controling for other important factors (like the winning percentage of each team). 
+A pair of researchers named Jonah Berger and Devin Pope recently published a study that found that losing can lead to winning. As part of the study, the researchers documented this phenomenon in National Basketball Association (NBA) games. The researchers studied thousands of NBA game outcomes and found that teams who were just behind at halftime were more likely to win the game, after controling for other important factors (like the winning percentage of each team). 
 
 In this study, which variable is the outcome variable, which is the running variable, and which is the treatment variable?
 
@@ -71,6 +71,147 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 *** =video_link
 //player.vimeo.com/video/218502963
 
+
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+## Visualizing RD designs
+Most analyses using the RDD approach graphically show the causal effect at the discontinuity. The graph on the right hand part of your screen displays this for the NBA game data mentioned in a previous exercise of this chapter.
+
+Each dot on the plot corresponds to the average winning percentage for a large number of games that had the same halftime points margin of the home team. 
+
+As you can see, there is a slight break in the two lines right at a margin of zero, implying that teams who are slightly behind at halftime are slightly more likely (than otherwise expected) to win the game.
+
+Why do you think the lines in this graph are sloping upward?
+
+*** =instructions
+- Because the RDD isn't controlling for team quality in an appropriate way
+- Because we should expect teams that are farther ahead at halftime to have a higher chance of winning, regardless of team quality or any other attribute
+- Because there is an inherent home court advantage in the NBA
+
+*** =pre_exercise_code
+```{r}
+set.seed(1)
+n <- 18060
+
+# Initialize dataframe
+NBA <- as.data.frame(matrix(0, ncol=10,nrow=n))
+colnames(NBA) <- c("id","season","home.team","away.team","home.team.qual","away.team.qual","home.team.halftime.score","away.team.halftime.score","home.team.final.margin","home.team.win")
+
+# Simulate baseline data
+NBA$id         <- seq(1,n,1)
+NBA$season     <- ifelse(NBA$id %in% seq( 0*1204+1, 1*1204,1),1994,
+                  ifelse(NBA$id %in% seq( 1*1204+1, 2*1204,1),1995,
+                  ifelse(NBA$id %in% seq( 2*1204+1, 3*1204,1),1996,
+                  ifelse(NBA$id %in% seq( 3*1204+1, 4*1204,1),1997,
+                  ifelse(NBA$id %in% seq( 4*1204+1, 5*1204,1),1998,
+                  ifelse(NBA$id %in% seq( 5*1204+1, 6*1204,1),1999,
+                  ifelse(NBA$id %in% seq( 6*1204+1, 7*1204,1),2000,
+                  ifelse(NBA$id %in% seq( 7*1204+1, 8*1204,1),2001,
+                  ifelse(NBA$id %in% seq( 8*1204+1, 9*1204,1),2002,
+                  ifelse(NBA$id %in% seq( 9*1204+1,10*1204,1),2003,
+                  ifelse(NBA$id %in% seq(10*1204+1,11*1204,1),2004,
+                  ifelse(NBA$id %in% seq(11*1204+1,12*1204,1),2005,
+                  ifelse(NBA$id %in% seq(12*1204+1,13*1204,1),2006,
+                  ifelse(NBA$id %in% seq(13*1204+1,14*1204,1),2007,
+                  ifelse(NBA$id %in% seq(14*1204+1,15*1204,1),2008,0)))))))))))))))
+teamqual <- cbind(c("BOS","NJN","NYK","PHL","GSW","LAC","LAL","PHX","SAC","CHI","CLE","DET","IND","MIL","DAL","HOU","MEM","SAS","ATL","CHA","MIA","ORL","WSH","DEN","MIN","SEA","POR","UTA"),
+                  matrix(rnorm(28*15,mean=0,sd=1), ncol=15))
+NBA$home.team      <- sample(teamqual[,1],n,replace=TRUE)
+NBA$away.team      <- sample(teamqual[,1],n,replace=TRUE)
+print(paste0('Number of teams playing themselves: ',sum(NBA$home.team==NBA$away.team)/n*100,'%'))
+for (i in 1:n) {
+    if (NBA$home.team[i]==NBA$away.team[i]) {
+        NBA$away.team[i] <- sample(setdiff(teamqual[,1],NBA$home.team[i]),1)
+    }
+}
+print(paste0('Number of teams playing themselves: ',sum(NBA$home.team==NBA$away.team)/n*100,'%'))
+
+# generate team qualities to explain outcomes for each game
+for (i in 1:n) {
+    NBA$away.team.qual[i] <- as.numeric(teamqual[teamqual[,1]==NBA$away.team[i],NBA$season[i]-1992])
+    NBA$home.team.qual[i] <- as.numeric(teamqual[teamqual[,1]==NBA$home.team[i],NBA$season[i]-1992])
+}
+
+NBA$home.team <- as.factor(NBA$home.team)
+NBA$away.team <- as.factor(NBA$away.team)
+
+# Generate halftime scores
+NBA$home.team.halftime.score  <- round(NBA$home.team.qual+rnorm(n, mean=48, sd=4), digits=0)
+NBA$away.team.halftime.score  <- round(NBA$away.team.qual+rnorm(n, mean=47, sd=6), digits=0)
+NBA$home.team.halftime.margin <- NBA$home.team.halftime.score - NBA$away.team.halftime.score
+
+# Remove games that are tied at halftime
+print(dim(NBA))
+NBA <- NBA[NBA$home.team.halftime.margin!=0,]
+print(dim(NBA))
+n1 <- dim(NBA)[1]
+
+# Generate final score
+NBA$home.team.winning.at.half <- NBA$home.team.halftime.margin>0
+NBA$home.team.final.margin    <- round(2 - 5*NBA$home.team.winning.at.half + 2*NBA$home.team.halftime.margin -.05*NBA$home.team.halftime.margin^2 + NBA$home.team.qual - NBA$away.team.qual + rnorm(n1, mean=0, sd=10), digits=0)
+NBA$home.team.win             <- NBA$home.team.final.margin>0
+
+# Clean up data
+NBA$season <- as.factor(NBA$season)
+NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.qual","home.team.halftime.margin","home.team.final.margin","home.team.winning.at.half","home.team.win")]
+
+
+# Create model
+    fit<-lm(home.team.final.margin ~ home.team.winning.at.half + 
+         home.team.halftime.margin +
+         home.team.qual + away.team.qual, data = NBA)
+
+
+# Create bins
+    bins<-seq(-10,10,(20/15))
+    
+# Create predicted values
+    # Create df with all model values except margins set at 0 or F
+        NBA2<-NBA[1:16,]
+        NBA2$home.team.winning.at.half<-rep(c(F,T),each=8)
+        NBA2$home.team.qual<-0
+        NBA2$away.team.qual<-0
+        NBA2$home.team.halftime.margin<-bins
+    # Predict values
+        predicts<- predict(fit, NBA2)
+
+#Turn margins and predicts into df
+    df<-data.frame(predicts=predicts, margins=NBA2$home.team.halftime.margin)
+        
+#create locations of line segments
+    mod1<-lm(predicts~margins,data=df[1:8,])
+    mod2<-lm(predicts~margins,data=df[9:16,])
+    
+    y1.1<-mod1$coefficients[1]+mod1$coefficients[2]*-10
+    y1.2<-mod1$coefficients[1]+mod1$coefficients[2]*0
+    y2.1<-mod2$coefficients[1]+mod2$coefficients[2]*0
+    y2.2<-mod2$coefficients[1]+mod2$coefficients[2]*10
+  
+#plot
+    library(ggplot2)
+    ggplot(df, aes(x = margins, y = predicts )) + 
+      geom_vline(aes(xintercept = 0), color = 'grey', size = 1, linetype = 'dashed') +  # verticle line at discontinuity
+      geom_point(size=3) + # adjust point size to your liking
+      geom_segment(aes(x = df$margins[1], xend = 0, y = y1.1, yend = y1.2), size = 1)+
+      geom_segment(aes(x = 0, xend = df$margins[16], y = y2.1, yend = y2.2), size = 1)
+
+```
+
+*** =sample_code
+```{r}
+    ggplot(df, aes(x = margins, y = predicts )) + 
+      geom_vline(aes(xintercept = 0), color = 'grey', size = 1, linetype = 'dashed') +  # verticle line at discontinuity
+      geom_point(size=3) + # adjust point size to your liking
+      geom_segment(aes(x = df$margins[1], xend = 0, y = y1.1, yend = y1.2), size = 1)+
+      geom_segment(aes(x = 0, xend = df$margins[16], y = y2.1, yend = y2.2), size = 1)
+```
+*** =sct
+```{r}
+msg1 = "Almost, try again."
+msg2 = "Good job! This is an example of why conclusions from RDD analyses are only valid at the boundary of the discontinuity! If we get too far away, we will be picking up effects that will confound our causal inference."
+msg3 = "Almost, try again."
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
+```
 
 
 --- type:NormalExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:8dfb92fd8e
