@@ -522,7 +522,7 @@ test_object("Solution4")
 success_msg("Good work!")
 ```
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:458e4ed187
 ## Comparing the estimates from indirect inference and 2SLS
 The previous two coding exercises used two separate methods to estimate a causal effect using instrumental variables. 
 
