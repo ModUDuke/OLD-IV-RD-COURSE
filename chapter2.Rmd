@@ -482,8 +482,8 @@ Instead, we'll instrument for Medicaid takeup using assignment to the treatment 
 *** =instructions
 - The data frame `OHIE` is on your workspace
 - Compute the ITT effect of being offered insurance on having a positive depression screening
-- Estimate the 2SLS effect of taking up the offer on positive depression screening using the `ivreg2` function which is also on your workspace
-- The syntax for this function is: model <- ivreg2(form = [second stage regression formula], endog = c("endogenous.regressor", iv = c("instruments"), data=name.of.data.frame)
+- Estimate the 2SLS effect of taking up the offer on positive depression screening using the `ivreg2()` function which is also on your workspace
+- The syntax for this function is: `model <- ivreg2(form = [second stage model regression formula], endog = c("endogenous.regressor"), iv = c("instruments"), data=name.of.data.frame)`
 
 *** =hint
 - Remember to include additional demographic controls in your regression model!
@@ -582,15 +582,6 @@ OHIE$dep_dx_pre_lottery[!is.na(OHIE$dep_dx_pre_lottery)]       <- as.integer(run
 # Variable labels
 #------------------------------------------
 names(OHIE)[(length(OHIE)-10):length(OHIE)] <- c("asthma pre lottery","diabetes pre lottery","hypertension pre lottery","high cholesterol pre lottery","heart attack pre lottery","congestive heart failure pre lottery","emphysema/COPD pre lottery","kidney failure pre lottery","cancer pre lottery","depression pre lottery","any of diabetes, high bp, high chol, heart attack, or cong heart failure pre lottery")
-
-print(summary(OHIE))
-
-#------------------------------------------
-# Print statistics to compare with OHIE data
-#------------------------------------------
-print(paste0("Number of individuals interviewed: ",sum(OHIE$intvw)))
-print(paste0("Number of individuals in lottery group: ",sum(OHIE$lottery==1,na.rm=TRUE)))
-print(paste0("Number of individuals in control group: ",sum(OHIE$lottery==0,na.rm=TRUE)))
 
 #------------------------------------------
 # Simulate first stage
@@ -701,7 +692,7 @@ OHIE$pos_depression_screen[!is.na(OHIE$pos_depression_screen)] <- as.integer(dra
 OHIE <- OHIE[!is.na(OHIE$pos_depression_screen),c("id","intvw","lottery","gender_inp","age_19_34_inp","age_35_49_inp","age_50_64_inp","race_white_inp","race_black_inp","race_nwother_inp","hispanic_inp","itvw_english_inp","insurance","pos_depression_screen")]
 
 # Add code for ivreg2 function
-    ivreg2 <- function(form,endog,iv,data,digits=3){
+ivreg2 <- function(form,endog,iv,data,digits=3){
     # library(MASS)
     # model setup
     r1 <- lm(form,data)
@@ -791,24 +782,20 @@ OHIE <- OHIE[!is.na(OHIE$pos_depression_screen),c("id","intvw","lottery","gender
 
 # Question 1: Using a linear regression, compute the ITT effect of being assigned to the treatment group ("lottery" variable) on positive depression screening, while also controlling for gender, age, ehtnicity, and interview language. Exclude age 18-34 and white from the set of right hand side dummy variables.
 #---- Question 1-------------------------------------#
-    Solution1<-lm( ~ ,data=OHIE)
+    Solution1<-summary(lm( ~ ,data=OHIE))
 #----------------------------------------------------#
 
 # Question 2: Compute the the 2SLS effect of insurance takeup using "lottery" as an instrument for the endogenous takeup indicator "insurance"
 #---- Question 2-------------------------------------#
     Solution2<-ivreg2(form = y~x1+x2+..., endog = c(" "), iv = c(" "), data=OHIE)$results
 #----------------------------------------------------#
-
 ```
 
 *** =solution
 ```{r}
-
-Solution1<-lm(pos_depression_screen~lottery+gender_inp+age_35_49_inp+age_50_64_inp+race_black_inp+race_nwother_inp+hispanic_inp+itvw_english_inp,data=OHIE)$results
+Solution1<-summary(lm(pos_depression_screen~lottery+gender_inp+age_35_49_inp+age_50_64_inp+race_black_inp+race_nwother_inp+hispanic_inp+itvw_english_inp,data=OHIE))
 Solution2<-ivreg2(form=pos_depression_screen~insurance+gender_inp+age_35_49_inp+age_50_64_inp+race_black_inp+race_nwother_inp+hispanic_inp+itvw_english_inp,endog = c("insurance"), iv = c("lottery"), data=OHIE)$results
-
 ```
-
 
 *** =sct
 ```{r}
