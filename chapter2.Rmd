@@ -471,7 +471,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 
 
 
---- type:NormalExercise lang:r xp:100 skills:1 key:415cb190e2
+--- type:NormalExercise lang:r xp:100 skills:1 key:834d82578f
 ## Practice using IV to solve noncompliance in the OHIE
 In an earlier course, you analyzed data from the Oregon Healthcare Insurance Experiment (OHIE) where you assumed that everyone who was offered Medicaid coverage ended up getting covered.
 
