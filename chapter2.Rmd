@@ -586,7 +586,7 @@ names(OHIE)[(length(OHIE)-10):length(OHIE)] <- c("asthma pre lottery","diabetes 
 #------------------------------------------
 # Simulate first stage
 #------------------------------------------
-OHIE$insurance<-0*OHIE$lottery
+OHIE$insurance <- 0*(OHIE$lottery)
 OHIE[OHIE$intvw==0,c("insurance")] <- NA
 colnames(OHIE)[length(OHIE)] <- c("insurance")
 
