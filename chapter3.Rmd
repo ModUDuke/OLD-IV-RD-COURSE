@@ -606,31 +606,30 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
   else return(p)
 }
 
+# Generate some data with no discontinuity.
+xNoDisc<-runif(n,-1,1)
+xDisc<-runif(n,-1,1)
+xDisc<-xDisc+2*(runif(n,-1,1)>0&x<0)
 ```
 
 *** =sample_code
 ```{r}
-# Generate some data with no discontinuity.
-x<-runif(n,-1,1)
 
-# Create a dummy variable that equals 1 if the home team is ahead at halftime
+# Test with data that has no discontinuity
 #---- Question 1-------------------------------------#
-      Solution1 <- DCdensity(x,0,plot=FALSE)
+      Solution1 <- DCdensity(xNoDisc,0,plot=FALSE)
 #----------------------------------------------------#
   
-# Now generate some data with a discontinuity.
-x<-runif(n,-1,1)
-x<-x+2*(runif(n,-1,1)>0&x<0)
-
+# Now test with some data with a discontinuity.
 #---- Question 2-------------------------------------#
-      Solution2<-DCdensity(x,0,plot=FALSE)
+      Solution2<-DCdensity(xDisc,0,plot=FALSE)
 #----------------------------------------------------#
 
 ```
 *** =solution
 ```{r}
-    Solution1 <- DCdensity(x,0,plot=FALSE)
-    Solution2 <- DCdensity(x,0,plot=FALSE)
+    Solution1 <- DCdensity(xNoDisc,0,plot=FALSE)
+    Solution2 <- DCdensity(xDisc,0,plot=FALSE)
 ```
 *** =sct
 ```{r}
