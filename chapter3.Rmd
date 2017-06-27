@@ -449,6 +449,7 @@ NBA$away.team <- as.factor(NBA$away.team)
 NBA$home.team.halftime.score  <- round(NBA$home.team.qual+rnorm(n, mean=48, sd=4), digits=0)
 NBA$away.team.halftime.score  <- round(NBA$away.team.qual+rnorm(n, mean=47, sd=6), digits=0)
 NBA$home.team.halftime.margin <- NBA$home.team.halftime.score - NBA$away.team.halftime.score
+NBA$home.team.halftime.margin.cheat <- NBA$home.team.halftime.margin-1*(NBA$home.team.halftime.margin==0)
 
 # Remove games that are tied at halftime
 print(dim(NBA))
@@ -463,7 +464,7 @@ NBA$home.team.win             <- NBA$home.team.final.margin>0
 
 # Clean up data
 NBA$season <- as.factor(NBA$season)
-NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.qual","home.team.halftime.margin","home.team.final.margin","home.team.winning.at.half","home.team.win")]
+NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.qual","home.team.halftime.margin","home.team.final.margin","home.team.winning.at.half","home.team.win","home.team.halftime.margin.cheat")]
 
 
 kernelwts<-function(X,center,bw,kernel="triangular"){
@@ -705,26 +706,40 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
 
 *** =sample_code
 ```{r}
-# Run the McCrary test with the running variable in the NBA data
+# Run the McCrary test with the running variable in the NBA data and the cutoff (score tied)
 #---- Question 1-------------------------------------#
-      Solution1 <- DCdensity(NBA$home.team.halftime.margin,0,plot=TRUE)
+      Solution1 <- DCdensity(NBA$[running.var],[cutoff],plot=TRUE)
 #----------------------------------------------------#
   
-# Now issue the command again, but print the p-value output 
+# Now issue the command again, but print the p-value output. Put print() around the command
 #---- Question 2-------------------------------------#
-      Solution2<-print(DCdensity(NBA$home.team.halftime.margin,0,plot=FALSE))
+      Solution 2<- DCdensity(NBA$[running.var],[cutoff],plot=FALSE)
+#----------------------------------------------------#
+
+# Now plot using the variable `home.team.halftime.margin.cheat` which has been manipulated
+#---- Question 3-------------------------------------#
+      Solution3 <- DCdensity(NBA$[new.running.var],[cutoff],plot=TRUE)
+#----------------------------------------------------#
+
+# And print the p-value:
+#---- Question 3-------------------------------------#
+      Solution3 <- DCdensity(NBA$[new.running.var],[cutoff],plot=FALSE)
 #----------------------------------------------------#
 
 ```
 *** =solution
 ```{r}
     Solution1 <- DCdensity(NBA$home.team.halftime.margin,0,plot=TRUE)
-    Solution2<-print(DCdensity(NBA$home.team.halftime.margin,0,plot=FALSE))
+    Solution2 <- print(DCdensity(NBA$home.team.halftime.margin,0,plot=FALSE))
+    Solution3 <- DCdensity(NBA$home.team.halftime.margin.cheat,0,plot=TRUE)
+    Solution4 <- print(DCdensity(NBA$home.team.halftime.margin.cheat,0,plot=FALSE))
 ```
 *** =sct
 ```{r}
 test_object("Solution1")
 test_object("Solution2")
+test_object("Solution3")
+test_object("Solution4")
 success_msg("Good work!")
 ```
 
