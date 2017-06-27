@@ -398,6 +398,32 @@ This is an example of how to visualize manipulation in RD designs. The main idea
 set.seed(1)
 n <- 10000
 
+kernelwts<-function(X,center,bw,kernel="triangular"){
+  dist<-(X-center)/bw
+  if(kernel=="triangular"){
+    w<-(1-abs(dist))
+  } else if (kernel=="rectangular") {
+    w<-1/2
+  } else if (kernel=="epanechnikov") {
+    w<-3/4*(1-dist^2)
+  } else if (kernel=="quartic" | kernel=="biweight") {
+    w<-15/16*(1-dist^2)^2
+  } else if (kernel=="triweight") {
+    w<-35/32*(1-dist^2)^3
+  } else if (kernel=="tricube") {
+    w<-70/81*(1-abs(dist)^3)^3
+  } else if (kernel=="gaussian") {
+    w<-1/sqrt(2*pi)*exp(-1/2*dist^2)
+  } else if (kernel=="cosine") {
+    w<-pi/4*cos(pi/2 * dist)
+  } else {
+    stop("Invalid kernel selection.")
+  }
+  w<-ifelse(abs(dist)>1&kernel!="gaussian",0,w)
+  w<-w/sum(w)
+  return(w)
+}
+
 DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,ext.out=FALSE,htest=FALSE) {
   runvar <- runvar[complete.cases(runvar)]
   #Grab some summary vars
@@ -617,7 +643,7 @@ xDisc<-xDisc+2*(runif(n,-1,1)>0&xDisc<0)
 
 # Test with data that has no discontinuity
 #---- Question 1-------------------------------------#
-      Solution1 <- DCdensity(xNoDisc,0,plot=FALSE)
+      Solution1 <- DCdensity(xNoDisc,0,plot=TRUE)
 #----------------------------------------------------#
   
 # Now test with some data with a discontinuity.
@@ -628,7 +654,7 @@ xDisc<-xDisc+2*(runif(n,-1,1)>0&xDisc<0)
 ```
 *** =solution
 ```{r}
-    Solution1 <- DCdensity(xNoDisc,0,plot=FALSE)
+    Solution1 <- DCdensity(xNoDisc,0,plot=TRUE)
     Solution2 <- DCdensity(xDisc,0,plot=FALSE)
 ```
 *** =sct
