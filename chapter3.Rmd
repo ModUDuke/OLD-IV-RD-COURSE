@@ -609,7 +609,7 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
 # Generate some data with no discontinuity.
 xNoDisc<-runif(n,-1,1)
 xDisc<-runif(n,-1,1)
-xDisc<-xDisc+2*(runif(n,-1,1)>0&x<0)
+xDisc<-xDisc+2*(runif(n,-1,1)>0&xDisc<0)
 ```
 
 *** =sample_code
