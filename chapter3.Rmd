@@ -721,8 +721,8 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
       Solution3 <- DCdensity(NBA$[new.running.var],[cutoff],plot=TRUE)
 #----------------------------------------------------#
 
-# And print the p-value:
-#---- Question 3-------------------------------------#
+# And print its p-value:
+#---- Question 4-------------------------------------#
       Solution3 <- DCdensity(NBA$[new.running.var],[cutoff],plot=FALSE)
 #----------------------------------------------------#
 
