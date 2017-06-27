@@ -449,7 +449,7 @@ NBA$away.team <- as.factor(NBA$away.team)
 NBA$home.team.halftime.score  <- round(NBA$home.team.qual+rnorm(n, mean=48, sd=4), digits=0)
 NBA$away.team.halftime.score  <- round(NBA$away.team.qual+rnorm(n, mean=47, sd=6), digits=0)
 NBA$home.team.halftime.margin <- NBA$home.team.halftime.score - NBA$away.team.halftime.score
-NBA$home.team.halftime.margin.cheat <- NBA$home.team.halftime.margin-2*(NBA$home.team.halftime.margin==1)
+NBA$home.team.halftime.margin.cheat <- NBA$home.team.halftime.margin-2*(NBA$home.team.halftime.margin==1)-3*(NBA$home.team.halftime.margin==2)
 
 # Remove games that are tied at halftime
 print(dim(NBA))
