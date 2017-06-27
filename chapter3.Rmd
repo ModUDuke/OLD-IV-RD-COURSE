@@ -712,14 +712,14 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
   
 # Now issue the command again, but print the p-value output 
 #---- Question 2-------------------------------------#
-      Solution2<-print(DCdensity(NBA$home.team.halftime.margin,0,plot=TRUE))
+      Solution2<-print(DCdensity(NBA$home.team.halftime.margin,0,plot=FALSE))
 #----------------------------------------------------#
 
 ```
 *** =solution
 ```{r}
     Solution1 <- DCdensity(NBA$home.team.halftime.margin,0,plot=TRUE)
-    Solution2<-print(DCdensity(NBA$home.team.halftime.margin,0,plot=TRUE))
+    Solution2<-print(DCdensity(NBA$home.team.halftime.margin,0,plot=FALSE))
 ```
 *** =sct
 ```{r}
