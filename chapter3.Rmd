@@ -386,7 +386,7 @@ msg2 = "Correct! It is true that geographical borders are *often* used to learn 
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
---- type:NormalExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:
+--- type:NormalExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:1de601c34a
 ## Examining Manipulation in Regression Discontinuity Designs
 This is an example of how to visualize manipulation in RD designs. The main idea with RD is that there should not be any difference in the frequency of observations near the cutoff. If there is, this suggests that observations are likely manipulating the cutoff. This question examines this idea.
 
