@@ -713,7 +713,7 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
   
 # Now issue the command again, but print the p-value output. Put print() around the command
 #---- Question 2-------------------------------------#
-      Solution 2<- DCdensity(NBA$[running.var],[cutoff],plot=FALSE)
+      Solution2 <- DCdensity(NBA$[running.var],[cutoff],plot=FALSE)
 #----------------------------------------------------#
 
 # Now plot using the variable `home.team.halftime.margin.cheat` which has been manipulated
@@ -723,7 +723,7 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
 
 # And print its p-value:
 #---- Question 4-------------------------------------#
-      Solution3 <- DCdensity(NBA$[new.running.var],[cutoff],plot=FALSE)
+      Solution4 <- DCdensity(NBA$[new.running.var],[cutoff],plot=FALSE)
 #----------------------------------------------------#
 
 ```
