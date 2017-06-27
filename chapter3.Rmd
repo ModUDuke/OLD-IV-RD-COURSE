@@ -388,15 +388,83 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 
 --- type:NormalExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:1de601c34a
 ## Examining Manipulation in Regression Discontinuity Designs
-This is an example of how to visualize manipulation in RD designs. The main idea with RD is that there should not be any difference in the frequency of observations near the cutoff. If there is, this suggests that observations are likely manipulating the cutoff. This question examines this idea.
+This is an example of how to visualize manipulation in RD designs. The main idea with RD is that there should not be any difference in the frequency of observations near the cutoff. If there is, this suggests that observations are likely manipulating the cutoff.
+
+Let's revisit the NBA data we used before. Manipulation in this setting might come about if teams try to be down by 1 or 2 points at halftime (perhaps because they read the research paper published in Management Science!)
 
 *** =instructions
-- Check out this code
+- Using the function `DCdensity` which is already on your workspace, plot the distribution of data near the cutoff
+- The statistical test to do this is called the McCrary test. It tests whether there is a discontinuity in the data frequency distribution around the cutoff. A p-value of less than 5% implies that the data are manipulated.
+- The syntax for the `DCdensity` function is: `DCdensity(runningvar,discontinuityvalue,plot=TRUE/FALSE)`
 
 *** =pre_exercise_code
 ```{r}
 set.seed(1)
-n <- 10000
+set.seed(1)
+n <- 18060
+
+# Initialize dataframe
+NBA <- as.data.frame(matrix(0, ncol=10,nrow=n))
+colnames(NBA) <- c("id","season","home.team","away.team","home.team.qual","away.team.qual","home.team.halftime.score","away.team.halftime.score","home.team.final.margin","home.team.win")
+
+# Simulate baseline data
+NBA$id         <- seq(1,n,1)
+NBA$season     <- ifelse(NBA$id %in% seq( 0*1204+1, 1*1204,1),1994,
+                  ifelse(NBA$id %in% seq( 1*1204+1, 2*1204,1),1995,
+                  ifelse(NBA$id %in% seq( 2*1204+1, 3*1204,1),1996,
+                  ifelse(NBA$id %in% seq( 3*1204+1, 4*1204,1),1997,
+                  ifelse(NBA$id %in% seq( 4*1204+1, 5*1204,1),1998,
+                  ifelse(NBA$id %in% seq( 5*1204+1, 6*1204,1),1999,
+                  ifelse(NBA$id %in% seq( 6*1204+1, 7*1204,1),2000,
+                  ifelse(NBA$id %in% seq( 7*1204+1, 8*1204,1),2001,
+                  ifelse(NBA$id %in% seq( 8*1204+1, 9*1204,1),2002,
+                  ifelse(NBA$id %in% seq( 9*1204+1,10*1204,1),2003,
+                  ifelse(NBA$id %in% seq(10*1204+1,11*1204,1),2004,
+                  ifelse(NBA$id %in% seq(11*1204+1,12*1204,1),2005,
+                  ifelse(NBA$id %in% seq(12*1204+1,13*1204,1),2006,
+                  ifelse(NBA$id %in% seq(13*1204+1,14*1204,1),2007,
+                  ifelse(NBA$id %in% seq(14*1204+1,15*1204,1),2008,0)))))))))))))))
+teamqual <- cbind(c("BOS","NJN","NYK","PHL","GSW","LAC","LAL","PHX","SAC","CHI","CLE","DET","IND","MIL","DAL","HOU","MEM","SAS","ATL","CHA","MIA","ORL","WSH","DEN","MIN","SEA","POR","UTA"),
+                  matrix(rnorm(28*15,mean=0,sd=1), ncol=15))
+NBA$home.team      <- sample(teamqual[,1],n,replace=TRUE)
+NBA$away.team      <- sample(teamqual[,1],n,replace=TRUE)
+print(paste0('Number of teams playing themselves: ',sum(NBA$home.team==NBA$away.team)/n*100,'%'))
+for (i in 1:n) {
+    if (NBA$home.team[i]==NBA$away.team[i]) {
+        NBA$away.team[i] <- sample(setdiff(teamqual[,1],NBA$home.team[i]),1)
+    }
+}
+print(paste0('Number of teams playing themselves: ',sum(NBA$home.team==NBA$away.team)/n*100,'%'))
+
+# generate team qualities to explain outcomes for each game
+for (i in 1:n) {
+    NBA$away.team.qual[i] <- as.numeric(teamqual[teamqual[,1]==NBA$away.team[i],NBA$season[i]-1992])
+    NBA$home.team.qual[i] <- as.numeric(teamqual[teamqual[,1]==NBA$home.team[i],NBA$season[i]-1992])
+}
+
+NBA$home.team <- as.factor(NBA$home.team)
+NBA$away.team <- as.factor(NBA$away.team)
+
+# Generate halftime scores
+NBA$home.team.halftime.score  <- round(NBA$home.team.qual+rnorm(n, mean=48, sd=4), digits=0)
+NBA$away.team.halftime.score  <- round(NBA$away.team.qual+rnorm(n, mean=47, sd=6), digits=0)
+NBA$home.team.halftime.margin <- NBA$home.team.halftime.score - NBA$away.team.halftime.score
+
+# Remove games that are tied at halftime
+print(dim(NBA))
+NBA <- NBA[NBA$home.team.halftime.margin!=0,]
+print(dim(NBA))
+n1 <- dim(NBA)[1]
+
+# Generate final score
+NBA$home.team.winning.at.half <- NBA$home.team.halftime.margin>0
+NBA$home.team.final.margin    <- round(2 - 5*NBA$home.team.winning.at.half + 2*NBA$home.team.halftime.margin -.05*NBA$home.team.halftime.margin^2 + NBA$home.team.qual - NBA$away.team.qual + rnorm(n1, mean=0, sd=10), digits=0)
+NBA$home.team.win             <- NBA$home.team.final.margin>0
+
+# Clean up data
+NBA$season <- as.factor(NBA$season)
+NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.qual","home.team.halftime.margin","home.team.final.margin","home.team.winning.at.half","home.team.win")]
+
 
 kernelwts<-function(X,center,bw,kernel="triangular"){
   dist<-(X-center)/bw
@@ -423,6 +491,7 @@ kernelwts<-function(X,center,bw,kernel="triangular"){
   w<-w/sum(w)
   return(w)
 }
+
 
 DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,ext.out=FALSE,htest=FALSE) {
   runvar <- runvar[complete.cases(runvar)]
@@ -632,30 +701,25 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
   else return(p)
 }
 
-# Generate some data with no discontinuity.
-xNoDisc<-runif(n,-1,1)
-xDisc<-runif(n,-1,1)
-xDisc<-xDisc+2*(runif(n,-1,1)>0&xDisc<0)
 ```
 
 *** =sample_code
 ```{r}
-
-# Test with data that has no discontinuity
+# Run the McCrary test with the running variable in the NBA data
 #---- Question 1-------------------------------------#
-      Solution1 <- DCdensity(xNoDisc,0,plot=TRUE)
+      Solution1 <- DCdensity(NBA$home.team.halftime.margin,0,plot=TRUE)
 #----------------------------------------------------#
   
-# Now test with some data with a discontinuity.
+# Now issue the command again, but print the p-value output 
 #---- Question 2-------------------------------------#
-      Solution2<-DCdensity(xDisc,0,plot=FALSE)
+      Solution2<-print(DCdensity(NBA$home.team.halftime.margin,0,plot=TRUE))
 #----------------------------------------------------#
 
 ```
 *** =solution
 ```{r}
-    Solution1 <- DCdensity(xNoDisc,0,plot=TRUE)
-    Solution2 <- DCdensity(xDisc,0,plot=FALSE)
+    Solution1 <- DCdensity(NBA$home.team.halftime.margin,0,plot=TRUE)
+    Solution2<-print(DCdensity(NBA$home.team.halftime.margin,0,plot=TRUE))
 ```
 *** =sct
 ```{r}
