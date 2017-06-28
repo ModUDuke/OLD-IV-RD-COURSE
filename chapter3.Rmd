@@ -295,6 +295,799 @@ NBA$home.team.win             <- NBA$home.team.final.margin>0
 NBA$season <- as.factor(NBA$season)
 NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.qual","home.team.halftime.margin","home.team.final.margin","home.team.winning.at.half","home.team.win")]
 
+Formula <- function(object) {
+
+  stopifnot(inherits(object, "formula"))
+
+  object_split <- split_formula(object)
+
+  structure(object, lhs = object_split$lhs, rhs = object_split$rhs,
+    class = c("Formula", "formula"))
+}
+
+as.Formula <- function(x, ...) UseMethod("as.Formula")
+
+as.Formula.default <- function(x, ..., env = parent.frame()) Formula(as.formula(x, env = env))
+
+as.Formula.Formula <- function(x, ...) x
+
+as.Formula.formula <- function(x, ..., env) {
+
+  ## preserve original environment
+  if(missing(env)) env <- environment(x)
+
+  ## combine all arguments to formula list
+  x <- c(list(x), list(...))
+  x <- lapply(x, as.formula)
+  
+  ## split all 
+  x_split <- lapply(x, split_formula)
+  x_lhs <- do.call("c", lapply(x_split, "[[", "lhs"))
+  x_rhs <- do.call("c", lapply(x_split, "[[", "rhs"))
+
+  ## recombine
+  x_all <- paste_formula(x_lhs, x_rhs)
+  
+  ## create formula
+  ## (we have everything to do this by hand, but for encapsulating code
+  ## call Formula() again...which splits again)
+  rval <- Formula(x_all)
+
+  ## re-attach original environment
+  environment(rval) <- env
+  return(rval)
+}
+
+is.Formula <- function(object) inherits(object, "Formula")
+
+formula.Formula <- function(x, lhs = NULL, rhs = NULL, collapse = FALSE,
+  update = FALSE, drop = TRUE, ...)
+{
+  ## available parts
+  lpart <- 1L:length(attr(x, "lhs"))
+  rpart <- 1L:length(attr(x, "rhs"))
+
+  ## default: keep all parts
+  lhs <- if(is.null(lhs)) lpart else lpart[lhs]
+  rhs <- if(is.null(rhs)) rpart else rpart[rhs]
+  if(any(is.na(lhs))) {
+    lhs <- as.vector(na.omit(lhs))
+    if(length(lhs) < 1L) lhs <- 0L
+    warning("subscript out of bounds, not all 'lhs' available")
+  }
+  if(any(is.na(rhs))) {
+    rhs <- as.vector(na.omit(rhs))
+    if(length(rhs) < 1L) rhs <- 0L
+    warning("subscript out of bounds, not all 'rhs' available")
+  }  
+
+  ## collapse: keep parts separated by "|" or collapse with "+"
+  collapse <- rep(as.logical(collapse), length.out = 2)
+
+  rval <- paste_formula(attr(x, "lhs")[lhs], attr(x, "rhs")[rhs],
+    lsep = ifelse(collapse[1L], "+", "|"),
+    rsep = ifelse(collapse[2L], "+", "|"))
+
+  ## omit potentially redundant terms
+  if(all(collapse) & update) rval <- update(rval, if(length(rval) > 2) . ~ . else ~ .)
+
+  ## reconvert to Formula if desired
+  if(!drop) rval <- Formula(rval)
+
+  ## re-attach original environment
+  environment(rval) <- environment(x)
+
+  return(rval)
+}
+
+terms.Formula <- function(x, ..., lhs = NULL, rhs = NULL, dot = "separate")
+{
+  ## simplify to standard formula
+  form <- simplify_to_formula(x, lhs = lhs, rhs = rhs)
+
+  ## if necessary try to expand/update/simplify formula parts with dot
+  if(has_dot(form)) {
+    x_orig <- x
+    dot <- match.arg(dot, c("separate", "sequential"))
+
+    ## lhs and rhs calls
+    ll <- formula(x, rhs = 0L, collapse = TRUE)[[2L]]
+    rr <- attr(x, "rhs")
+
+    ## update and simplify again
+    for(i in seq_along(rr)) {
+      if(dot == "sequential" && i > 1L) ll <- c_formula(ll, rr[[i - 1L]], sep = "+")
+      fi <- paste_formula(ll, rr[[i]]) #probably better than:# paste_formula(NULL, c_formula(rr[[i]], ll, sep = "-"))
+      rr[[i]] <- update(formula(terms(fi, ...)), . ~ .)[[3L]]
+    }
+    attr(x, "rhs") <- rr
+    form <- simplify_to_formula(x, lhs = lhs, rhs = rhs)
+
+    ## call traditional terms()
+    mt <- terms(form, ...)
+
+    ## store updating for future reference (e.g., in model.part)
+    attr(mt, "Formula_with_dot") <- x_orig
+    attr(mt, "Formula_without_dot") <- x
+    attr(mt, "dot") <- dot
+  } else {
+    ## call traditional terms()
+    mt <- terms(form, ...)
+  }
+  
+  return(mt)
+}
+
+model.frame.Formula <- function(formula, data = NULL, ..., lhs = NULL, rhs = NULL, dot = "separate")
+{
+  model.frame(terms(formula, lhs = lhs, rhs = rhs, data = data, dot = dot), data = data, ...)
+}
+
+model.matrix.Formula <- function(object, data = environment(object), ..., lhs = NULL, rhs = 1, dot = "separate")
+{
+  form <- formula(object, lhs = lhs, rhs = rhs, collapse = c(FALSE, TRUE))
+  mt <- delete.response(terms(form, data = data, dot = dot))
+  model.matrix(mt, data = data, ...)
+}
+
+## as model.response() is not generic, we do this:
+model.part <- function(object, ...)
+  UseMethod("model.part")
+
+model.part.formula <- function(formula, data, ..., drop = FALSE) {
+  formula <- Formula(formula)
+  NextMethod()
+}
+
+model.part.Formula <- function(object, data, lhs = 0, rhs = 0, drop = FALSE, terms = FALSE, dot = NULL, ...) {
+
+  ## *hs = NULL: keep all parts
+  if(is.null(lhs)) lhs <- 1L:length(attr(object, "lhs"))
+  if(is.null(rhs)) rhs <- 1L:length(attr(object, "rhs"))
+
+  if(isTRUE(all.equal(as.numeric(lhs), rep(0, length(lhs)))) &
+     isTRUE(all.equal(as.numeric(rhs), rep(0, length(rhs)))))
+    stop("Either some 'lhs' or 'rhs' has to be selected.")
+
+  if(is.null(dot)) {
+    if(is.null(attr(attr(data, "terms"), "dot"))) {
+      dot <- "separate"
+    } else {
+      dot <- attr(attr(data, "terms"), "dot")
+    }
+  } else {
+    dot <- match.arg(dot, c("separate", "sequential"))
+  }
+
+  ##
+  if(has_dot(object) &&
+     !is.null(attr(data, "terms")) &&
+     all(c("Formula_with_dot", "Formula_without_dot", "dot") %in% names(attributes(attr(data, "terms")))) &&
+     dot == attr(attr(data, "terms"), "dot") &&
+     simplify_to_formula(object, lhs = lhs, rhs = rhs) == simplify_to_formula(attr(attr(data, "terms"), "Formula_with_dot"), lhs = lhs, rhs = rhs)
+  ) {
+    object <- attr(attr(data, "terms"), "Formula_without_dot")
+  }
+
+  ## construct auxiliary terms object
+  mt <- terms(object, lhs = lhs, rhs = rhs, dot = dot, data = data)
+
+  ## subset model frame
+  ix <- attr(mt, "variables")[-1L]
+  if(is.null(ix)) {
+    ix <- 0
+  } else {
+    ix <- sapply(ix, deparse)
+    if(!all(ix %in% names(data))) stop(
+      paste("'data' does not seem to be an appropriate 'model.frame':",
+      paste(paste("'", ix[!(ix %in% names(data))], "'", sep = ""), collapse = ", "),
+      "not found")
+    )
+  }
+  rval <- data[, ix, drop = drop]
+  if(!is.data.frame(rval)) names(rval) <- rownames(data)
+  if(terms) attr(rval, "terms") <- mt
+  return(rval)
+}
+
+update.Formula <- function(object, new,...) {
+
+  new <- Formula(new)
+  
+  ## extract all building blocks
+  o_lhs <- attr(object, "lhs")
+  o_rhs <- attr(object, "rhs")
+  n_lhs <- attr(new, "lhs")
+  n_rhs <- attr(new, "rhs")
+  lhs <- rep(list(NULL), length = max(length(o_lhs), length(n_lhs)))
+  rhs <- rep(list(NULL), length = max(length(o_rhs), length(n_rhs)))
+
+  ## convenience function for updating components
+  update_components <- function(x, y) {
+    xf <- yf <- ~ .
+    xf[[2L]] <- x
+    yf[[2L]] <- y
+    update(xf, yf)[[2L]]
+  }
+    
+  if(length(lhs) > 0L) for(i in 1L:length(lhs)) {
+    lhs[[i]] <- if(length(o_lhs) < i) n_lhs[[i]]
+      else if(length(n_lhs) < i) o_lhs[[i]]
+      else update_components(o_lhs[[i]], n_lhs[[i]])
+  }
+
+  if(length(rhs) > 0L) for(i in 1L:length(rhs)) {
+    rhs[[i]] <- if(length(o_rhs) < i) n_rhs[[i]]
+      else if(length(n_rhs) < i) o_rhs[[i]]
+      else update_components(o_rhs[[i]], n_rhs[[i]])
+  }
+
+  ## recombine
+  rval <- paste_formula(lhs, rhs)
+  
+  ## create formula
+  ## (we have everything to do this by hand, but for encapsulating code
+  ## call Formula() again...which splits again)
+  rval <- Formula(rval)  
+  
+  ## preserve original environment
+  environment(rval) <- environment(object)
+  
+  return(rval)
+}
+
+length.Formula <- function(x) {
+  ## NOTE: return length of both sides, not only rhs
+  c(length(attr(x, "lhs")), length(attr(x, "rhs")))
+}
+
+print.Formula <- function(x, ...) {
+  ## we could avoid calling formula() by computing on the internal
+  ## structure attr(x, "rhs") <- attr(x, "lhs") <- NULL
+  ## but this is probably cleaner...
+  print(formula(x))
+  invisible(x)
+}
+
+all.equal.Formula <- function(target, current, ...) {
+  rval <- NULL
+  
+  if(length(target)[1L] != length(current)[1L]) {
+    rval <- c(rval, paste("Length mismatch: target, current differ in number of LHS parts: ",
+      length(target)[1L], ", ", length(current)[1L], sep = ""))
+  } else if(!isTRUE(all.equal(attr(target, "lhs"), attr(current, "lhs")))) {
+    rval <- c(rval, "Formula mismatch: LHS formulas differ in contents")
+  }
+
+  if(length(target)[2L] != length(current)[2L]) {
+    rval <- c(rval, paste("Length mismatch: target, current differ in number of RHS parts: ",
+      length(target)[2L], ", ", length(current)[2L], sep = ""))
+  } else if(!isTRUE(all.equal(attr(target, "rhs"), attr(current, "rhs")))) {
+    rval <- c(rval, "Formula mismatch: RHS formulas differ in contents")
+  }
+  
+  if(is.null(rval)) TRUE else rval
+}
+
+str.Formula <- function(object, ...) {
+  le <- length(object)
+  ls <- if(sum(le) > 2L | any(le > 1L)) "s" else ""
+  writeLines(c(
+    sprintf("'Formula' with %s left-hand and %s right-hand side%s: %s",
+      le[1L], le[2L], ls, format(object)),
+    sprintf("  ..- attr(*, \".Environment\")=%s", format(attr(object, ".Environment")))))
+  invisible()
+}
+
+## convenience tools #################################################
+
+## split formulas
+split_formula <- function(f) {
+
+  stopifnot(inherits(f, "formula"))
+
+  rhs <- if(length(f) > 2) f[[3L]] else f[[2L]]
+  lhs <- if(length(f) > 2) f[[2L]] else NULL
+
+  extract_parts <- function(x, sep = "|") {
+    if(is.null(x)) return(NULL)
+    
+    rval <- list()
+    if(length(x) > 1L && x[[1L]] == sep) {
+      while(length(x) > 1L && x[[1L]] == sep) {
+        rval <- c(x[[3L]], rval)
+        x <- x[[2L]]
+      }
+    }
+    return(c(x, rval))
+  }
+
+  list(lhs = extract_parts(lhs), rhs = extract_parts(rhs))
+}
+
+## combine (parts of) formulas
+c_formula <- function(f1, f2, sep = "~") {
+
+  stopifnot(length(sep) == 1L, nchar(sep) == 1L,
+    sep %in% c("~", "+", "-", "|", "&"))
+
+  if(sep == "~") {
+    rval <- . ~ .
+    rval[[3L]] <- f2	
+    rval[[2L]] <- f1
+  } else {
+    rval <- as.formula(paste(". ~ .", sep, "."))
+    rval[[3L]][[3L]] <- f2
+    rval[[3L]][[2L]] <- f1
+    rval <- rval[[3L]]
+  }
+
+  return(rval)
+}
+
+## reassemble formulas
+paste_formula <- function(lhs, rhs, lsep = "|", rsep = "|") {
+
+  stopifnot(all(nchar(lsep) == 1L), all(lsep %in% c("+", "|", "&")))
+  stopifnot(all(nchar(rsep) == 1L), all(rsep %in% c("+", "|", "&")))
+  
+  if(length(lhs) > 1L) lsep <- rep(lsep, length.out = length(lhs) - 1L)
+  if(length(rhs) > 1L) rsep <- rep(rsep, length.out = length(rhs) - 1L)
+
+  if(is.null(lhs)) lhs <- list()
+  if(is.null(rhs)) rhs <- list()
+  
+  if(!is.list(lhs)) lhs <- list(lhs)
+  if(!is.list(rhs)) rhs <- list(rhs)
+
+  lval <- if(length(lhs) > 0L) lhs[[1L]] else NULL
+  if(length(lhs) > 1L) {
+    for(i in 2L:length(lhs)) lval <- c_formula(lval, lhs[[i]], sep = lsep[[i - 1L]])
+  }
+  rval <- if(length(rhs) > 0L) rhs[[1L]] else 0 ## FIXME: Is there something better?
+  if(length(rhs) > 1L) {
+    for(i in 2L:length(rhs)) rval <- c_formula(rval, rhs[[i]], sep = rsep[[i - 1L]])
+  }
+
+  c_formula(lval, rval, sep = "~")
+}
+
+## simplify a Formula to a formula that can be processed with
+## terms/model.frame etc.
+simplify_to_formula <- function(Formula, lhs = NULL, rhs = NULL) {
+
+  ## get desired subset as formula and Formula
+  form <- formula(Formula, lhs = lhs, rhs = rhs)
+  Form <- Formula(form)
+
+  ## convenience functions for checking extended features
+  is_lhs_extended <- function(Formula) {
+    ## check for multiple parts
+    if(length(attr(Formula, "lhs")) > 1L) {
+      return(TRUE)
+    } else {
+    ## and multiple responses
+      if(length(attr(Formula, "lhs")) < 1L) return(FALSE)
+      return(length(attr(terms(paste_formula(NULL,
+        attr(Formula, "lhs"), rsep = "+")), "term.labels")) > 1L)
+    }
+  }
+
+  is_rhs_extended <- function(Formula) {
+    ## check for muliple parts
+    length(attr(Formula, "rhs")) > 1L
+  }
+
+  ## simplify (if necessary)
+  ext_lhs <- is_lhs_extended(Form)
+  if(ext_lhs | is_rhs_extended(Form)) {
+    form <- if(ext_lhs) {
+      if(length(attr(Form, "rhs")) == 1L & identical(attr(Form, "rhs")[[1L]], 0)) {
+	paste_formula(NULL, attr(Form, "lhs"), rsep = "+")    
+      } else {
+        paste_formula(NULL, c(attr(Form, "lhs"), attr(Form, "rhs")), rsep = "+")
+      }
+    } else {
+      paste_formula(attr(Form, "lhs"), attr(Form, "rhs"), rsep = "+")	 
+    }
+  }
+
+  ## re-attach original environment and return
+  environment(form) <- environment(Formula)
+  return(form)
+}
+
+## check whether formula has a dot (FIXME: can other problems than just '.' occur?)
+has_dot <- function(formula) inherits(try(terms(formula), silent = TRUE), "try-error")
+
+kernelwts<-function(X,center,bw,kernel="triangular"){
+  dist<-(X-center)/bw
+  if(kernel=="triangular"){
+    w<-(1-abs(dist))
+  } else if (kernel=="rectangular") {
+    w<-1/2
+  } else if (kernel=="epanechnikov") {
+    w<-3/4*(1-dist^2)
+  } else if (kernel=="quartic" | kernel=="biweight") {
+    w<-15/16*(1-dist^2)^2
+  } else if (kernel=="triweight") {
+    w<-35/32*(1-dist^2)^3
+  } else if (kernel=="tricube") {
+    w<-70/81*(1-abs(dist)^3)^3
+  } else if (kernel=="gaussian") {
+    w<-1/sqrt(2*pi)*exp(-1/2*dist^2)
+  } else if (kernel=="cosine") {
+    w<-pi/4*cos(pi/2 * dist)
+  } else {
+    stop("Invalid kernel selection.")
+  }
+  w<-ifelse(abs(dist)>1&kernel!="gaussian",0,w)
+  w<-w/sum(w)
+  return(w)
+}
+
+IKbandwidth <-function (X,Y,cutpoint=NULL,verbose=FALSE,kernel="triangular") {
+  #Implementation of Imbens-Kalyanaraman optimal bandwidth
+  # for regression discontinuity
+  sub<-complete.cases(X)&complete.cases(Y)
+  X <- X[sub]
+  Y <- Y[sub]
+  Nx<-length(X)
+  Ny<-length(Y)
+  if(Nx!=Ny)
+    stop("Running and outcome variable must be of equal length")
+  if(is.null(cutpoint)) {
+    cutpoint<-0
+    if(verbose) cat("Using default cutpoint of zero.\n")
+  } else {
+    if(! (typeof(cutpoint) %in% c("integer","double")))
+      stop("Cutpoint must be of a numeric type")
+  }
+  #Now we should be ready to start
+  #Pilot bandwidth
+  h1<-1.84*sd(X)*Nx^(-1/5)
+  left<-X>=(cutpoint-h1) & X<=cutpoint
+  right<-X>cutpoint & X<=(cutpoint+h1)
+  Nl<-sum(left)
+  Nr<-sum(right)
+  Ybarl<-mean(Y[left])
+  Ybarr<-mean(Y[right])
+  fbarx<-(Nl+Nr)/(2*Nx*h1)
+  varY<-(sum((Y[left]-Ybarl)^2)+sum((Y[right]-Ybarr)^2))/(Nl+Nr)
+  medXl<-median(X[X<=cutpoint])
+  medXr<-median(X[X>cutpoint])
+  Nl<-sum(X<cutpoint)
+  Nr<-sum(X>=cutpoint)
+  cX<-X-cutpoint
+  if(sum(X[left]>medXl)==0 | sum(X[right]<medXr)==0)
+    stop("Insufficient data in vicinity of the cutpoint to calculate bandwidth.")
+  #Model a cubic within the pilot bandwidth
+  mod<-lm(Y~I(X>=cutpoint)+poly(cX,3,raw=T),subset=(X>=medXl&X<=medXr))
+  m3<-6*coef(mod)[5]
+  #New bandwidth estimate
+  h2l<-3.56*(Nl^(-1/7))*(varY/(fbarx*max(m3^2,0.01)))^(1/7)
+  h2r<-3.56*(Nr^(-1/7))*(varY/(fbarx*max(m3^2,0.01)))^(1/7)
+  left<-(X>=(cutpoint-h2l)) & (X<cutpoint)
+  right<-(X>=cutpoint) & (X<= (cutpoint+h2r))
+  Nl<-sum(left)
+  Nr<-sum(right)
+  if(Nl==0 | Nr==0)
+    stop("Insufficient data in vicinity of the cutpoint to calculate bandwidth.")
+  #Estimate quadratics for curvature estimation
+  mod<-lm(Y~poly(cX,2,raw=T),subset=right)
+  m2r<-2*coef(mod)[3]
+  mod<-lm(Y~poly(cX,2,raw=T),subset=left)
+  m2l<-2*coef(mod)[3]
+  rl<-720*varY/(Nl*(h2l^4))
+  rr<-720*varY/(Nr*(h2r^4))
+  #Which kernel are we using?
+  # Method for finding these available in I--K p. 6
+  if(kernel=="triangular") {
+    ck<-3.43754
+  } else if (kernel=="rectangular") {
+    ck<-5.40384
+  } else if(kernel=="epanechnikov") {
+    ck<-3.1999
+  } else if(kernel=="quartic" | kernel=="biweight") {
+    ck<-3.65362
+  } else if(kernel=="triweight") {
+    ck<-4.06065
+  } else if(kernel=="tricube") {
+    ck<-3.68765
+  } else if(kernel=="gaussian") {
+    ck<-1.25864
+  } else if(kernel=="cosine") {
+    ck<-3.25869
+  } else {
+    stop("Unrecognized kernel.") 
+  }
+  #And there's our optimal bandwidth
+  optbw<-ck*(2*varY/(fbarx*((m2r-m2l)^2+rr+rl)))^(1/5)*(Nx^(-1/5))
+  left<-(X>=(cutpoint-optbw)) & (X<cutpoint)
+  right<-(X>=cutpoint) & (X<= (cutpoint+optbw))
+  if(sum(left)==0 | sum(right)==0)
+    stop("Insufficient data in the calculated bandwidth.")
+  names(optbw)<-NULL
+  if(verbose) cat("Imbens-Kalyanamaran Optimal Bandwidth: ",sprintf("%.3f",optbw),"\n")
+  return(optbw)
+  }
+
+
+RDestimate<-function(formula, data, subset=NULL, cutpoint=NULL, bw=NULL, kernel="triangular", se.type="HC1", cluster=NULL, verbose=FALSE, model=FALSE, frame=FALSE) {
+  call<-match.call()
+  if(missing(data)) data<-environment(formula)
+  formula<-as.Formula(formula)
+  X<-model.frame(formula,rhs=1,lhs=0,data=data,na.action=na.pass)[[1]]
+  Y<-model.frame(formula,rhs=0,lhs=NULL,data=data,na.action=na.pass)[[1]]
+  if(!is.null(subset)){
+    X<-X[subset]
+    Y<-Y[subset]
+    if(!is.null(cluster)) cluster<-cluster[subset]
+  }
+  if (!is.null(cluster)) {
+    cluster<-as.character(cluster)
+    robust.se <- function(model, cluster){
+      M <- length(unique(cluster))
+      N <- length(cluster)           
+      K <- model$rank
+      dfc <- (M/(M - 1)) * ((N - 1)/(N - K))
+      uj  <- apply(estfun(model), 2, function(x) tapply(x, cluster, sum));
+      rcse.cov <- dfc * sandwich(model, meat. = crossprod(uj)/N)
+      rcse.se <- coeftest(model, rcse.cov)
+      return(rcse.se[2,2])
+    }
+  }
+  na.ok<-complete.cases(X)&complete.cases(Y)
+  if(length(all.vars(formula(formula,rhs=1,lhs=F)))>1){
+   type<-"fuzzy" 
+   Z<-model.frame(formula,rhs=1,lhs=0,data=data,na.action=na.pass)[[2]]
+   if(!is.null(subset)) Z<-Z[subset]
+   na.ok<-na.ok&complete.cases(Z)
+   if(length(all.vars(formula(formula,rhs=1,lhs=F)))>2)
+     stop("Invalid formula. Read ?RDestimate for proper syntax")
+  } else {
+   type="sharp" 
+  }
+  covs<-NULL
+  if(length(formula)[2]>1){
+    covs<-model.frame(formula,rhs=2,lhs=0,data=data,na.action=na.pass)
+    if(!is.null(subset)) covs<-subset(covs,subset)
+    na.ok<-na.ok&complete.cases(covs)
+    covs<-subset(covs,na.ok)
+  }
+  X<-X[na.ok]
+  Y<-Y[na.ok]
+  if(type=="fuzzy") Z<-as.double(Z[na.ok])
+  
+  if(is.null(cutpoint)) {
+    cutpoint<-0
+    if(verbose) cat("No cutpoint provided. Using default cutpoint of zero.\n")
+  }
+  if(frame) {
+    if(type=="sharp") {
+      if (!is.null(covs))
+        dat.out<-data.frame(X,Y,covs)
+      else
+        dat.out<-data.frame(X,Y)
+    } else {
+      if (!is.null(covs))
+        dat.out<-data.frame(X,Y,Z,covs)
+      else
+        dat.out<-data.frame(X,Y,Z)
+    }
+  }
+  if(is.null(bw)) {
+    bw<-IKbandwidth(X=X,Y=Y,cutpoint=cutpoint,kernel=kernel, verbose=verbose)
+    bws<-c(bw,.5*bw,2*bw)
+    names(bws)<-c("LATE","Half-BW","Double-BW")
+  } else if (length(bw)==1) {
+    bws<-c(bw,.5*bw,2*bw)
+    names(bws)<-c("LATE","Half-BW","Double-BW")
+  } else {
+    bws<-bw
+  }
+  
+  #Setup values to be returned
+  o<-list()
+  o$type<-type
+  o$call<-call
+  o$est<-vector(length=length(bws),mode="numeric")
+  names(o$est)<-names(bws)
+  o$bw<-as.vector(bws)
+  o$se<-vector(mode="numeric")
+  o$z<-vector(mode="numeric")
+  o$p<-vector(mode="numeric")
+  o$obs<-vector(mode="numeric")
+  o$ci<-matrix(NA,nrow=length(bws),ncol=2)
+  o$model<-list()
+  if(type=="fuzzy") {
+    o$model$firststage<-list()
+    o$model$iv<-list()
+  }
+  o$frame<-list()
+  o$na.action<-which(na.ok==FALSE)
+  class(o)<-"RD"
+  X<-X-cutpoint
+  Xl<-(X<0)*X
+  Xr<-(X>=0)*X
+  Tr<-as.integer(X>=0)
+  
+  for(bw in bws){
+    ibw<-which(bw==bws)
+  #Subset to within the bandwidth, except for when using gaussian weighting
+    sub<- X>=(-bw) & X<=(+bw)
+  
+    
+  if(kernel=="gaussian") 
+    sub<-TRUE
+
+  w<-kernelwts(X,0,bw,kernel=kernel)
+  o$obs[ibw]<-sum(w>0)
+    
+  if(type=="sharp"){
+    if(verbose) {
+      cat("Running Sharp RD\n")
+      cat("Running variable:",all.vars(formula(formula,rhs=1,lhs=F))[1],"\n")
+      cat("Outcome variable:",all.vars(formula(formula,rhs=F,lhs=1))[1],"\n")
+      if(!is.null(covs)) cat("Covariates:",paste(names(covs),collapse=", "),"\n")
+    }
+    if(!is.null(covs)) {
+      data<-data.frame(Y,Tr,Xl,Xr,covs,w)
+      form<-as.formula(paste("Y~Tr+Xl+Xr+",paste(names(covs),collapse="+",sep=""),sep=""))
+    } else {
+      data<-data.frame(Y,Tr,Xl,Xr,w)
+      form<-as.formula(Y~Tr+Xl+Xr)
+    }
+
+    mod<-lm(form,weights=w,data=subset(data,w>0))
+    if(verbose==TRUE) {
+      cat("Model:\n")
+      print(summary(mod))
+    }
+    o$est[ibw]<-coef(mod)["Tr"]
+    if (is.null(cluster)) {
+      o$se[ibw]<-coeftest(mod,vcovHC(mod,type=se.type))[2,2]
+    } else {
+      o$se[ibw]<-robust.se(mod,cluster[na.ok][w>0])
+    }
+    o$z[ibw]<-o$est[ibw]/o$se[ibw]
+    o$p[ibw]<-2*pnorm(abs(o$z[ibw]),lower.tail=F)
+    o$ci[ibw,]<-c(o$est[ibw]-qnorm(.975)*o$se[ibw],o$est[ibw]+qnorm(.975)*o$se[ibw])
+
+    if(model) o$model[[ibw]]=mod
+    if(frame) o$frame[[ibw]]=dat.out
+
+  } else {
+    if(verbose){
+      cat("Running Fuzzy RD\n")
+      #CLEAN UP
+      cat("Running variable:",all.vars(formula(formula,rhs=1,lhs=F))[1],"\n")
+      cat("Outcome variable:",all.vars(formula(formula,rhs=F,lhs=1))[1],"\n")
+      cat("Treatment variable:",all.vars(formula(formula,rhs=1,lhs=F))[2],"\n")
+      if(!is.null(covs)) cat("Covariates:",paste(names(covs),collapse=", "),"\n")
+    }
+
+    if(!is.null(covs)) {
+      data<-data.frame(Y,Tr,Xl,Xr,Z,covs,w)
+      form<-as.Formula(paste(
+              "Y~Z+Xl+Xr+",paste(names(covs),collapse="+"),
+              "|Tr+Xl+Xr+",paste(names(covs),collapse="+"),sep=""))
+      form1<-as.Formula(paste("Z~Tr+Xl+Xr+",paste(names(covs),collapse="+",sep="")))
+    } else {
+      data<-data.frame(Y,Tr,Xl,Xr,Z,w)
+      form<-as.Formula(Y~Z+Xl+Xr|Tr+Xl+Xr)
+      form1<-as.formula(Z~Tr+Xl+Xr)
+    }
+    
+    mod1<-lm(form1,weights=w,data=subset(data,w>0))
+    mod<-ivreg(form,weights=w,data=subset(data,w>0))
+    if(verbose==TRUE) {
+      cat("First stage:\n")
+      print(summary(mod1))
+      cat("IV-RD:\n")
+      print(summary(mod))
+    }
+    o$est[ibw]<-coef(mod)["Z"]
+    if (is.null(cluster)) {
+      o$se[ibw]<-coeftest(mod,vcovHC(mod,type=se.type))[2,2]
+    } else {
+      o$se[ibw]<-robust.se(mod,cluster[na.ok][w>0])
+    }
+    o$z[ibw]<-o$est[ibw]/o$se[ibw]
+    o$p[ibw]<-2*pnorm(abs(o$z[ibw]),lower.tail=F)
+    o$ci[ibw,]<-c(o$est[ibw]-qnorm(.975)*o$se[ibw],o$est[ibw]+qnorm(.975)*o$se[ibw])
+    
+    if(model) {
+      o$model$firststage[[ibw]]<-mod1
+      o$model$iv[[ibw]]=mod
+    }
+    if(frame) o$frame=dat.out
+  }
+  }
+  return(o)
+}
+
+summary.RD<-function(object,digits=max(3, getOption("digits") - 3),...){
+  cat("\n")
+  cat("Call:\n")
+  print(object$call)
+  cat("\n")
+  
+  cat("Type:\n")
+  cat(object$type,"\n\n")
+  
+  #If the model wasn't included in the output, we need to get it
+  mod<-FALSE
+  if("model" %in% names(object$call)) mod<-object$call$model
+  if(!mod){
+    object$call$model<-TRUE
+    object$call$verbose<-FALSE
+    object<-eval.parent(object$call)
+  }
+  n<-length(object$est)
+
+  obs<-vector(length=n)
+  if(object$type=="sharp") {
+    for(i in 1:n) obs[i]<-length(residuals(object$model[[i]]))
+  } else {
+    for(i in 1:n) obs[i]<-length(residuals(object$model$iv[[i]]))
+  }
+  cat("Estimates:\n")
+  #Need to get this to give at least as much as stata does in fuzzy designs
+  stars<-vector(length=n)
+
+  for(i in 1:n) {
+    stars[i]<-if (object$p[i]<0.001) "***" else if(object$p[i]<0.01) "**" else if(object$p[i]<0.05) "*" else if(object$p[i]<0.1) "." else " "
+  }
+
+  out<-matrix(
+    c(object$bw,
+      object$obs,
+      object$est,
+      object$se,
+      object$z,
+      object$p),
+    nrow=n)
+  rownames(out)<-names(object$est)
+  colnames(out)<-c("Bandwidth","Observations","Estimate","Std. Error","z value","Pr(>|z|)")
+
+  print.default(cbind(apply(out,2,function(x) format(x,digits=digits)),
+                      " "=stars),quote=FALSE,print.gap=2,right=FALSE)
+  cat("---\n")
+  cat("Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n")
+  
+  out<-list(coefficients=out)
+  class(out)<-"summary.RD"
+  fstat<-matrix(NA,nrow=n,ncol=4)
+  if(object$type=="sharp") {
+    for(i in 1:n) {
+      fstat[i,]<-c(summary(object$model[[i]])$fstatistic[[1]],
+               summary(object$model[[i]])$fstatistic[[2]],
+               summary(object$model[[i]])$fstatistic[[3]],
+        pf(summary(object$model[[i]])$fstatistic[[1]],
+          summary(object$model[[i]])$fstatistic[[2]],
+          summary(object$model[[i]])$fstatistic[[3]])
+      )
+    }
+    fstat[,4]<-2*apply(cbind(fstat[,4],1-fstat[,4]),1,min)
+  } else {
+    for(i in 1:n) {
+      fstat[i,]<-c(
+        summary(object$model$iv[[i]])$waldtest[1],
+        summary(object$model$iv[[i]])$waldtest[3],
+        summary(object$model$iv[[i]])$waldtest[4],
+        summary(object$model$iv[[i]])$waldtest[2])
+    }
+  }
+  colnames(fstat)<-c("F","Num. DoF","Denom. DoF","p")
+  rownames(fstat)<-names(object$est)
+  cat("F-statistics:\n")
+  print.default(apply(fstat,2,function(x) format(x,digits=digits)),quote=FALSE,print.gap=2,right=FALSE)
+  out$fstat<-fstat
+  return(invisible(out))
+}
+
+
     
 ```
 *** =sample_code
@@ -328,6 +1121,9 @@ NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.
 
 # The function we will use is called RDestimate. Without getting into too many details, copy and paste the following syntax as your answer to Question 4: summary(RDestimate(home.team.final.margin ~ home.team.halftime.margin | home.team.qual+away.team.qual,data=NBA))
 
+#---- Question 4-------------------------------------#
+      Solution4<-summary(RDestimate(home.team.final.margin ~ home.team.halftime.margin | home.team.qual+away.team.qual,data=NBA))
+#----------------------------------------------------#
 
 # Now compare the results of our three causal effect estimates. Which estimate do you think most closely captures the true causal effect of being behind (or ahead) at halftime on the final margin of victory?
 
@@ -337,12 +1133,14 @@ NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.
     Solution1<- NBA$home.team.halftime.margin<0
     Solution2<-summary(lm(home.team.final.margin ~ home.team.winning.at.half+home.team.halftime.margin+home.team.qual+away.team.qual,data=NBA))
     Solution3<-summary(lm(home.team.final.margin ~ home.team.winning.at.half+home.team.halftime.margin+I(home.team.halftime.margin^2)+home.team.qual+away.team.qual,data=NBA))
+    Solution4<-summary(RDestimate(home.team.final.margin ~ home.team.halftime.margin | home.team.qual+away.team.qual,data=NBA))
 ```
 *** =sct
 ```{r}
 test_object("Solution1")
 test_object("Solution2")
 test_object("Solution3")
+test_object("Solution4")
 success_msg("Good work! From the looks of it, the quadratic specification of halftime margin looks very similar to the nonparametric estimate (4.8 points versus 4.4 points). The linear specification seems to not capture the true relationship between halftime margin and final margin, as it only estimates an effect of 2.5 points.")
 ```
 
