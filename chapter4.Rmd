@@ -56,6 +56,25 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 *** =video_link
 //player.vimeo.com/video/219561575
 
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+## Interpreting different results when working with noncompliance
+Suppose I try out all four methods of dealing with noncompliance: bounds analysis, assuming random compliance, intention-to-treat analysis, and instrumental variables. That gives me four results. What should I expect to see?
+
+*** =instructions
+- All the results will be the same, regardless of the method
+- None of the results will be the same
+- Some of the results will be the same
+- It doesn’t matter because only the result from instrumental variables analysis is credible
+- None of the above
+*** =sct
+```{r}
+msg1 = "Not quite. Try again"
+msg2 = "Not quite. Try again"
+msg3 = “Not quite. Try again”
+msg4 = “Not quite. Try again”
+msg5 = “It depends! First, the bounds analysis did not require any assumptions, so the true ATE will be within the bounds we derived there. And remember that bounds analysis always gives, well, a bound! And as long as there is some noncompliance, that bound will always be positive. So it can’t possible give the same result as using IV, assuming random compliance, or doing intention-to-treat analysis. That’s because all three of those methods deliver a single point. Moreover, each of those methods will typically deliver different answers, except in special cases. Which one is more credible depends on what you think about the assumptions used to compute those numbers.”
+test_mc(correct = 5, feedback_msgs = c(msg1,msg2,msg3,msg4,msg5))
+```
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:162436a553
 ## ATEs, CATEs, and LATEs: What's the Difference?
@@ -65,7 +84,7 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:0311238e09
 ## An alternate way to LATE? 
-In this video, we saw many different ways to divide up the population of units. So, when I get my data set, all I need to do is divide my units up into groups like in this module, and then I can compute the corresponding treatment effects by just taking the average outcome within each group.
+In this video, we saw many different ways to divide up the population of units. So, when I get my dataset, all I need to do is divide my units up into groups like in this module, and then I can compute the corresponding treatment effects by just taking the average outcome within each group.
 
 *** =instructions
 - True
@@ -75,7 +94,7 @@ In this video, we saw many different ways to divide up the population of units. 
 *** =sct
 ```{r}
 msg1 = "Not quite. Try again"
-msg2 = "Definitely false! First, we know from very early on in these modules that learning causality is rarely as easy as just computing a single average. At the least we need to compute the *difference* in two averages, like in a randomized experiment. Beyond that, however, we have discussed in other modules that we do not actually know who is or is not a complier in our dataset, for example. So—in our data—we cannot actually split people up as seen in this module. The split we discussed here is done “as if” we knew things about people which we cannot possibly know with an actual dataset."
+msg2 = "Definitely false! First, we know from very early on in these videos that learning causality is rarely as easy as just computing a single average. At the least we need to compute the *difference* in two averages, like in a randomized experiment. Beyond that, however, we have discussed in other videos that we do not actually know who is or is not a complier in our dataset, for example. So—in our data—we cannot actually split people up as seen in this module. The split we discussed here is done “as if” we knew things about people which we cannot possibly know with an actual dataset."
 msg3 = “Not quite. Try again”
 msg4 = “Not quite. Try again”
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3,msg4))
