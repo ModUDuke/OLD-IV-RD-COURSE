@@ -56,7 +56,7 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 *** =video_link
 //player.vimeo.com/video/219561575
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:ccb5f3da17
 ## Interpreting different results when working with noncompliance
 Suppose I try out all four methods of dealing with noncompliance: bounds analysis, assuming random compliance, intention-to-treat analysis, and instrumental variables. That gives me four results. What should I expect to see?
 
