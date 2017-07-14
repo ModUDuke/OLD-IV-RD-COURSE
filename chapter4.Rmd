@@ -9,7 +9,7 @@ description : "This chapter explores deeper concepts and applications related to
 //player.vimeo.com/video/219560681
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:7bd9f2f678
 ## LATE and the ATE for Always-Takers
 LATE is defined as the average treatment effect for the compliers. Why don’t we define and report an average treatment effect for the always takers??
 
@@ -63,7 +63,7 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 //player.vimeo.com/video/219561649
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:0311238e09
 ## An alternate way to LATE? 
 In this video, we saw many different ways to divide up the population of units. So, when I get my data set, all I need to do is divide my units up into groups like in this module, and then I can compute the corresponding treatment effects by just taking the average outcome within each group.
 
