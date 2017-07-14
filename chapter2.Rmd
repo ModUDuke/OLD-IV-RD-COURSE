@@ -25,19 +25,35 @@ test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
 //player.vimeo.com/video/219559447
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f9981cd29c
-## Logical arguments about instrumental variables
-Let's say that you have data on the impact of bike riding on child happiness, and you want to use the brand of bicycle as your instrument. What's the best argument that the brand of bike does not affect child happiness directly?
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+## Using IV when there is measurement error
+You’re doing some research and plan on using an instrumental variables strategy to help with any noncompliance. But you think that, similar to the AJR (2001) paper, your instrument might have some measurement error, because it was hard to measure perfectly. Can you just proceed like usual, as they did?
 
 *** =instructions
-- Kids don't have brand awareness like adults do
+- Yes
+- No
+- Maybe
+*** =sct
+```{r}
+msg1 = “Yes, you can proceed. But, with some very important caveats. You should be careful to acknowledge that measurement error could be an issue. And there are also several things you might be able to do in order to think about the effect of this measurement error on your findings. There are always more econometric techniques to try out that might help”
+msg2 = "Not quite. Try again"
+msg3 = “Not quite. Try again.”
+test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3))
+```
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f9981cd29c
+## Logical arguments about instrumental variables
+Let's say that you work for the city government, and you want to find out about the non-financial impact of bike lanes on the lives of citizens. Specifically, you want to learn if bike riding improves child happiness. You decide to use an IV analysis, and you think you can use the brand of bicycle as your instrument. What's the best argument that the brand of bike does not affect child happiness directly?
+
+*** =instructions
+- Little kids don't have brand awareness like adults do
 - Once they are on the bike, the brand doesn't matter
 - Bike brands may be sized differently, but kids always adjust as needed
 - Bike brands differ mostly in color patterns, and kids' preferences cancel each other out
 *** =sct
 ```{r}
-msg1 = "Correct! This is the best argument because, if kids are very brand aware, then simply owning a specific brand may make them very happy, independently of whether they actually ride the bike or not."
-msg2 = "Not quite. Try again"
+msg1 = "Correct! This is the best argument because, if kids are very brand aware, then this argument would suddenly become a very weak one, because simply owning a specific brand may make them very happy, independently of whether they actually ride the bike or not."
+msg2 = "This might be "
 msg3 = "Not quite. Try again"
 msg4 = "Not quite. Try again"
 test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
@@ -188,6 +204,22 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3))
 //player.vimeo.com/video/219559540
 
 
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+## Interpreting a simple case with instrumental variables
+A researcher found an instrument, argued for its validity (it satisfies the 3 assumptions), and then used indirect inference to compute the causal effect of a treatment on outcomes. They found a positive number, and concluded that treatment is good. Is that a valid conclusion?
+
+*** =instructions
+- Yes
+- No
+- Maybe
+*** =sct
+```{r}
+msg1 = "Not quite. Try again"
+msg2 = "Not quite. Try again"
+msg3 = “Maybe! First, they would also need to give us some idea of the *uncertainty* inherent in the estimate. That’s because we always have to worry about whether our sample size is big enough to let us learn something. For example, they could compute a confidence interval for their treatment effect estimate. Second—and this relates to several other videos on IVs—there might be *heterogeneity* in treatment effects. So when you say the treatment is “good” we have to ask “for whom?”. This is a very difficult question! We tackle this in a limited way in some of the other videos (in particular, the ones on LATE)..”
+test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
+```
+
 --- type:NormalExercise lang:r xp:100 skills:1 key:721d6bc016
 ## Practice computing causal effects using indirect inference: CreditCo
 Now let's repeat the previous CreditCo analysis, but now use indirect inference to compute the causal effect of opting in to a credit limit increase on one's credit balance.
@@ -317,7 +349,6 @@ success_msg("Good work!")
 ## Two Stage Least Squares (2SLS)
 *** =video_link
 //player.vimeo.com/video/219559617
-
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:415cb190e2
 ## Practice computing causal effects using Two-Stage Least Squares (2SLS): CreditCo
@@ -452,11 +483,25 @@ In general, do you think that these two methods will always yield the same resul
 *** =sct
 ```{r}
 msg1 = "Try again"
-msg2 = "Correct! The previous coding examples happened to yield identical results because of the specific situation. In general, the results should yield numbers that are statistically similar (i.e. the confidence interval of one should contain the other)."
+msg2 = "Correct! The previous coding examples happened to yield identical results because of the specific situation. In general, the results should yield numbers that are "statistically similar": that is, the confidence interval of one should contain the other."
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+## So I’ve calculated a result with IV…
+Suppose I do an instrumental variables analysis and compute a number using 2SLS or indirect inference. That’s it, right?
 
+*** =instructions
+- Yes
+- No
+- Maybe
+*** =sct
+```{r}
+msg1 = "Not quite. Try again"
+msg2 = "No! As discussed in this module and emphasized in other videos, it is very important that we can *interpret* exactly what number we are computing. This is important for figuring out what implications that number has on the policy recommendations we might make. This and the subsequent videos are devoted to explaining how to interpret what we get from 2SLS and instrumental variables analysis."
+msg3 = “Not quite. Try again.”
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
+```
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:25532d1a49
 ## Solving Noncompliance in Experiments with Instrumental Variables
@@ -470,6 +515,21 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 //player.vimeo.com/video/219559775
 
 
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+## Assumptions when using IV with the Oregon Health Data
+In previous modules we said that the relevance assumption is refutable and in this module we saw that it is *not* refuted in the Oregon Experiment example—it does indeed hold there. For the other two assumptions, exogeneity and exclusion, we’ve said that they are nonrefutable. Is this always true?
+
+*** =instructions
+- Yes, they are always nonrefutable
+- It depends
+- No, I can make them refutable if I have additional data
+*** =sct
+```{r}
+msg1 = "Not quite. Try again"
+msg2 = "It depends. This is actually a somewhat deep philosophical point: “Refutability” is defined with respect to a “model”, which includes a description of the precise set of data which is observable. For example, suppose I observe a dataset with the age of person in the United States. Then the claim that the average age is 26 is refutable—I can simply compute the true average age and then see if it really is 26 or not. But the claim that the average annual income is $30,000 is not refutable. That’s just because my dataset doesn’t have income in it! If I observed data on income, then that claim would become refutable. A similar story applies to the instrumental variables assumptions. If you add more data or change the assumptions in different ways, it is sometimes possible to convert a nonrefutable assumption into a refutable assumption. However, without more or different kinds of data, typically the exogeneity and exclusion assumptions are not refutable. In this case, you must be prepared to use a qualitative argument to explain why you find them to be credible assumptions."
+msg3 = "Not quite. Try again"
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
+```
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:834d82578f
 ## Practice using IV to solve noncompliance in the OHIE
