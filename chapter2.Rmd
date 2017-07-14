@@ -25,7 +25,7 @@ test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
 //player.vimeo.com/video/219559447
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:76ab8a34c9
 ## Using IV when there is measurement error
 You’re doing some research and plan on using an instrumental variables strategy to help with any noncompliance. But you think that, similar to the AJR (2001) paper, your instrument might have some measurement error, because it was hard to measure perfectly. Can you just proceed like usual, as they did?
 
@@ -204,7 +204,7 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3))
 //player.vimeo.com/video/219559540
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:c96afe9f06
 ## Interpreting a simple case with instrumental variables
 A researcher found an instrument, argued for its validity (it satisfies the 3 assumptions), and then used indirect inference to compute the causal effect of a treatment on outcomes. They found a positive number, and concluded that treatment is good. Is that a valid conclusion?
 
@@ -487,7 +487,7 @@ msg2 = "Correct! The previous coding examples happened to yield identical result
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:a1947fbea3
 ## So I’ve calculated a result with IV…
 Suppose I do an instrumental variables analysis and compute a number using 2SLS or indirect inference. That’s it, right?
 
@@ -515,7 +515,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 //player.vimeo.com/video/219559775
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:23b590892d
 ## Assumptions when using IV with the Oregon Health Data
 In previous modules we said that the relevance assumption is refutable and in this module we saw that it is *not* refuted in the Oregon Experiment example—it does indeed hold there. For the other two assumptions, exogeneity and exclusion, we’ve said that they are nonrefutable. Is this always true?
 
