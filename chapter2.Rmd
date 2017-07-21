@@ -27,7 +27,7 @@ test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:76ab8a34c9
 ## Using IV when there is measurement error
-You’re doing some research and plan on using an instrumental variables strategy to help with any noncompliance. But you think that, similar to the AJR (2001) paper, your instrument might have some measurement error, because it was hard to measure perfectly. Can you just proceed like usual, as they did?
+You're doing some research and plan on using an instrumental variables strategy to help with any noncompliance. But you think that, similar to the AJR (2001) paper, your instrument might have some measurement error, because it was hard to measure perfectly. Can you just proceed like usual, as they did?
 
 *** =instructions
 - Yes
@@ -35,9 +35,9 @@ You’re doing some research and plan on using an instrumental variables strateg
 - Maybe
 *** =sct
 ```{r}
-msg1 = “Yes, you can proceed. But, with some very important caveats. You should be careful to acknowledge that measurement error could be an issue. And there are also several things you might be able to do in order to think about the effect of this measurement error on your findings. There are always more econometric techniques to try out that might help”
+msg1 = 'Yes, you can proceed. But, with some very important caveats. You should be careful to acknowledge that measurement error could be an issue. And there are also several things you might be able to do in order to think about the effect of this measurement error on your findings. There are always more econometric techniques to try out that might help'
 msg2 = "Not quite. Try again"
-msg3 = “Not quite. Try again.”
+msg3 = 'Not quite. Try again.'
 test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
@@ -216,7 +216,7 @@ A researcher found an instrument, argued for its validity (it satisfies the 3 as
 ```{r}
 msg1 = "Not quite. Try again"
 msg2 = "Not quite. Try again"
-msg3 = “Maybe! First, they would also need to give us some idea of the *uncertainty* inherent in the estimate. That’s because we always have to worry about whether our sample size is big enough to let us learn something. For example, they could compute a confidence interval for their treatment effect estimate. Second—and this relates to several other videos on IVs—there might be *heterogeneity* in treatment effects. So when you say the treatment is “good” we have to ask “for whom?”. This is a very difficult question! We tackle this in a limited way in some of the other videos (in particular, the ones on LATE)..”
+msg3 = 'Maybe! First, they would also need to give us some idea of the *uncertainty* inherent in the estimate. That’s because we always have to worry about whether our sample size is big enough to let us learn something. For example, they could compute a confidence interval for their treatment effect estimate. Second—and this relates to several other videos on IVs—there might be *heterogeneity* in treatment effects. So when you say the treatment is “good” we have to ask “for whom?”. This is a very difficult question! We tackle this in a limited way in some of the other videos (in particular, the ones on LATE)'
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
@@ -483,7 +483,7 @@ In general, do you think that these two methods will always yield the same resul
 *** =sct
 ```{r}
 msg1 = "Try again"
-msg2 = "Correct! The previous coding examples happened to yield identical results because of the specific situation. In general, the results should yield numbers that are "statistically similar": that is, the confidence interval of one should contain the other."
+msg2 = "Correct! The previous coding examples happened to yield identical results because of the specific situation. In general, the results should yield numbers that are 'statistically similar': that is, the confidence interval of one should contain the other."
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
@@ -499,7 +499,7 @@ Suppose I do an instrumental variables analysis and compute a number using 2SLS 
 ```{r}
 msg1 = "Not quite. Try again"
 msg2 = "No! As discussed in this module and emphasized in other videos, it is very important that we can *interpret* exactly what number we are computing. This is important for figuring out what implications that number has on the policy recommendations we might make. This and the subsequent videos are devoted to explaining how to interpret what we get from 2SLS and instrumental variables analysis."
-msg3 = “Not quite. Try again.”
+msg3 = 'Not quite. Try again.'
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
