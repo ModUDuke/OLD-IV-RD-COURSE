@@ -14,7 +14,7 @@ description : "This chapter will introduce you to instrumental variables (IV) an
 //player.vimeo.com/video/219559011
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:8c410956e7
-## Assumptions of instrumental variables
+## Assumptions of Instrumental Cariables
 Which of the following is *not* a key identifying assumption/condition of instrumental variables?
 
 *** =instructions
@@ -31,6 +31,7 @@ msg4 = "The instrument needs to be correlated with the outcome. Try again"
 test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
+
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:953b93e528
 ## Instrumental Variables in Action: Education and Wages (graphs)
 *** =video_link
@@ -46,7 +47,7 @@ True or False: If you see that there is a zero correlation between the treatment
 *** =sct
 ```{r}
 msg1 = "Try again"
-msg2 = "Correct! The amount or sign of correlation between treatments and outcomes is completely irrelevant for instrumental variables analysis. That is because we are considering the case where treatments are *not* randomly assigned, so we know that correlation (or the lack thereof) does not imply causation (or the lack thereof). For instrumental variables analysis, all the assumptions are about how the instrument itself relates to the other variables."
+msg2 = "Correct! This question is a little tricky. The amount or sign of correlation between treatments and outcomes is completely irrelevant for instrumental variables analysis. That is because we are considering the case where treatments are *not* randomly assigned, so we know that correlation (or the lack thereof) does not imply causation (or the lack thereof). For instrumental variables analysis, all the assumptions are about how the instrument itself relates to the other variables."
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
@@ -54,6 +55,47 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ## Instrumental Variables in Action: Education and Wages (tables)
 *** =video_link
 //player.vimeo.com/video/219559305
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1
+## An Example of Instrumental Variable Analysis
+Alan the almond farmer consistently sells all of his almond crops. Since Alan is the only almond farmer in his county, Alan has no direct competition. Due to his great sales and lack of competition, Alan is considering raising the prices of his almonds. However, Alan is worried that increasing the prices of his almonds might hurt his sales and overall margins.
+
+Alan wants to know whether almond sales are particularly sensitive to prices. Alan has data on what portion of almonds were sold across each county of his state for the past 10 years, but he does not have information about the prices of those almonds. However, Alan comes up with an idea for doing an instrumental variable analysis: Alan knows that farmers consistently increase their almond prices on years when they have low almond yields, and Alan knows that almond yields tend to be low on years when their is little rain. Therefore, Alan believes that he could study weather patterns as an instrument for prices. If weather effects almond prices, and almond prices effect sales, can studying the association between weather and almond sales help Alan determine whether there is a causal relationship between almond prices and almond sales?
+
+
+*** =instructions
+- Yes
+- No
+*** =sct
+```{r}
+msg1 = "Correct! The instrument has an indirect causal effect on almond sales through almond sales prices. This is a good example of where instrumental variable analysis would work."
+msg2 = "Try again"
+test_mc(correct = 1, feedback_msgs = c(msg1,msg2))
+```
+
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1
+## Instrumental Variable Analysis Assumptions
+In the previous question, Alan the almond farmer measured the effect of almond prices on rates of almond sales through instrumental variable analysis. Alan did not have information on almond sales prices, but knew that almond prices were effected by the weather; therefore, Alan examined how weather patterns were associated with rates of almond sales, concluding that any correlation may be indicative of a causal relationship. Which of the following assumptions does Alan's model depend on?
+
+a) Almond prices are effected by the weather 
+b) The weather and rates almond sales are not both consequences of another factor 
+c) The weather is not correlated with other factors (besides almond prices) that are consequential to rates of almond sales. 
+d) The weather has a direct effect on rates of almond sales 
+
+*** =instructions
+- a, c
+- b, d
+- a, b, c 
+- a, b, c, d
+*** =sct
+```{r}
+msg1 = "Almost! These are both assumptions of Alan's model, but there are more. Try again"
+msg2 = "Not quite. b) is an important assumption of Alan's model, but d) is not. Try again."
+msg3 = "Correct! a) is true because the instrument in any IV model must effect the independent variable of interest. b) and c) are true because IVs require that the relationship between an instrument and the dependent variable cannot be explained by any other factors but their causal relationships to the key independent variable. d) is false for the same reason that b) and c) are true; if the weather directly effects the rate of almond sales, then we cannot assume that the this relationship is mediated by the effect of the weather on almond sales prices."
+msg4 = "Almost! At least one of the possible assumptions is false."
+test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4))
+```
 
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:3ae8d65d96
@@ -66,6 +108,28 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ## The Problem of Weak Instruments
 *** =video_link
 //player.vimeo.com/video/219559996
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1
+## Why Don't we See a Causal Effect?  
+A public health specialist names Phoebe is interested in how a person's wealth (their assets minus their debts) might effect their health. Phoebe has longitudinal data on people's wealth and health, but she's having trouble determining whether wealth has a causal effect on health with traditional regression models. Phoebe's concern is that the relationship between wealth and health is endogenously confounded; a person's wealth might have a positive causal effect on their wealth, but a person's health could also have a positive causal effect on their wealth. 
+
+To untangle this causal relationship, Phoebe decides to conduct an instrumental variable analysis of wealth's effect on health with inheritance as an exogenous instrument of wealth (that is, inheritance effects a person's wealth but does not have any direct or indirect relationship with a person's health other than through how it might effect wealth). However, Phoebe's analysis yields no statistically significant results. Phoebe concludes that inheritance was a weak instrumental variable. Which of the following could this imply?    
+
+*** =instructions
+- Inheritance has a direct causal effect on health.
+- Inheritance does not have a large causal effect on wealth.
+- People who inherit money often feel guilty, leading to a decline in health.
+- People are more likely to inherit money when they themselves have poor health. 
+
+*** =sct
+```{r}
+msg1 = "Although this instrumental variable would be poor for this analysis (an instrument should not have a direct effect on the dependent variable), this is not an example of a 'weak' instrumental variable."
+msg2 = "Correct! Only a small percentage of people ever inherit a substantial amount of money, and those who do tend to have better wealth to begin with. So the effect of inheritance on wealth would be pretty small, which allows for very little statistical power on the relationship between wealth and health."
+msg3 = "This answer is very similar to the first one. In this case, the problem is not that the instrument is 'weak,' but that the instrument has a direct causal effect on health."
+msg4 = "Although this instrumental variable would be poor for this analysis (an instrument should be randomly assigned), this is not an example of a 'weak' instrumental variable."
+
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
+```
 
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:90f146a86a
