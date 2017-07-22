@@ -56,7 +56,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 *** =video_link
 //player.vimeo.com/video/219559305
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:e4ac42d0db
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1
 ## An Example of Instrumental Variable Analysis
 Alan the almond farmer consistently sells all of his almond crops. Since Alan is the only almond farmer in his county, Alan has no direct competition. Due to his great sales and lack of competition, Alan is considering raising the prices of his almonds. However, Alan is worried that increasing the prices of his almonds might hurt his sales and overall margins.
 
@@ -74,7 +74,7 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2))
 ```
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:01af032fa2
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1
 ## Instrumental Variable Analysis Assumptions
 In the previous question, Alan the almond farmer measured the effect of almond prices on rates of almond sales through instrumental variable analysis. Alan did not have information on almond sales prices, but knew that almond prices were effected by the weather; therefore, Alan examined how weather patterns were associated with rates of almond sales, concluding that any correlation may be indicative of a causal relationship. Which of the following assumptions does Alan's model depend on?
 
@@ -109,8 +109,8 @@ test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4))
 *** =video_link
 //player.vimeo.com/video/219559996
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:b16f04d836
-## Why Don't we See a Causal Effect?  
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1
+## An Example of a Weak Instrument  
 A public health specialist names Phoebe is interested in how a person's wealth (their assets minus their debts) might effect their health. Phoebe has longitudinal data on people's wealth and health, but she's having trouble determining whether wealth has a causal effect on health with traditional regression models. Phoebe's concern is that the relationship between wealth and health is endogenously confounded; a person's wealth might have a positive causal effect on their wealth, but a person's health could also have a positive causal effect on their wealth. 
 
 To untangle this causal relationship, Phoebe decides to conduct an instrumental variable analysis of wealth's effect on health with inheritance as an exogenous instrument of wealth (that is, inheritance effects a person's wealth but does not have any direct or indirect relationship with a person's health other than through how it might effect wealth). However, Phoebe's analysis yields no statistically significant results. Phoebe concludes that inheritance was a weak instrumental variable. Which of the following could this imply?    
@@ -128,7 +128,7 @@ msg2 = "Correct! Only a small percentage of people ever inherit a substantial am
 msg3 = "This answer is very similar to the first one. In this case, the problem is not that the instrument is 'weak,' but that the instrument has a direct causal effect on health."
 msg4 = "Although this instrumental variable would be poor for this analysis (an instrument should be randomly assigned), this is not an example of a 'weak' instrumental variable."
 
-test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
 
