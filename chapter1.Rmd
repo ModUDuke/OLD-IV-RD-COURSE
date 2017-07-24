@@ -14,7 +14,7 @@ description : "This chapter will introduce you to instrumental variables (IV) an
 //player.vimeo.com/video/219559011
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:8c410956e7
-## Assumptions of Instrumental Cariables
+## Assumptions of Instrumental Variables
 Which of the following is *not* a key identifying assumption/condition of instrumental variables?
 
 *** =instructions
