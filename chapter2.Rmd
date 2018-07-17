@@ -4,7 +4,7 @@ description : "This chapter will allow you to practice instrumental variables (I
  
   
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:5ad3dddd73
-## Instrumental variables in practice
+## Instrumental Variables in Practice
 Suppose you have data on where students live once they graduate from college. You want to know the causal effect of living in a rural versus urban area on their wages. So you categorize locations as either urban or rural, giving you a binary treatment variable. What kind of variation is in that variable and why?
 
 *** =instructions
@@ -26,7 +26,7 @@ test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:76ab8a34c9
-## Using IV when there is measurement error
+## Using IV When There is Measurement Error
 You're doing some research and plan on using an instrumental variables strategy to help with any noncompliance. But you think that, similar to the AJR (2001) paper, your instrument might have some measurement error, because it was hard to measure perfectly. Can you just proceed like usual, as they did?
 
 *** =instructions
@@ -42,7 +42,7 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f9981cd29c
-## Logical arguments about instrumental variables
+## Logical Arguments About Instrumental Variables
 Let's say that you work for the city government, and you want to find out about the non-financial impact of bike lanes on the lives of citizens. Specifically, you want to learn if bike riding improves child happiness. You decide to use an IV analysis, and you think you can use the brand of bicycle as your instrument. What's the best argument that the brand of bike does not affect child happiness directly?
 
 *** =instructions
@@ -61,7 +61,7 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
 
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:80186483d8
-## Practice using instrumental variables: CreditCo
+## Practice Using Instrumental Variables: CreditCo
 In the experiments course, you assessed the validity of a natural experiment using data from CreditCo. Let's revisit that analysis, framing it in the logic of instrumental variables.
 
 As you may recall, CreditCo sent out offers in the mail to increase their customers' credit limits. We are worried that the customers who took up the offer might not have randomly done so, which causes an endogeneity problem. We proposed to solve this problem by using the weather on the day the credit offers were delivered as an instrument for treatment. 
@@ -69,9 +69,9 @@ As you may recall, CreditCo sent out offers in the mail to increase their custom
 Included on the workspace is a data set from CreditCo. The data are a sample of CreditCo customers who were offered the credit limit increase. We will focus on the variable `rainy`, which we will use as an instrument for `opt_in`, which we suspect is endogenous to our outcomes of interest.
 
 *** =instructions
-- Using a linear regression, compute the correlation between opt-in and rain
-- Test whether rain satisfies the relevance assumption (i.e. if its correlation with opt-in is significantly different from zero).
-- What is the sign of the correlation between rain and opt-in?
+- 1) Using a linear regression, compute the correlation between opt-in and rain
+- 2) Test whether rain satisfies the relevance assumption (i.e. if its correlation with opt-in is significantly different from zero).
+- 3) What is the sign of the correlation between rain and opt-in?
 
 *** =hint
 - Remember to be aware of selecting the correct subsample
@@ -141,17 +141,17 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
 ```{r}
 # The dataset `CreditCo` is available in your workspace
 
-# Question 1: Using a linear regression, compute the correlation between rain and opt-in status.
+# 1) Using a linear regression, compute the correlation between rain and opt-in status.
 #---- Question 1-------------------------------------#
     Solution1<-lm( ~ ,data=CreditCo)
 #----------------------------------------------------#
 
-# Question 2: What is the p-value associated with the t-test on the coefficient of rain?
+# 2) What is the p-value associated with the t-test on the coefficient of rain?
 #---- Question 2-------------------------------------#
     Solution2<-summary(Solution1)$coefficients[2,4]
 #----------------------------------------------------#
 
-# Question 3: What is the sign of the correlation between rain and opt-in?
+# 3) What is the sign of the correlation between rain and opt-in?
 #---- Question 3-------------------------------------#
     Solution3<-sign(Solution1$coefficients[2])
 #----------------------------------------------------#
@@ -177,13 +177,13 @@ success_msg("Good work!")
 
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:9cc4cfa847
-## Refutability and nonrefutability of the instrumental variables assumptions
+## Refutability and Nonrefutability of the Instrumental Variables Assumptions
 *** =video_link
 //player.vimeo.com/video/219559377
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:db21106fcb
-## Questioning the validity of instrumental variables results
+## Questioning the Validity of Instrumental Variables Results
 Many researchers have found the distance-to-college instrument questionable. What do you think is the most plausible reason?
 
 *** =instructions
@@ -205,7 +205,7 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3))
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:c96afe9f06
-## Interpreting a simple case with instrumental variables
+## Interpreting a Simple Case with Instrumental Variables
 A researcher found an instrument, argued for its validity (it satisfies the 3 assumptions), and then used indirect inference to compute the causal effect of a treatment on outcomes. They found a positive number, and concluded that treatment is good. Is that a valid conclusion?
 
 *** =instructions
@@ -221,7 +221,7 @@ test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:721d6bc016
-## Practice computing causal effects using indirect inference: CreditCo
+## Practice Computing Causal Effects Using Indirect Inference: CreditCo
 Now let's repeat the previous CreditCo analysis, but now use indirect inference to compute the causal effect of opting in to a credit limit increase on one's credit balance.
 
 The setting is the same as before: CreditCo sent out offers in the mail to increase their customers' credit limits. But we know that taking up the offer is not randomly determined. We proposed to solve this problem by using the whether it rained on the day the credit offers were delivered as an instrument for takeup. 
@@ -231,10 +231,10 @@ In this exercise, we will restrict our analysis to the set of customers who rece
 Included on the workspace is a data set from CreditCo. The data are a sample of CreditCo customers who were offered the credit limit increase. We will focus on the variable `rainy`, which we will use as an instrument for `opt_in`, which we suspect is endogenous to our outcomes of interest.
 
 *** =instructions
-- Using a linear regression, compute the reduced-form effect (i.e. correlation between credit balance and rain)
-- Using a linear regression, compute the first-stage effect (i.e. correlation between opting in and rain)
-- Now compute the causal effect, which is equal to (reduced form)/(first stage)
-- Did opting in to the credit offer increase or decrease credit balances?
+- 1) Using a linear regression, compute the reduced-form effect (i.e. correlation between credit balance and rain)
+- 2) Using a linear regression, compute the first-stage effect (i.e. correlation between opting in and rain)
+- 3) Now compute the causal effect, which is equal to (reduced form)/(first stage)
+- 4) Did opting in to the credit offer increase or decrease credit balances?
 
 *** =hint
 - Remember to be aware of selecting the correct subsample
@@ -304,22 +304,22 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
 ```{r}
 # The dataset `CreditCo` is available in your workspace
 
-# Question 1: Using a linear regression, compute the reduced-form effect (i.e. correlation between `balance_post` and `rainy`).
+# 1) Using a linear regression, compute the reduced-form effect (i.e. correlation between `balance_post` and `rainy`).
 #---- Question 1-------------------------------------#
     Solution1<-lm( ~ ,data=CreditCo)
 #----------------------------------------------------#
 
-# Question 2: Using a linear regression, compute the first-stage effect (i.e. correlation between `opt_in` and `rainy`)
+# 2) Using a linear regression, compute the first-stage effect (i.e. correlation between `opt_in` and `rainy`)
 #---- Question 2-------------------------------------#
     Solution2<-lm( ~ ,data=CreditCo)
 #----------------------------------------------------#
 
-# Question 3: Compute the causal effect, which is equal to (reduced form)/(first stage)
+# 3) Compute the causal effect, which is equal to (reduced form)/(first stage)
 #---- Question 3-------------------------------------#
     Solution3<-Solution1$coefficients[2]/Solution2$coefficients[2]
 #----------------------------------------------------#
 
-# Question 4: Did opting in to the credit offer increase or decrease credit balances? (type "increased" if Solution3 is positive or "decreased" if Solution3 is negative)
+# 4) Did opting in to the credit offer increase or decrease credit balances? (type "increased" if Solution3 is positive or "decreased" if Solution3 is negative)
 #---- Question 3-------------------------------------#
     Solution4<-c("")
 #----------------------------------------------------#
@@ -351,14 +351,14 @@ success_msg("Good work!")
 //player.vimeo.com/video/219559617
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:415cb190e2
-## Practice computing causal effects using Two-Stage Least Squares (2SLS): CreditCo
+## Practice Computing Causal Effects Using Two-Stage Least Squares (2SLS): CreditCo
 Now let's repeat the previous CreditCo analysis, but now use 2SLS to compute the causal effect instead of indirect inference.
 
 *** =instructions
-- Using a linear regression, compute the first-stage effect (i.e. correlation between opting in and rain)
-- Compute the predicted values of opting in
-- Compute the causal effect by linear regression (i.e. correlation between credit balance and predicted opt-in rate)
-- Did opting in to the credit offer increase or decrease credit balances?
+- 1) Using a linear regression, compute the first-stage effect (i.e. correlation between opting in and rain)
+- 2) Compute the predicted values of opting in
+- 3) Compute the causal effect by linear regression (i.e. correlation between credit balance and predicted opt-in rate)
+- 4) Did opting in to the credit offer increase or decrease credit balances?
 
 *** =hint
 - Remember to be aware of selecting the correct subsample
@@ -428,23 +428,23 @@ Now let's repeat the previous CreditCo analysis, but now use 2SLS to compute the
 ```{r}
 # The dataset `CreditCo` is available in your workspace
 
-# Question 1: Using a linear regression, compute the first-stage effect (i.e. correlation between `opt_in` and `rainy`)
+# 1) Using a linear regression, compute the first-stage effect (i.e. correlation between `opt_in` and `rainy`)
 #---- Question 1-------------------------------------#
     Solution1<-lm( ~ ,data=CreditCo)
 #----------------------------------------------------#
 
-# Question 2: Compute the predicted opt-in rate for each person and include it as a variable in the `CreditCo` data frame
+# 2) Compute the predicted opt-in rate for each person and include it as a variable in the `CreditCo` data frame
 #---- Question 2-------------------------------------#
     Solution2<-predict(Solution1,data=CreditCo)
     CreditCo$prediction <- Solution2
 #----------------------------------------------------#
 
-# Question 3: Compute the causal effect, which is a regression of credit balance on the predicted values
+# 3) Compute the causal effect, which is a regression of credit balance on the predicted values
 #---- Question 3-------------------------------------#
     Solution3<-lm( ~ ,data=CreditCo)
 #----------------------------------------------------#
 
-# Question 4: Did opting in to the credit offer increase or decrease credit balances? (type "increased" or "decreased")
+# 4) Did opting in to the credit offer increase or decrease credit balances? (type "increased" or "decreased")
 #---- Question 3-------------------------------------#
     Solution4<-c("")
 #----------------------------------------------------#
@@ -470,7 +470,7 @@ success_msg("Good work!")
 ```
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:458e4ed187
-## Comparing the estimates from indirect inference and 2SLS
+## Comparing the Estimates from Indirect Inference and 2SLS
 The previous two coding exercises used two separate methods to estimate a causal effect using instrumental variables. 
 
 The estimate from the indirect inference method yielded an effect of $16,319. The 2SLS method estimate was an identical $16,319.
@@ -516,7 +516,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:23b590892d
-## Assumptions when using IV with the Oregon Health Data
+## Assumptions When Using IV with the Oregon Health Data
 In previous modules we said that the relevance assumption is refutable and in this module we saw that it is *not* refuted in the Oregon Experiment example—it does indeed hold there. For the other two assumptions, exogeneity and exclusion, we’ve said that they are nonrefutable. Is this always true?
 
 *** =instructions
@@ -532,7 +532,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:834d82578f
-## Practice using IV to solve noncompliance in the OHIE
+## Practice Using IV to Solve Noncompliance in the OHIE
 In an earlier course, you analyzed data from the Oregon Healthcare Insurance Experiment (OHIE) where you assumed that everyone who was offered Medicaid coverage ended up getting covered.
 
 Now let's relax this assumption and instead assume that not everyone who was offered Medicaid coverage actually enrolled.
@@ -540,9 +540,8 @@ Now let's relax this assumption and instead assume that not everyone who was off
 Instead, we'll instrument for Medicaid takeup using assignment to the treatment group as an instrument.
 
 *** =instructions
-- The data frame `OHIE` is on your workspace
-- Compute the ITT effect of being offered insurance on having a positive depression screening
-- Estimate the 2SLS effect of taking up the offer on positive depression screening using two separate calls to `lm()`
+- 1) Compute the ITT effect of being offered insurance on having a positive depression screening
+- 2) Estimate the 2SLS effect of taking up the offer on positive depression screening using two separate calls to `lm()`
 
 *** =hint
 - Remember to include additional demographic controls in your regression model!
@@ -837,14 +836,14 @@ OHIE <- OHIE[!is.na(OHIE$pos_depression_screen),c("id","intvw","lottery","gender
 
 *** =sample_code
 ```{r}
-# The dataset `OHIE` and the function `ivreg2` are both available in your workspace
+# The dataset `OHIE` and the function `ivreg2` are both available in your workspace.
 
-# Question 1: Using a linear regression, compute the ITT effect of being assigned to the treatment group ("lottery" variable) on positive depression screening, while also controlling for gender, age, ehtnicity, and interview language. Exclude age 18-34 and white from the set of right hand side dummy variables.
+# 1) Using a linear regression, compute the ITT effect of being assigned to the treatment group ("lottery" variable) on positive depression screening, while also controlling for gender, age, ehtnicity, and interview language. Exclude age 18-34 and white from the set of right hand side dummy variables.
 #---- Question 1-------------------------------------#
     Solution1<-summary(lm( ~ ,data=OHIE))
 #----------------------------------------------------#
 
-# Question 2: Compute the the 2SLS effect of insurance takeup on depression by using "lottery" as an instrument for the endogenous takeup indicator "insurance"
+# 2) Compute the the 2SLS effect of insurance takeup on depression by using "lottery" as an instrument for the endogenous takeup indicator "insurance"
 #---- Question 2-------------------------------------#
     OHIE$prediction<-predict(lm( ~ ,data=OHIE))
     Solution2<-summary(lm( ~ prediction+... ,data=OHIE))
