@@ -38,7 +38,7 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
 //player.vimeo.com/video/219559159
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:16cf760443
-## Correlation and causation in instrumental variables
+## Correlation and Causation in Instrumental Variables
 True or False: If you see that there is a zero correlation between the treatment variable and the outcome variable, then the treatment cannot have a causal effect on outcomes---there must be correlation between those two variables if we are to have any hope of using instrumental variables to learn about causality.
 
 *** =instructions
@@ -75,7 +75,7 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2))
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:01af032fa2
-## Instrumental Variable Analysis Assumptions
+## Assumptions in Instrumental Variable Analysis 
 In the previous question, Alan the almond farmer measured the effect of almond prices on rates of almond sales through instrumental variable analysis. Alan knew that almond prices were effected by the weather; therefore, Alan examined how weather patterns were associated with rates of almond sales, concluding that any correlation may be indicative of a causal relationship. Which of the following assumptions does Alan's model depend on?
 
 a) Almond prices are effected by the weather 
