@@ -20,7 +20,7 @@ description : "This chapter will introduce you to regression discontinuity desig
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f401e635a5
-## Key variables in an RD design
+## Key Variables in an RD Design
 Which of the following variables is *not* a key (required) variable in a regression discontinuity design?
 
 *** =instructions
@@ -44,7 +44,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3,msg4))
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:7977c48f95
-## Practice identifying key variables in an RD design
+## Identifying Key Variables in an RD Design
 A pair of researchers named Jonah Berger and Devin Pope recently published a study that found that losing can lead to winning. As part of the study, the researchers documented this phenomenon in National Basketball Association (NBA) games. The researchers studied thousands of NBA game outcomes and found that teams who were just behind at halftime were more likely to win the game, after controling for other important factors (like the winning percentage of each team). 
 
 In this study, which variable is the outcome variable, which is the running variable, and which is the treatment variable?
@@ -72,7 +72,7 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f1b89ac666
-## Visualizing RD designs
+## Visualizing RD Designs
 Most analyses using the RDD approach graphically show the causal effect at the discontinuity. The graph on the right hand part of your screen displays this for the NBA game data mentioned in a previous exercise of this chapter.
 
 Each dot on the plot corresponds to the average margin of victory for the home team taken from a large number of games that had the same halftime margin for the home team. 
@@ -2235,7 +2235,7 @@ summary.RD<-function(object,digits=max(3, getOption("digits") - 3),...){
       Solution3<-summary(lm())
 #----------------------------------------------------#
   
-# As a last exercise, let's further relax the quadratic assumption of halftime margin. Instead of estimating an OLS regression using the lm function, we will now use a package called 'rdd' which allows us to examine how sensitive the regression assumptions are for our RD estimate.
+# 4) As a last exercise, let's further relax the quadratic assumption of halftime margin. Instead of estimating an OLS regression using the lm function, we will now use a package called 'rdd' which allows us to examine how sensitive the regression assumptions are for our RD estimate.
 
 # The function we will use is called RDestimate. Without getting into too many details, copy and paste the following syntax as your answer to Question 4: summary(RDestimate(home.team.final.margin ~ home.team.halftime.margin | home.team.qual+away.team.qual,data=NBA))
 
@@ -2289,7 +2289,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:2781eb8177
-## Using geographical borders more generally in RD designs
+## Using Geographical Borders More Generally in RD Designs
 True or False: As in the Black (1999) paper, anytime there is a geographical border where treatment changes across the border, we can use RDD analysis to learn the causal effect of treatment.
 
 *** =instructions
@@ -2309,7 +2309,7 @@ This is an example of how to visualize manipulation in RD designs. The main idea
 Let's revisit the NBA data we used before. Manipulation in this setting might come about if teams try to be down by 1 or 2 points at halftime (perhaps because they read the research paper published in Management Science!)
 
 *** =instructions
-- Using the function `DCdensity` which is already on your workspace, plot the distribution of data near the cutoff
+- 1) Using the function `DCdensity` which is already on your workspace, plot the distribution of data near the cutoff
 - The statistical test to do this is called the McCrary test. It tests whether there is a discontinuity in the data frequency distribution around the cutoff. A p-value of less than 5% implies that the data are manipulated.
 - The syntax for the `DCdensity` function is: `DCdensity(runningvar,discontinuityvalue,plot=TRUE/FALSE)`
 
@@ -2622,22 +2622,22 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
 
 *** =sample_code
 ```{r}
-# Run the McCrary test with the running variable in the NBA data and the cutoff (score tied)
+# 1) Run the McCrary test with the running variable in the NBA data and the cutoff (score tied)
 #---- Question 1-------------------------------------#
       Solution1 <- DCdensity(NBA$[running.var],[cutoff],plot=TRUE)
 #----------------------------------------------------#
   
-# Now issue the command again, but print the p-value output. Put print() around the command
+# 2) Now issue the command again, but print the p-value output. Put print() around the command
 #---- Question 2-------------------------------------#
       Solution2 <- DCdensity(NBA$[running.var],[cutoff],plot=FALSE)
 #----------------------------------------------------#
 
-# Now plot using the variable `home.team.halftime.margin.cheat` which has been manipulated
+# 3) Now plot using the variable `home.team.halftime.margin.cheat` which has been manipulated
 #---- Question 3-------------------------------------#
       Solution3 <- DCdensity(NBA$[new.running.var],[cutoff],plot=TRUE)
 #----------------------------------------------------#
 
-# And print its p-value:
+# 4) And print its p-value:
 #---- Question 4-------------------------------------#
       Solution4 <- DCdensity(NBA$[new.running.var],[cutoff],plot=FALSE)
 #----------------------------------------------------#
@@ -2668,7 +2668,7 @@ success_msg("Good work!")
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:88264adef7
-## Identifying fuzzy and sharp RDDs
+## Identifying Fuzzy and Sharp RDDs
 Consider the following examples. Which is an example of a fuzzy RDD and which is a sharp RDD?
 
 1. Running variable: Age. Treatment: You become eligible for senior citizen welfare programs once you are 65 are older.
