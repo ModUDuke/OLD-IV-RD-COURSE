@@ -59,7 +59,7 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:ccb5f3da17
-## Interpreting different results when working with noncompliance
+## Interpreting Different Results when Working with Noncompliance
 Suppose I try out all four methods of dealing with noncompliance: bounds analysis, assuming random compliance, intention-to-treat analysis, and instrumental variables. That gives me four results. What should I expect to see?
 
 *** =instructions
@@ -85,7 +85,7 @@ test_mc(correct = 5, feedback_msgs = c(msg1,msg2,msg3,msg4,msg5))
 
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:0311238e09
-## An alternate way to LATE? 
+## An Alternate Way to LATE? 
 In this video, we saw many different ways to divide up the population of units. So, when I get my dataset, all I need to do is divide my units up into groups like in this module, and then I can compute the corresponding treatment effects by just taking the average outcome within each group.
 
 *** =instructions
