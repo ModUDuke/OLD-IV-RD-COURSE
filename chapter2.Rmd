@@ -62,14 +62,14 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:80186483d8
 ## Practice Using Instrumental Variables: CreditCo
-In the experiments course, you assessed the validity of a natural experiment using data from CreditCo. Let's revisit that analysis, framing it in the logic of instrumental variables.
+If you took our Experiments course, you assessed the validity of a natural experiment using data from CreditCo. Let's revisit that analysis, framing it in the logic of instrumental variables.
 
-As you may recall, CreditCo sent out offers in the mail to increase their customers' credit limits. We are worried that the customers who took up the offer might not have randomly done so, which causes an endogeneity problem. We proposed to solve this problem by using the weather on the day the credit offers were delivered as an instrument for treatment. 
+As you may recall, CreditCo sent out offers in the mail to increase their customers' credit limits. We are worried that the customers who took up the offer might not have randomly done so, which causes an endogeneity problem. We proposed to solve this problem by using the rainy weather on the day the credit offers were delivered as an instrument for treatment. 
 
-Included on the workspace is a data set from CreditCo. The data are a sample of CreditCo customers who were offered the credit limit increase. We will focus on the variable `rainy`, which we will use as an instrument for `opt_in`, which we suspect is endogenous to our outcomes of interest.
+Included on the workspace is a dataset from CreditCo. The data are a sample of CreditCo customers who were offered the credit limit increase. We will focus on the variable `rainy`, which we will use as an instrument for `opt_in`, which we suspect is endogenous to our outcomes of interest.
 
 *** =instructions
-- 1) Using a linear regression, compute the correlation between opt-in and rain
+- 1) Using a linear regression, compute the correlation between opt-in and rain.
 - 2) Test whether rain satisfies the relevance assumption (i.e. if its correlation with opt-in is significantly different from zero).
 - 3) What is the sign of the correlation between rain and opt-in?
 
@@ -141,20 +141,20 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
 ```{r}
 # The dataset `CreditCo` is available in your workspace
 
-# 1) Using a linear regression, compute the correlation between rain and opt-in status.
-#---- Question 1-------------------------------------#
-    Solution1<-lm( ~ ,data=CreditCo)
-#----------------------------------------------------#
+# 1) First we need to determine whether our instrument satisfies the Relevance Assumption, and we'll start this process by looking to see if it has any correlation with our outcome variable. Using a linear regression, compute the correlation between rain and opt-in status.
 
-# 2) What is the p-value associated with the t-test on the coefficient of rain?
-#---- Question 2-------------------------------------#
+    Solution1<-lm( ~ ,data=CreditCo)
+
+
+# 2) If it does have a correlation, we need to make sure it's a statistically significant one. What is the p-value associated with the t-test on the coefficient of rain?
+
     Solution2<-summary(Solution1)$coefficients[2,4]
-#----------------------------------------------------#
+
 
 # 3) What is the sign of the correlation between rain and opt-in?
-#---- Question 3-------------------------------------#
+
     Solution3<-sign(Solution1$coefficients[2])
-#----------------------------------------------------#
+
 
 ```
 
@@ -170,7 +170,7 @@ Solution3 <- sign(Solution1$coefficients[2])
 test_object("Solution1")
 test_object("Solution2")
 test_object("Solution3")
-success_msg("Good work!")
+success_msg("Good work! Our instrument does seem to have a statistically significant negative correlation with our outcome variable. This is one important pillar that supports our argument that we can use the rainy weather as an instrument in this analysis. ")
 ```
 
 
