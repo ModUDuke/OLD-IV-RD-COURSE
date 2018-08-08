@@ -305,24 +305,24 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
 # The dataset `CreditCo` is available in your workspace
 
 # 1) Using a linear regression, compute the reduced-form effect (i.e. correlation between `balance_post` and `rainy`).
-#---- Question 1-------------------------------------#
+
     Solution1<-lm( ~ ,data=CreditCo)
-#----------------------------------------------------#
+
 
 # 2) Using a linear regression, compute the first-stage effect (i.e. correlation between `opt_in` and `rainy`)
-#---- Question 2-------------------------------------#
+
     Solution2<-lm( ~ ,data=CreditCo)
-#----------------------------------------------------#
+
 
 # 3) Compute the causal effect, which is equal to (reduced form)/(first stage)
-#---- Question 3-------------------------------------#
+
     Solution3<-Solution1$coefficients[2]/Solution2$coefficients[2]
-#----------------------------------------------------#
+
 
 # 4) Did opting in to the credit offer increase or decrease credit balances? (type "increased" if Solution3 is positive or "decreased" if Solution3 is negative)
-#---- Question 3-------------------------------------#
-    Solution4<-c("")
-#----------------------------------------------------#
+
+    Solution4<-""
+
 
 ```
 
@@ -331,7 +331,7 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
 Solution1 <- lm(balance_post~rainy,data=CreditCo)
 Solution2 <- lm(opt_in~rainy,data=CreditCo)
 Solution3 <- Solution1$coefficients[2]/Solution2$coefficients[2]
-Solution4 <- c("increased")
+Solution4 <- "increased"
 ```
 
 *** =sct
@@ -429,25 +429,25 @@ Now let's repeat the previous CreditCo analysis, but now use 2SLS to compute the
 # The dataset `CreditCo` is available in your workspace
 
 # 1) Using a linear regression, compute the first-stage effect (i.e. correlation between `opt_in` and `rainy`)
-#---- Question 1-------------------------------------#
+
     Solution1<-lm( ~ ,data=CreditCo)
-#----------------------------------------------------#
+
 
 # 2) Compute the predicted opt-in rate for each person and include it as a variable in the `CreditCo` data frame
-#---- Question 2-------------------------------------#
+
     Solution2<-predict(Solution1,data=CreditCo)
     CreditCo$prediction <- Solution2
-#----------------------------------------------------#
+
 
 # 3) Compute the causal effect, which is a regression of credit balance on the predicted values
-#---- Question 3-------------------------------------#
+
     Solution3<-lm( ~ ,data=CreditCo)
-#----------------------------------------------------#
+
 
 # 4) Did opting in to the credit offer increase or decrease credit balances? (type "increased" or "decreased")
-#---- Question 3-------------------------------------#
-    Solution4<-c("")
-#----------------------------------------------------#
+
+    Solution4<-""
+
 
 ```
 
@@ -457,7 +457,7 @@ Solution1 <- lm(opt_in~rainy,data=CreditCo)
 Solution2 <- predict(Solution1,data=CreditCo)
 CreditCo$prediction <- Solution2
 Solution3 <- lm(balance_post ~ prediction,data=CreditCo)
-Solution4 <- c("increased")
+Solution4 <- "increased"
 ```
 
 *** =sct
@@ -839,15 +839,15 @@ OHIE <- OHIE[!is.na(OHIE$pos_depression_screen),c("id","intvw","lottery","gender
 # The dataset `OHIE` and the function `ivreg2` are both available in your workspace.
 
 # 1) Using a linear regression, compute the ITT effect of being assigned to the treatment group ("lottery" variable) on positive depression screening, while also controlling for gender, age, ehtnicity, and interview language. Exclude age 18-34 and white from the set of right hand side dummy variables.
-#---- Question 1-------------------------------------#
+
     Solution1<-summary(lm( ~ ,data=OHIE))
-#----------------------------------------------------#
+
 
 # 2) Compute the the 2SLS effect of insurance takeup on depression by using "lottery" as an instrument for the endogenous takeup indicator "insurance"
-#---- Question 2-------------------------------------#
+
     OHIE$prediction<-predict(lm( ~ ,data=OHIE))
     Solution2<-summary(lm( ~ prediction+... ,data=OHIE))
-#----------------------------------------------------#
+
 ```
 
 *** =solution
