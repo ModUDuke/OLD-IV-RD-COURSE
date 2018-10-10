@@ -11,6 +11,7 @@ Suppose you have data on where students live once they graduate from college. Yo
 - Exogenous
 - Endogenous
 - Both
+
 *** =sct
 ```{r}
 msg1 = "Not quite. Try again"
@@ -33,6 +34,7 @@ You're doing some research and plan on using an instrumental variables strategy 
 - Yes
 - No
 - Maybe
+
 *** =sct
 ```{r}
 msg1 = 'Yes, you can proceed. But, with some very important caveats. You should be careful to acknowledge that measurement error could be an issue. And there are also several things you might be able to do in order to think about the effect of this measurement error on your findings. There are always more econometric techniques to try out that might help'
@@ -50,6 +52,7 @@ Let's say that you work for the city government, and you want to find out about 
 - Once they are on the bike, the brand doesn't matter
 - Bike brands may be sized differently, but kids always adjust as needed
 - Bike brands differ mostly in color patterns, and kids' preferences cancel each other out
+
 *** =sct
 ```{r}
 msg1 = "Correct! This is the best argument because, if kids are very brand aware, then this argument would suddenly become a very weak one, because simply owning a specific brand may make them very happy, independently of whether they actually ride the bike or not."
@@ -190,6 +193,7 @@ Many researchers have found the distance-to-college instrument questionable. Wha
 - Researchers think the relevance assumption does not hold---whether you live close to a college or not doesn't actually affect whether you go to college or not.
 - Researchers think the exclusion restriction does not hold---employers are willing to pay people more money if students went to high school in a town that was close to a college.
 - Researchers think the exogeneity assumption does not hold---there are unobserved variables like ability which are correlated with distance-to-college and which affect how much income you'll make.
+
 *** =sct
 ```{r}
 msg1 = "Not quite. Remember: relevance is refutable, so people don't usually complain about this because it can be checked in the data. Try again"
@@ -212,6 +216,7 @@ A researcher found an instrument, argued for its validity (it satisfies the 3 as
 - Yes
 - No
 - Maybe
+
 *** =sct
 ```{r}
 msg1 = "Not quite. Try again"
@@ -471,15 +476,14 @@ success_msg("Good work!")
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:458e4ed187
 ## Comparing the Estimates from Indirect Inference and 2SLS
-The previous two coding exercises used two separate methods to estimate a causal effect using instrumental variables. 
-
-The estimate from the indirect inference method yielded an effect of $16,319. The 2SLS method estimate was an identical $16,319.
+The previous two coding exercises used two separate methods to estimate a causal effect using instrumental variables. The estimate from the indirect inference method yielded an effect of $16,319. The 2SLS method estimate was an identical $16,319.
 
 In general, do you think that these two methods will always yield the same results?
 
 *** =instructions
 - Yes
 - No
+
 *** =sct
 ```{r}
 msg1 = "Try again"
@@ -495,6 +499,7 @@ Suppose I do an instrumental variables analysis and compute a number using 2SLS 
 - Yes
 - No
 - Maybe
+
 *** =sct
 ```{r}
 msg1 = "Not quite. Try again"
@@ -523,6 +528,7 @@ In previous modules we said that the relevance assumption is refutable and in th
 - Yes, they are always nonrefutable
 - It depends
 - No, I can make them refutable if I have additional data
+
 *** =sct
 ```{r}
 msg1 = "Not quite. Try again"
