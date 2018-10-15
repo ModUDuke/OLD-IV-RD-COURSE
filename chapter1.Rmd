@@ -31,7 +31,7 @@ msg4 = "The instrument should have a causal effect on the treatment, but should 
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:8c410956e7
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:4c7896c749
 ## What is the Relationship Between the Instrument and the Treatment?
 Now let us review the relationship between the instrument and the treatment.  Which one of these is the correct assumption for IV analysis?
 
@@ -49,7 +49,7 @@ msg4 = "Correct!"
 test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:8c410956e7
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:8a1ad925e4
 ## What is the Relationship Between the Instrument and the Other Pre-Treatment Variables?
 The instrument is one of many variables that could be confounding the effect of what we really want to study: the effect of our treatment on the outcome. Let us review the relationship of the instrument to this larger pool of potential confounders. Which of the following statements is correct for an IV analysis?
 
@@ -68,7 +68,7 @@ msg4 = "Correct!"
 test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:8c410956e7
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:ed73a92806
 ## How Do We Calculate a Causal Effect with Instrumental Variables Analysis?
 So now we can summarize the main purpose of IV analysis. Once again, how does the instrumental variable help us understand the causal effect of the treatment on the outcome?
 
