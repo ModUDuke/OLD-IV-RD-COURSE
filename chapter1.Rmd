@@ -87,12 +87,6 @@ msg4 = "That is not exactly the process. We do not add these effects together to
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
-
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:953b93e528
-## Instrumental Variables in Action: Education and Wages (graphs)
-*** =video_link
-//player.vimeo.com/video/219559159
-
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:16cf760443
 ## Correlation and Causation in Instrumental Variables
 True or False: If you see that there is a zero correlation between the treatment variable and the outcome variable, then the treatment cannot have a causal effect on outcomes. There must be correlation between those two variables if we are to have any hope of using instrumental variables to learn about causality.
@@ -107,6 +101,12 @@ msg2 = "Correct! This question is a little tricky. The amount or sign of correla
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:953b93e528
+## Instrumental Variables in Action: Education and Wages (graphs)
+*** =video_link
+//player.vimeo.com/video/219559159
+
+
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:116a9fd6fa
 ## Instrumental Variables in Action: Education and Wages (tables)
 *** =video_link
@@ -116,7 +116,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ## An Example of Instrumental Variable Analysis
 Alan the almond farmer consistently sells all of his almond crops. Since Alan is the only almond farmer in his county, Alan has no direct competition. Due to his great sales and lack of competition, Alan is considering raising the prices of his almonds. However, Alan is worried that increasing the prices of his almonds might hurt his sales and overall margins.
 
-Alan wants to know whether almond sales are particularly sensitive to prices. Alan has data on what portion of almonds were sold across each county of his state for the past 10 years and he knows how much they were sold for, but he's not sure whether he could use these variables to identify a true causal relationship. Alan comes up with an idea for doing an instrumental variable analysis: Alan knows that farmers consistently increase their almond prices on years when they have low almond yields, and Alan knows that almond yields tend to be low on years when their is little rain. Therefore, Alan believes that he could study weather patterns as an instrument for prices. If weather effects almond prices, and almond prices effect sales, can studying the association between weather and almond sales help Alan determine whether there is a causal relationship between almond prices and almond sales?
+Alan wants to know whether almond sales are particularly sensitive to prices. Alan has data on what portion of almonds were sold across each county of his state for the past 10 years and he knows how much they were sold for, but he's not sure whether he could use these variables to identify a true causal relationship. Alan comes up with an idea for doing an instrumental variable analysis: Alan knows that farmers consistently increase their almond prices on years when they have low almond yields, and Alan knows that the number of almonds tends to be low on years when there is little rain. Therefore, Alan believes that he could study weather patterns as an instrument for prices. If weather effects the amount of almonds, and the amount of almonds affects sales, can studying the association between weather and almond sales help Alan determine whether there is a causal relationship between almond prices and almond sales?
 
 
 *** =instructions
@@ -137,7 +137,7 @@ In the previous question, Alan the almond farmer measured the effect of almond p
 a) Almond prices are effected by the weather 
 b) The weather and rates almond sales are not both consequences of another factor 
 c) The weather is not correlated with other factors (besides almond prices) that are consequential to rates of almond sales. 
-d) The weather has a direct effect on rates of almond sales 
+d) The weather has a direct effect on quantity of almonds 
 
 *** =instructions
 - a, c
