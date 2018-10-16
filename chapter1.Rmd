@@ -87,18 +87,23 @@ msg4 = "That is not exactly the process. We do not add these effects together to
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:16cf760443
-## Correlation and Causation in Instrumental Variables
-True or False: If you see that there is a zero correlation between the treatment variable and the outcome variable, then the treatment cannot have a causal effect on outcomes. There must be correlation between those two variables if we are to have any hope of using instrumental variables to learn about causality.
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:8c410956e7
+## What if Our Data Shows No Clear Correlation Between Treatment and Outcome?
+Suppose we run an Instrumental Variable analysis, and in our initial data exploration, we find that the treatment is uncorrelated with the outcome. But nonetheless, we carry on with the IV analysis and find that it shows a positive causal effect of the treatment on the outcome. How should we interpret these results?
 
-*** =instructions
-- True
-- False
+  *** =instructions
+- One of the IV assumptions must be violated, thus the IV estimate is wrong.
+- There could be a causal effect, but it must be small.
+- There must be a large amount of measurement error in either the treatment or the instrument.
+- None of the above.
+
 *** =sct
 ```{r}
-msg1 = "Try again"
-msg2 = "Correct! This question is a little tricky. The amount or sign of correlation between treatments and outcomes is completely irrelevant for instrumental variables analysis. That is because we are considering the case where treatments are *not* randomly assigned, so we know that correlation (or the lack thereof) does not imply causation (or the lack thereof). For instrumental variables analysis, all the assumptions are about how the instrument itself relates to the other variables."
-test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
+msg1 = "Try again."
+msg2 = "Try again."
+msg3 = "Try again."
+msg4 = "Correct! This question is a little tricky. If you look back at the list of logical requirements for an IV analysis, the amount or sign of correlation between treatments and outcomes is not listed, and it turns out to be completely irrelevant for instrumental variables analysis. That is because the correlation between treatment and outcome would be meaningul if treatment was randomly assigned, but we are considering the case where treatments are *not* randomly assigned, so we know that correlation (or the lack thereof) does not imply causation (or the lack thereof). For instrumental variables analysis, all the assumptions are about how the instrument itself relates to the other variables."
+test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:953b93e528
