@@ -143,7 +143,7 @@ In the previous question, Alan the almond farmer measured the effect of almond p
 a) Almond prices are effected by the weather 
 b) The weather and rates almond sales are not both consequences of another factor 
 c) The weather is not correlated with other factors (besides almond prices) that are consequential to rates of almond sales. 
-d) The weather has a direct effect on quantity of almonds 
+d) The weather has no effect on the demand for almonds by consumers
 
 *** =instructions
 - a, c
