@@ -11,19 +11,19 @@ description : "This chapter explores deeper concepts and applications related to
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:7bd9f2f678
 ## LATE and the ATE for Always-Takers
-LATE is defined as the average treatment effect for the compliers. Why don’t we define and report an average treatment effect for the always takers??
+LATE is defined as the average treatment effect for the compliers. Why don't we define and report an average treatment effect for the always takers?
 
 *** =instructions
 - Because we only care about compliers.
-- Because we already know what the treatment effect for the Always Takers is, by definition.
-- Because the Always Takers and the Compliers have the same treatment effect.
+- Because we already know what the treatment effect for the always takers is, by definition.
+- Because the always takers and the compliers have the same treatment effect.
 - None of the above.
 *** =sct
 ```{r}
 msg1 = "Not quite. Try again"
 msg2 = "Not quite. Try again"
-msg3 = 'Not quite. Try again.'
-msg4 = 'None of the above. The reason is that, as we’ll see in later videos, we are able to compute LATE from the data. (We can show it is “identified”.) But the average treatment effect for Always Takers is not nearly as easy to get, or indeed could be impossible to learn. So we focus on LATE no so much because of intrinsic interest (although that is often the case) but also because it is something we are able to learn from the data.'
+msg3 = "Not quite. Try again."
+msg4 = "None of the above. The reason is that we are able to compute LATE from the data, (a.k.a. we can show it is 'identified'.) But the average treatment effect for always takers is not nearly as easy to get, or indeed could be impossible to learn: a necessary condition to calculate treatment effects is to observe outcomes for individuals in a population who do and don’t receive treatment. Since always takers always get treated, we don’t have any data about when they don’t take treatment.So we focus on LATE no so much because of intrinsic interest (although that is often the case) but also because it is something we are able to learn from the data."
 test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
