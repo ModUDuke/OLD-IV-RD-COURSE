@@ -170,18 +170,18 @@ success_msg("Good work! Our instrument does seem to have a statistically signifi
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:db21106fcb
 ## Questioning the Validity of Instrumental Variables Results
-Many researchers have found the distance-to-college instrument questionable. What do you think is the most plausible reason?
+Remember back to an earlier video, where we looked at the hyothetical question of whether going to college increases how much money you make, using the travel distance between home and the college as an instrumental variable. Researchers looking at this analysis will be worrying about the nonrefutable Exclusion Restriction and Exogeneity Assumption in this design. What do you think the most valid criticism would be?
 
 *** =instructions
-- Researchers think the relevance assumption does not hold---whether you live close to a college or not doesn't actually affect whether you go to college or not.
-- Researchers think the exclusion restriction does not hold---employers are willing to pay people more money if students went to high school in a town that was close to a college.
-- Researchers think the exogeneity assumption does not hold---there are unobserved variables like ability which are correlated with distance-to-college and which affect how much income you'll make.
+- Researchers think the Relevance Assumption does not hold: whether you live close to a college or not doesn't actually affect whether you go to college or not
+- Researchers think the Exclusion Restriction does not hold: employers are willing to pay people more money if students went to high school in a town that was close to a college
+- Researchers think the Exogeneity Assumption does not hold: there are unobserved variables, like ability, which are correlated with distance-to-college and which also affect how much income you'll make
 
 *** =sct
 ```{r}
 msg1 = "Not quite. Remember: relevance is refutable, so people don't usually complain about this because it can be checked in the data. Try again"
-msg2 = "This is not the most common complaint. Try again"
-msg3 = "Correct! This is the most common complaint."
+msg2 = "This is probably not the most common complaint, because it would take a long and complex argument to justify this as the single main reason why the IV analysis is invalid. Try again"
+msg3 = "Correct! This would be the most common complaint, and it's a good one. Luckily, the example was theoretical!"
 test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
