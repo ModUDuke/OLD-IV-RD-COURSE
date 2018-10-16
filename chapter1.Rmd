@@ -99,11 +99,12 @@ Suppose we run an Instrumental Variable analysis, and in our initial data explor
 
 *** =sct
 ```{r}
-msg1 = "Try again."
-msg2 = "Try again."
-msg3 = "Try again."
+msg1 = "If you look back at the required assumptions for IV, the correlation between treatment and the outcome is not mentioned, so try again."
+msg2 = "The causal effect we calculated could be big or small, and it would not change the question we are facing. Try again."
+msg3 = "The amount of measurement error might be worth watching, but it isn't listed as an element in the requirements for IV analysis. Try again."
 msg4 = "Correct! This question is a little tricky. If you look back at the list of logical requirements for an IV analysis, the amount or sign of correlation between treatments and outcomes is not listed, and it turns out to be completely irrelevant for instrumental variables analysis. That is because the correlation between treatment and outcome would be meaningul if treatment was randomly assigned, but we are considering the case where treatments are *not* randomly assigned, so we know that correlation (or the lack thereof) does not imply causation (or the lack thereof). For instrumental variables analysis, all the assumptions are about how the instrument itself relates to the other variables."
 test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
+
 ```
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:953b93e528
