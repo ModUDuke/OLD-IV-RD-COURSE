@@ -119,8 +119,8 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 //player.vimeo.com/video/219559305
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:5ad3dddd73
-## Instrumental Variables in Practice
-Suppose you have data on where students live once they graduate from college. You want to know the causal effect of living in a rural versus urban area on their wages. So you categorize locations as either urban or rural, giving you a binary treatment variable. What kind of variation is in that variable?
+## Is it Endogenous vs Exogenous Variation? 
+Suppose you are interested in the economic status of new college graduates, and have just gotten access to data on what kinds of places people move to after they graduate from college. In your first step of data analysis, you subset this geographic data to categorize locations as either urban or rural, giving you a binary treatment variable. What kind of variation does that variable have?
 
 *** =instructions
 - Exogenous
@@ -130,9 +130,9 @@ Suppose you have data on where students live once they graduate from college. Yo
 *** =sct
 ```{r}
 msg1 = "Not quite. Try again"
-msg2 = "Not quite. Try again"
-msg3 = "Correct! Locations are not exogenously determined because people choose where they want to live. If their choices are related to some other unobserved variables (like if people who desire more money choose to live in urban areas), then this produces endogenous variation. The reason it is likely both is that there might be other reasons that affect people's choice of where to live, like perhaps where their family is from, which might be unrelated to any variables that affect how much someone earns."
-test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
+msg2 = "Correct! While there might be external reasons that affect people's choice of where to live, usually it's the case that people ultimately make the decision on where they want to live--unless they are in the military or in prison! So that choice is most likely related to some other unobserved variables in each individual's own mind (like if people who desire more money choose to live in urban areas), which produces endogenous variation."
+msg3 = "Not quite. Try again"
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:e4ac42d0db
