@@ -11,20 +11,20 @@ description : "This chapter will allow you to practice instrumental variables (I
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:76ab8a34c9
 ## Using IV When There is Measurement Error
-You're doing some research and plan on using an instrumental variables strategy to help with any noncompliance. But you think that, similar to the AJR (2001) paper, your instrument might have some measurement error, because it was hard to measure perfectly. Can you just proceed like usual, as they did?
+You're doing some research and plan on using an instrumental variables strategy to help with any noncompliance. But your instrument was hard to measure perfectly, so you think its values have some measurement error. Two of the following statements are valid for an IV analysis, but which one would violate the assumptions of IV analysis and make our results invalid?
 
 *** =instructions
-- Yes
-- No
-- Maybe
+- The instrument's measurement error is independent of the values for the treatment and outcome variables
+- The instrument's measurement error is independent of the values of the treatment variable, but not for the outcome variable
+- The instrument's measurement error is independent of the values from the outcome variable, but not for the treatment variable
 
 *** =sct
 ```{r}
-msg1 = 'Yes, you can proceed. But, with some very important caveats. You should be careful to acknowledge that measurement error could be an issue. And there are also several things you might be able to do in order to think about the effect of this measurement error on your findings. There are always more econometric techniques to try out that might help'
-msg2 = "Not quite. Try again"
-msg3 = 'Not quite. Try again.'
-test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3))
-```
+msg1 = "This is perfectly fine with IV analysis. If the measurement error is not affecting the measurement of the treatment and outcome variables, then we're safe. We are looking for the option that would violate the IV assumptions, so try again."
+msg2 = "Correct! This would break our IV analysis, because it would mean that the instrument has some direct effect on the values of theoutcome variable by itself, but to use IV correctly, we need the instrument to only indirectly act on the outcome via the treatment variable."
+msg3 = "This is perfectly fine with IV analysis. We expect the instrument to have a causal effect on the treatment variable, so it would make sense that the measurement error would show up in the value of our treatment variable. But we are looking for the option that would violate the IV assumptions, so try again."
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
+``
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f9981cd29c
 ## Logical Arguments About Instrumental Variables
