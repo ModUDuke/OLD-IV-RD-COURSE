@@ -87,7 +87,7 @@ msg4 = "That is not exactly the process. We do not add these effects together to
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:8c410956e7
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:e48c3917d8
 ## What if Our Data Shows No Clear Correlation Between Treatment and Outcome?
 Suppose we run an Instrumental Variable analysis, and in our initial data exploration, we find that the treatment is uncorrelated with the outcome. But nonetheless, we carry on with the IV analysis and find that it shows a positive causal effect of the treatment on the outcome. How should we interpret these results?
 
