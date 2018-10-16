@@ -171,22 +171,23 @@ test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4))
 *** =video_link
 //player.vimeo.com/video/219559996
 
+
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:02e185272f
 ## An Example of a Weak Instrument  
-A public health specialist names Phoebe is interested in how a person's wealth (their assets minus their debts) might effect their health. Phoebe has longitudinal data on people's wealth and health, but she's having trouble determining whether wealth has a causal effect on health with traditional regression models. Phoebe's concern is that the relationship between wealth and health is endogenously confounded; a person's wealth might have a positive causal effect on their wealth, but a person's health could also have a positive causal effect on their wealth. 
+A public health specialist names Phoebe is interested in how a person's wealth (their assets minus their debts) might effect their health. Phoebe has longitudinal data on people's wealth and health, but she's having trouble determining whether wealth has a causal effect on health with traditional regression models. Phoebe's concern is that a person's health varies endogenously with their weath; a person's wealth might have a positive causal effect on their health, but a person's health could also have a positive causal effect on their wealth. 
 
-To untangle this causal relationship, Phoebe decides to conduct an instrumental variable analysis of wealth's effect on health with inheritance as an exogenous instrument of wealth (that is, inheritance effects a person's wealth but does not have any direct or indirect relationship with a person's health other than through how it might effect wealth). However, Phoebe's analysis yields no statistically significant results. Phoebe concludes that inheritance was a weak instrumental variable. Which of the following could this imply?    
-
-*** =instructions
+To untangle this causal relationship, Phoebe decides to conduct an instrumental variable analysis of wealth's effect on health with inheritance as an exogenous instrument of wealth (that is, inheritance effects a person's wealth but does not have any direct or indirect relationship with a person's health other than through how it might affect wealth). However, Phoebe's analysis yields no statistically significant results. Phoebe also tests the relationship between inheritance and wealth, and finds that there is only a very weak correlation. Which of the following could this imply?    
+  
+  *** =instructions
 - Inheritance has a direct causal effect on health.
-- Inheritance does not have a large causal effect on wealth.
+- These results are uninformative about any potential causality between wealth and health.
 - People who inherit money often feel guilty, leading to a decline in health.
 - People are more likely to inherit money when they themselves have poor health. 
 
 *** =sct
 ```{r}
 msg1 = "Although this instrumental variable would be poor for this analysis (an instrument should not have a direct effect on the dependent variable), this is not an example of a 'weak' instrumental variable."
-msg2 = "Correct! Only a small percentage of people ever inherit a substantial amount of money, and those who do tend to have better wealth to begin with. So the effect of inheritance on wealth would be pretty small, which allows for very little statistical power on the relationship between wealth and health."
+msg2 = "Correct! Only a small percentage of people ever inherit a substantial amount of money, and those who do tend to have better wealth to begin with. So despite our theories, the data we have might have very little statistical power on the relationship between wealth and health."
 msg3 = "This answer is very similar to the first one. In this case, the problem is not that the instrument is 'weak,' but that the instrument has a direct causal effect on health."
 msg4 = "Although this instrumental variable would be poor for this analysis (an instrument should be randomly assigned), this is not an example of a 'weak' instrumental variable."
 
