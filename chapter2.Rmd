@@ -24,7 +24,7 @@ msg1 = "This is perfectly fine with IV analysis. If the measurement error is not
 msg2 = "Correct! This would break our IV analysis, because it would mean that the instrument has some direct effect on the values of theoutcome variable by itself, but to use IV correctly, we need the instrument to only indirectly act on the outcome via the treatment variable."
 msg3 = "This is perfectly fine with IV analysis. We expect the instrument to have a causal effect on the treatment variable, so it would make sense that the measurement error would show up in the value of our treatment variable. But we are looking for the option that would violate the IV assumptions, so try again."
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
-``
+```
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f9981cd29c
 ## Logical Arguments About Instrumental Variables
