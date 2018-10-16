@@ -193,7 +193,7 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3))
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:c96afe9f06
 ## Interpreting a Simple Case with Instrumental Variables
-A researcher is working on a question that could fit an IV analyis. They found an instrument and argued that it satisfies the 3 assumptions. They had good data (with only a small level of sampling error) and then used indirect inference to compute the causal effect of the treatment on outcomes. They found a positive causal effect on the outcome, and concluded that treatment is good. Is that a valid conclusion?
+A data analyst is working on a question that could fit an IV analysis. They found an instrument and argued that it satisfies the 3 assumptions. They had good data (with only a small level of sampling error) and then used indirect inference to compute the causal effect of the treatment on outcomes. They found a positive causal effect on the outcome, and concluded that treatment is good. Is that a valid conclusion?
 
 *** =instructions
 - Yes
