@@ -193,7 +193,7 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3))
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:c96afe9f06
 ## Interpreting a Simple Case with Instrumental Variables
-A researcher found an instrument, argued for its validity (it satisfies the 3 assumptions), and then used indirect inference to compute the causal effect of a treatment on outcomes. They found a positive number, and concluded that treatment is good. Is that a valid conclusion?
+A researcher is working on a question that could fit an IV analyis. They found an instrument and argued that it satisfies the 3 assumptions. They had good data (with only a small level of sampling error) and then used indirect inference to compute the causal effect of the treatment on outcomes. They found a positive causal effect on the outcome, and concluded that treatment is good. Is that a valid conclusion?
 
 *** =instructions
 - Yes
@@ -202,9 +202,9 @@ A researcher found an instrument, argued for its validity (it satisfies the 3 as
 
 *** =sct
 ```{r}
-msg1 = "Not quite. Try again"
-msg2 = "Not quite. Try again"
-msg3 = 'Maybe! First, they would also need to give us some idea of the *uncertainty* inherent in the estimate. That’s because we always have to worry about whether our sample size is big enough to let us learn something. For example, they could compute a confidence interval for their treatment effect estimate. Second—and this relates to several other videos on IVs—there might be *heterogeneity* in treatment effects. So when you say the treatment is “good” we have to ask “for whom?”. This is a very difficult question! We tackle this in a limited way in some of the other videos (in particular, the ones on LATE)'
+msg1 = "It's not quite that clear. Try again"
+msg2 = "If it's a convincing instrument and calculation, then it really might be valid. Try again"
+msg3 = "Maybe! First, they would also need to give us some idea of the *uncertainty* inherent in the estimate. That's because we always have to worry about whether our sample size is big enough to let us learn something. For example, they could compute a confidence interval for their treatment effect estimate. Second, and this relates to several other videos on IVs, there might be *heterogeneity* in treatment effects. So when you say the treatment is 'good' we have to ask 'for whom?'. This is a very difficult question! We tackle this in a limited way in some of the other videos (in particular, the ones on LATE)."
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
