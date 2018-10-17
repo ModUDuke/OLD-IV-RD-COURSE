@@ -2674,7 +2674,7 @@ Consider the following examples. Which is an example of a fuzzy RDD and which is
 
 2. Running variable: A region's poverty rate. Treatment: Regions become eligible for Federal assistance once their poverty rate is above a certain cutoff.
 
-3. Running variable: Population. Treatment variable: Number of seats a region gets in government (e.g., number of representatives in the U.S. House of Representatives).
+3. Running variable: Population. Treatment variable: Number of seats a region gets in a national government with a fixed amount of total seats (e.g., number of representatives per state out of the 345 total in the U.S. House of Representatives).
 
 *** =instructions
 - All are fuzzy
@@ -2689,13 +2689,13 @@ Consider the following examples. Which is an example of a fuzzy RDD and which is
 ```{r}
 msg1 = "Try again"
 msg2 = "Try again"
-msg3 = "Try again"
+msg3 = "Correct! Often the distinction between sharp and fuzzy hinges on the definition of treatment. For (1) and (2), treatment is defined as **eligibility** rather than takeup. In contrast (3) is fuzzy because the treatment is not completely consistent for all units. Rural districts may get 1 representative for every 200,000 people, but in urban districts, 1 politician may represent 800,000 people. In a way, the way that governments create districts means they are not reacting proportionally to the changes in the population in particular regions, and it's often helpful to think of fuzzy RDDs as having a non-compliance problem."
 msg4 = "Try again"
 msg5 = "Try again"
 msg6 = "Try again"
 msg7 = "Try again"
-msg8 = "Correct! Often the distinction between sharp and fuzzy hinges on the definition of treatment. For (1) and (2), treatment is defined as **eligibility** rather than takeup. A similar idea explains why (3) is sharp: all regions with a certain population have the same number of representatives allocated, and there's no way for a region to send more or fewer representatives. In this way, it's helpful to think of fuzzy RDDs as having a non-compliance problem."
-test_mc(correct = 8, feedback_msgs = c(msg1,msg2,msg3,msg4,msg5,msg6,msg7,msg8))
+msg8 = "Try again"
+test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4,msg5,msg6,msg7,msg8))
 ```
 
 
