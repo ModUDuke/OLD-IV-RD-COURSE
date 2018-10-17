@@ -2289,14 +2289,14 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:2781eb8177
 ## Using Geographical Borders More Generally in RD Designs
-True or False: As in the Black (1999) paper, anytime there is a geographical border where treatment changes across the border, we can use RDD analysis to learn the causal effect of treatment.
+True or False: If we look at the data used in the Black (1999) paper, even if each school district has different property tax rates, we can still use RDD analysis to learn the causal effect of treatment.
 
 *** =instructions
 - True
 - False
 *** =sct
 ```{r}
-msg1 = "Try again"
+msg1 = "Are all the units on both sides of the boundary identical, except for the side of the boundary they are on? Try again"
 msg2 = "Correct! It is true that geographical borders are *often* used to learn about causal effects via RDD. But this requires that the only thing that's different between units on each side of the border is the treatment! This is often not the case. For example, if you look at country borders, there are often many different variables that change as you cross the border, which means it will be hard or impossible to disentangle the effect of just one of these variables."
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
