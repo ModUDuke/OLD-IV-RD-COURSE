@@ -60,22 +60,21 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:ccb5f3da17
 ## Interpreting Different Results when Working with Noncompliance
-Suppose I try out all four methods of dealing with noncompliance: bounds analysis, assuming random compliance, intention-to-treat analysis, and instrumental variables. That gives me four results. What should I expect to see?
+Suppose you run an experiment where individuals are randomly selected to receive a voucher for free healthcare (as in the Oregon experiment), but only half of the recipients use the voucher. You suspect that the choice to take use the voucher may be related to your health status. To deal with noncompliance but still find a causal effect, you try all four approaches: bounds analysis, assuming random compliance, intention-to-treat analysis, and instrumental variables. That gives you four results. What should you expect to see?
 
 *** =instructions
-- All the results will be the same, regardless of the method
-- None of the results will be the same
-- Some of the results will be the same
+- All the results will be the identical, regardless of the method
+- Some of the results will be the identical, but some will be different
+- None of the results will be the identical
 - It doesn’t matter because only the result from instrumental variables analysis is credible
-- None of the above
+
 *** =sct
 ```{r}
-msg1 = "Not quite. Try again"
-msg2 = "Not quite. Try again"
-msg3 = 'Not quite. Try again'
-msg4 = 'Not quite. Try again'
-msg5 = 'It depends! First, the bounds analysis did not require any assumptions, so the true ATE will be within the bounds we derived there. And remember that bounds analysis always gives, well, a bound! And as long as there is some noncompliance, that bound will always be positive. So it can’t possible give the same result as using IV, assuming random compliance, or doing intention-to-treat analysis. That’s because all three of those methods deliver a single point. Moreover, each of those methods will typically deliver different answers, except in special cases. Which one is more credible depends on what you think about the assumptions used to compute those numbers.'
-test_mc(correct = 5, feedback_msgs = c(msg1,msg2,msg3,msg4,msg5))
+msg1 = "Remember that bounds analysis only gives you a range of values, but the other three methods will provide a single point estimate, so they can't all be identical. Try again"
+msg2 = "Even if we get answers that are statistically similar (within each other's confidence intervals), the interpretations of each result are slightly different depending on the method. Try again"
+msg3 = "Correct! First, the bounds analysis did not require any assumptions, so the true ATE will be within the bounds we derived there. And remember that bounds analysis always gives, well, a bound! And as long as there is some noncompliance, that bound will always be positive. So it can’t possible give the same result as using IV, assuming random compliance, or doing intention-to-treat analysis. That’s because all three of those methods deliver a single point. Moreover, each of those methods will typically deliver different answers. Which one is more credible depends on what you think about the assumptions used to compute those numbers."
+msg4 = "Instrumental variables are not the best method just because they are hard! Try again"
+test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:162436a553
