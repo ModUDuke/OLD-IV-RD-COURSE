@@ -205,7 +205,7 @@ To untangle this causal relationship, Phoebe decides to conduct an instrumental 
 ```{r}
 msg1 = "Although this instrumental variable would be poor for this analysis (an instrument should not have a direct effect on the dependent variable), this is not an example of a 'weak' instrumental variable."
 msg2 = "Correct! Only a small percentage of people ever inherit a substantial amount of money, and those who do tend to have better wealth to begin with. So despite our theories, the data we have might have very little statistical power on the relationship between wealth and health."
-msg3 = "This answer is very similar to the first one. In this case, the problem is not that the instrument is 'weak,' but that the instrument has a direct causal effect on health."
+msg3 = "This answer is very similar to the first one. In this case, the problem is not that the instrument is 'weak' but that the instrument has a direct causal effect on health."
 msg4 = "Although this instrumental variable would be poor for this analysis (an instrument should be randomly assigned), this is not an example of a 'weak' instrumental variable."
 
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3,msg4))
