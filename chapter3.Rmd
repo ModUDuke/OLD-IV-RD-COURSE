@@ -2674,7 +2674,7 @@ Consider the following examples. Which is an example of a fuzzy RDD and which is
 
 2. Running variable: A region's poverty rate. Treatment: Regions become eligible for Federal assistance once their poverty rate is above a certain cutoff.
 
-3. Running variable: Population. Treatment variable: Number of seats a region gets in a national government with a fixed amount of total seats (e.g., number of representatives per state out of the 345 total in the U.S. House of Representatives).
+3. Running variable: Population. Treatment variable: Number of seats per state/province in a national government when each politician represents a different amount of citizens, like in the U.S. House of Representatives.
 
 *** =instructions
 - All are fuzzy
@@ -2689,7 +2689,7 @@ Consider the following examples. Which is an example of a fuzzy RDD and which is
 ```{r}
 msg1 = "Try again"
 msg2 = "Try again"
-msg3 = "Correct! Often the distinction between sharp and fuzzy hinges on the definition of treatment. For (1) and (2), treatment is defined as **eligibility** rather than takeup. In contrast (3) is fuzzy because the treatment is not completely consistent for all units. Rural districts may get 1 representative for every 200,000 people, but in urban districts, 1 politician may represent 800,000 people. In a way, the way that governments create districts means they are not reacting proportionally to the changes in the population in particular regions, and it's often helpful to think of fuzzy RDDs as having a non-compliance problem."
+msg3 = "Correct! Often the distinction between sharp and fuzzy hinges on the definition of treatment. For (1) and (2), treatment is defined as **eligibility** rather than takeup. In contrast (3) is fuzzy because the treatment boundary varies a bit across units. Rural districts may get 1 representative for every 200,000 people, but in urban districts, 1 politician may represent 600,000 people. In a way, the way that governments create districts often means they are not reacting proportionally to the changes in the population in particular regions, and it's often helpful to think of fuzzy RDDs as having a non-compliance problem."
 msg4 = "Try again"
 msg5 = "Try again"
 msg6 = "Try again"
