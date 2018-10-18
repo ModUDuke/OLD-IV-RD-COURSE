@@ -474,22 +474,6 @@ msg2 = "Correct! The previous coding examples happened to yield identical result
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:a1947fbea3
-## So I’ve calculated a result with IV…
-Suppose I do an instrumental variables analysis and compute a number using 2SLS or indirect inference. That’s it, right?
-
-*** =instructions
-- Yes
-- No
-- Maybe
-
-*** =sct
-```{r}
-msg1 = "Not quite. Try again"
-msg2 = "No! As discussed in this module and emphasized in other videos, it is very important that we can *interpret* exactly what number we are computing. This is important for figuring out what implications that number has on the policy recommendations we might make. This and the subsequent videos are devoted to explaining how to interpret what we get from 2SLS and instrumental variables analysis."
-msg3 = 'Not quite. Try again.'
-test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
-```
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:25532d1a49
 ## Solving Noncompliance in Experiments with Instrumental Variables
@@ -503,22 +487,26 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 //player.vimeo.com/video/219559775
 
 
+
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:23b590892d
-## Assumptions When Using IV with the Oregon Health Data
-In previous modules we said that the relevance assumption is refutable and in this module we saw that it is *not* refuted in the Oregon Experiment example—it does indeed hold there. For the other two assumptions, exogeneity and exclusion, we’ve said that they are nonrefutable. Is this always true?
+## Balancing Assumptions and Data When Using IV
+In previous videos we said that the relevance assumption is refutable, and in this video we saw that it passed our tests in the Oregon Healthcare experiment. We also said that the other two assumptions, exogeneity and exclusion, are nonrefutable because we would need a world of complete and perfect information to refute them. 
+
+But two data analysts, Alex and Monique, are working together on an IV analysis, and they argue about whether more data can help them build a convincing argument for their instrument. Alex says, "there's no point to changing our model to include more datasets, because these last 2 assumptions are nonrefutable, so we can only use qualitative explanations to defend them." But Monique says that "we can replace our qualitative arguments with data-driven arguments if we add new datasets with the relevant data to our model."
+
+Who is giving better advice for defending the 'nonrefutable' assumptions of IV?
 
 *** =instructions
-- Yes, they are always nonrefutable
-- It depends
-- No, I can make them refutable if I have additional data
+- Alex is correct: the assumptions are nonrefutable without perfect information, so more data won't help with them 
+- Monique is correct: it's better to add more datasets to reduce the guesswork about the model
 
 *** =sct
 ```{r}
-msg1 = "Not quite. Try again"
-msg2 = "It depends. This is actually a somewhat deep philosophical point: “Refutability” is defined with respect to a “model”, which includes a description of the precise set of data which is observable. For example, suppose I observe a dataset with the age of person in the United States. Then the claim that the average age is 26 is refutable—I can simply compute the true average age and then see if it really is 26 or not. But the claim that the average annual income is $30,000 is not refutable. That’s just because my dataset doesn’t have income in it! If I observed data on income, then that claim would become refutable. A similar story applies to the instrumental variables assumptions. If you add more data or change the assumptions in different ways, it is sometimes possible to convert a nonrefutable assumption into a refutable assumption. However, without more or different kinds of data, typically the exogeneity and exclusion assumptions are not refutable. In this case, you must be prepared to use a qualitative argument to explain why you find them to be credible assumptions."
-msg3 = "Not quite. Try again"
-test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
+msg1 = "'Refutability' is defined with respect to a model, which includes a description of the precise set of data which is observable. For example, suppose I observe a dataset with the age of person in the United States. Then the claim that the average age is 26 is refutable—-I can simply compute the true average age and then see if it really is 26 or not. But the claim that the average annual income is $30,000 is not refutable. That’s just because my dataset doesn’t have income in it! If I observed data on income, then that claim would become refutable. Try again."
+msg2 = "Correct. Without more or different kinds of data, typically the exogeneity and exclusion assumptions are not refutable, and Alex would be right. However, if you add more data or change the assumptions in different ways, it is sometimes possible to convert a nonrefutable assumption into a refutable assumption. But you should always be ready with qualitative arguments to strengthen your defense of these assumptions."
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
+
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:834d82578f
 ## Practice Using IV to Solve Noncompliance in the OHIE
