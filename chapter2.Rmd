@@ -29,7 +29,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f9981cd29c
 ## Logical Arguments About Instrumental Variables
 
-Let's say that you work for the city government of a town that has been rated as having "the least happy children in the country." Your town also wants to increase the number of bike lanes on city streets. As a creative data analyst, you think that bike lanes may encourage families to exercise together, and exercising as a family may change the unhappy kids in your town into happy kids. You get your hands on a national dataset that has statistics on bike lanes, family exercise, and child happiness from many cities. You think that you can use bike lanes as an instrumental variable to see if family exercise has an effect on child happiness: your basic argument is that bike lanes cause families to exercise together, and family exercise is correlated with child happiness, so bike lanes are an instrument for the effect of family exercise on child happiness. What's your best argument that the instrument does not have a direct causal effect on the outcome variable? 
+Let's say that you work for the city government of a town that has been rated as having the least happy children in the country. Your town also wants to increase the number of bike lanes on city streets. As a creative data analyst, you think that bike lanes may encourage families to exercise together, and exercising as a family may change the unhappy kids in your town into happy kids. You get your hands on a national dataset that has statistics on bike lanes, family exercise, and child happiness from many cities. You think that you can use bike lanes as an instrumental variable to see if family exercise has an effect on child happiness: your basic argument is that bike lanes cause families to exercise together, and family exercise is correlated with child happiness, so bike lanes are an instrument for the effect of family exercise on child happiness. What's your best argument that the instrument does not have a direct causal effect on the outcome variable? 
   
   *** =instructions
 - Kids are not made happier from the painted lines on the road
@@ -122,11 +122,11 @@ Included on the workspace is a dataset from CreditCo. The data are a sample of C
 # Remove elements and variables from environment
   rm(draw,frac_female,frac_treated,frac_white,n,p,xb)
   CreditCo <- CreditCo[CreditCo$offered==1,c("id","opt_in","FICO","female","race_white","default_pre","default_post","balance_pre","balance_post","rainy")]
- ```
+```
 
 *** =sample_code
 ```{r}
-# The dataset `CreditCo` is available in your workspace
+# The dataset `CreditCo` is available in your workspace.
 
 # 1) First we need to determine whether our instrument satisfies the Relevance Assumption, and we'll start this process by looking to see if it has any correlation with our outcome variable. Using a linear regression, compute the correlation between rain and opt-in status.
 
@@ -291,7 +291,7 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
 
 *** =sample_code
 ```{r}
-# The dataset `CreditCo` is available in your workspace
+# The dataset `CreditCo` is available in your workspace.
 
 # 1) Using a linear regression, compute the reduced-form effect (i.e. correlation between `balance_post` and `rainy`).
 
