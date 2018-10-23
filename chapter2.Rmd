@@ -29,7 +29,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f9981cd29c
 ## Logical Arguments About Instrumental Variables
 
-Let's say that you work for the city government of a town that has been rated as having the least happy children in the country. Your town also wants to increase the number of bike lanes on city streets. As a creative data analyst, you think that bike lanes may encourage families to exercise together, and exercising as a family may change the unhappy kids in your town into happy kids. You get your hands on a national dataset that has statistics on bike lanes, family exercise, and child happiness from many cities. You think that you can use bike lanes as an instrumental variable to see if family exercise has an effect on child happiness: your basic argument is that bike lanes cause families to exercise together, and family exercise is correlated with child happiness, so bike lanes are an instrument for the effect of family exercise on child happiness. What's your best argument that the instrument does not have a direct causal effect on the outcome variable? 
+Let's say that you work for the city government of a town that has been rated as having the least happy children in the country. Your town also wants to increase the number of bike lanes on city streets. As a creative data analyst, you think that bike lanes may encourage families to exercise together, and exercising as a family may change the unhappy kids in your town into happy kids. You get your hands on a national dataset that has statistics on bike lanes, family exercise, and child happiness from many cities. You think that you can use bike lanes as an instrumental variable to see if family exercise has an effect on child happiness. Your basic argument is that bike lanes cause families to exercise together, and family exercise is correlated with child happiness, so bike lanes are an instrument for the effect of family exercise on child happiness. What is your best argument that the instrument does not have a direct causal effect on the outcome variable? 
   
   *** =instructions
 - Kids are not made happier from the painted lines on the road
@@ -191,23 +191,6 @@ test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3))
 *** =video_link
 //player.vimeo.com/video/219559540
 
-
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:c96afe9f06
-## Interpreting a Simple Case with Instrumental Variables
-A data analyst is working on a question that could fit an IV analysis. They found an instrument and argued that it satisfies the 3 assumptions. They had good data (with only a small level of sampling error) and then used indirect inference to compute the causal effect of the treatment on outcomes. They found a positive causal effect on the outcome, and concluded that treatment is good. Is that a valid conclusion?
-
-*** =instructions
-- Yes
-- No
-- Maybe
-
-*** =sct
-```{r}
-msg1 = "It's not quite that clear. Try again"
-msg2 = "If it's a convincing instrument and calculation, then it really might be valid. Try again"
-msg3 = "Maybe! First, they would also need to give us some idea of the *uncertainty* inherent in the estimate. That's because we always have to worry about whether our sample size is big enough to let us learn something. For example, they could compute a confidence interval for their treatment effect estimate. Second, and this relates to several other videos on IVs, there might be *heterogeneity* in treatment effects. So when you say the treatment is 'good' we have to ask 'for whom?'. This is a very difficult question! We tackle this in a limited way in some of the other videos (in particular, the ones on LATE)."
-test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
-```
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:721d6bc016
 ## Practice Computing Causal Effects Using Indirect Inference: CreditCo
