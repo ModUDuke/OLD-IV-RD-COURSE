@@ -28,20 +28,21 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f9981cd29c
 ## Logical Arguments About Instrumental Variables
-Let's say that you work for the city government, and you want to find out about the non-financial impact of bike lanes on the lives of citizens. Specifically, you want to learn if bike riding improves child happiness. You decide to use an IV analysis, and you think you can use the brand of bicycle as your instrument. What's the best argument that the brand of bike does not affect child happiness directly?
 
-*** =instructions
-- Little kids don't have brand awareness like adults do
-- Once they are on the bike, the brand doesn't matter
-- Bike brands may be sized differently, but kids always adjust as needed
-- Bike brands differ mostly in color patterns, and kids' preferences cancel each other out
+Let's say that you work for the city government of a town that has been rated as having "the least happy children in the country." Your town also wants to increase the number of bike lanes on city streets. As a creative data analyst, you think that bike lanes may encourage families to exercise together, and exercising as a family may change the unhappy kids in your town into happy kids. You get your hands on a national dataset that has statistics on bike lanes, family exercise, and child happiness from many cities. You think that you can use bike lanes as an instrumental variable to see if family exercise has an effect on child happiness: your basic argument is that bike lanes cause families to exercise together, and family exercise is correlated with child happiness, so bike lanes are an instrument for the effect of family exercise on child happiness. What's your best argument that the instrument does not have a direct causal effect on the outcome variable? 
+  
+  *** =instructions
+- Kids are not made happier from the painted lines on the road
+- All kids are equally happy when they are on a bike, whether alone or with their family
+- Traffic safety with bike lanes always varies, but kids adjust as needed
+- Some kids are happier to ride in bike lanes and happier to bike offroad, but those preferences cancel each other out
 
 *** =sct
 ```{r}
-msg1 = "Correct! This is the best argument because, if kids are very brand aware, then this argument would suddenly become a very weak one, because simply owning a specific brand may make them very happy, independently of whether they actually ride the bike or not."
-msg2 = "This might be "
-msg3 = "Not quite. Try again"
-msg4 = "Not quite. Try again"
+msg1 = "Correct! This is the best argument because, if kids only bike when there are bike lanes, then this argument would suddenly become a very weak one, because simply painting new lines on a road would make kids very happy, independently of whether they actually ride a bike or not."
+msg2 = "This might be true, but that is directed more at whether the treatment (riding with a family) affects the outcome (child happiness), not the instrument on the outcome like the question asks. Try again"
+msg3 = "Kids may need to feel safe to be happy, but we aren't trying to use a 'feeling of safety' as an instrument. Try again"
+msg4 = "If this were true, it sounds like the instrument would be uncorrelated with our outcome, which would make our IV analysis invalid, because we need the instrument to be correlated to the outcome exlcusively by the causal effect of the treatment. So try again."
 test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
