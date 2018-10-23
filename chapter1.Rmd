@@ -135,46 +135,32 @@ msg3 = "While there might be external reasons that affect people's choice of whe
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:e4ac42d0db
-## An Example of Instrumental Variable Analysis
-Alan the almond farmer consistently sells all of his almond crops. Since Alan is the only almond farmer in his county, Alan has no direct competition. Due to his great sales and lack of competition, Alan is considering raising the prices of his almonds. However, Alan is worried that increasing the prices of his almonds might hurt his sales and overall margins.
-
-Alan wants to know whether almond sales are particularly sensitive to prices. Alan has data on what portion of almonds were sold across each county of his state for the past 10 years and he knows how much they were sold for, but he's not sure whether he could use these variables to identify a true causal relationship. Alan comes up with an idea for doing an instrumental variable analysis: Alan knows that farmers consistently increase their almond prices on years when they have low almond yields, and Alan knows that the number of almonds tends to be low on years when there is little rain. Therefore, Alan believes that he could study weather patterns as an instrument for prices. If weather effects the amount of almonds, and the amount of almonds affects sales, can studying the association between weather and almond sales help Alan determine whether there is a causal relationship between almond prices and almond sales?
-
-
-*** =instructions
-- Yes
-- No
-*** =sct
-```{r}
-msg1 = "Correct! The instrument has an indirect causal effect on almond sales through almond sales prices. This is a good example of where instrumental variable analysis would work."
-msg2 = "Try again"
-test_mc(correct = 1, feedback_msgs = c(msg1,msg2))
-```
-
-
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:01af032fa2
-## Assumptions in Instrumental Variable Analysis 
-In the previous question, Alan the almond farmer measured the effect of almond prices on rates of almond sales through instrumental variable analysis. Alan knew that almond prices were effected by the weather; therefore, Alan examined how weather patterns were associated with rates of almond sales, concluding that any correlation may be indicative of a causal relationship. Which of the following assumptions does Alan's model depend on?
+## Alan the Egg Farmer Turns to Instrumental Variables
 
-a) Almond prices are effected by the weather 
-b) The weather and rates almond sales are not both consequences of another factor 
-c) The weather is not correlated with other factors (besides almond prices) that are consequential to rates of almond sales. 
-d) The weather has no effect on the demand for almonds by consumers
+Alan the Egg Farmer consistently sells all of his fresh eggs on his island in the South Pacific. Since Alan is the only egg farmer on his island, he has no direct competition, and people seem to buy his eggs no matter what price he sets. Due to his great sales and lack of competition, Alan is considering greatly increasing the prices of his eggs. But how much do egg sales really vary when prices change? Alan wants to find out.
+
+Luckily, he has a lot of down time and an interest in data science. He knows there are a lot of different factors involved in the production of eggs and in the sales of eggs, from chicken health to transportation costs to popular food trends, and he wants to find a single variable that can help him cut through the many possible confounding factors. So he comes up with an idea for doing an instrumental variable analysis: Alan knows that chickens produce fewer eggs in years with less rain, and he knows that farmers consistently increase their egg prices on years when they have low egg yields. Therefore, with a big dataset on egg sales and the weather history of nearby islands, Alan believes that he could study weather patterns as an instrument for egg prices, and he can use that instrument to find the impact of egg prices on egg sales. Which of the following assumptions does Alan's model depend on?
+  
+a) Egg prices are affected only by the weather 
+b) The weather and amounts of egg sales are not both caused by another factor 
+c) The weather is not correlated with other factors (besides egg prices) that are consequential to egg sales
+d) The weather has no effect on egg sales
 
 *** =instructions
 - a, c
 - b, d
 - a, b, c 
-- a, b, c, d
+- All of the above
 *** =sct
 ```{r}
-msg1 = "Almost! These are both assumptions of Alan's model, but there are more. Try again"
+msg1 = "Almost! These are both assumptions of Alan's model, but there are more. Try again."
 msg2 = "Not quite. b) is an important assumption of Alan's model, but d) is not. Try again."
-msg3 = "Correct! a) is true because the instrument in any IV model must effect the independent variable of interest. b) and c) are true because IVs require that the relationship between an instrument and the dependent variable cannot be explained by any other factors but their causal relationships to the key independent variable. d) is false for the same reason that b) and c) are true; if the weather directly effects the rate of almond sales, then we cannot assume that the this relationship is mediated by the effect of the weather on almond sales prices."
+msg3 = "Correct! a) is true because the instrument in any IV model must affect the independent variable of interest. b) and c) are true because IVs require that the relationship between an instrument and the dependent variable cannot be explained by any other factors but their causal relationships to the key independent variable. d) is false because the instrument must be correlated with the outcome variable; if the weather has no effect on egg sales, then we cannot assume that egg sales are mediated by the effect of the weather on egg prices."
 msg4 = "Almost! At least one of the possible assumptions is false."
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
+
 
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:3ae8d65d96
