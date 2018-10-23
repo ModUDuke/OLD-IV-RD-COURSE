@@ -183,7 +183,7 @@ Remember back to an earlier video, where we looked at the hyothetical question o
 msg1 = "Not quite. Remember: relevance is refutable, so people don't usually complain about this because it can be checked in the data. Try again"
 msg2 = "This is probably not the most common complaint, because it would take a long and complex argument to justify this as the single main reason why the IV analysis is invalid. Try again"
 msg3 = "Correct! This would be the most common complaint, and it's a good one. Luckily, the example was theoretical!"
-test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3))
+test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:88c5d08f7e
