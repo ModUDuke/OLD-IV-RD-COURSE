@@ -511,18 +511,16 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:834d82578f
 ## Practice Using IV to Solve Noncompliance in the OHIE
-In an earlier course, you analyzed data from the Oregon Healthcare Insurance Experiment (OHIE) where you assumed that everyone who was offered Medicaid coverage ended up getting covered.
+In an earlier course, you analyzed data from the Oregon Healthcare Insurance Experiment (OHIE) where you assumed that everyone who was offered Medicaid coverage ended up getting covered. Now let us relax this assumption and instead assume that not everyone who was offered Medicaid coverage actually enrolled.
 
-Now let's relax this assumption and instead assume that not everyone who was offered Medicaid coverage actually enrolled.
-
-Instead, we'll instrument for Medicaid takeup using assignment to the treatment group as an instrument.
+Instead, we will instrument for Medicaid takeup using assignment to the treatment group as an instrument.
 
 *** =instructions
 - 1) Compute the ITT effect of being offered insurance on having a positive depression screening
 - 2) Estimate the 2SLS effect of taking up the offer on positive depression screening using two separate calls to `lm()`
 
 *** =hint
-- Remember to include additional demographic controls in your regression model!
+- Remember to include additional demographic controls in your regression model
 
 *** =pre_exercise_code
 ```{r}
