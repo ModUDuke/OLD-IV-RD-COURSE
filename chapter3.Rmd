@@ -44,15 +44,15 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3,msg4))
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:7977c48f95
 ## Identifying Key Variables in an RD Design
-A pair of researchers named Jonah Berger and Devin Pope recently published a study that found that losing can lead to winning. As part of the study, the researchers documented this phenomenon in National Basketball Association (NBA) games. The researchers studied thousands of NBA game outcomes and found that teams who were just behind at halftime were more likely to win the game, after controling for other important factors (like the winning percentage of each team). 
+A pair of researchers named Jonah Berger and Devin Pope recently published a study about the results of professional basketball games that found that, surprisingly, sometimes losing can lead to winning. The researchers were looking at the determinants of winning in the National Basketball Association (NBA), and they had compiled a dataset of thousands of NBA games. When they looked at the halftime and final scores of each team, and after controlling for other important factors (like the winning percentage of each team), they found that teams who were slightly ahead at halftime were actually more likely to lose the game than the team that was behind at halftime. One theory to explain this outcome is that the team losing at halftime tries a little harder in the second half, while the team winning at halftime relaxes a little too much and loses the game.
 
-In this study, which variable is the outcome variable, which is the running variable, and which is the treatment variable?
+So in this study, which variable is the outcome variable, which is the running variable, and which is the treatment variable?
 
 *** =instructions
 - The score at halftime is the outcome variable, winning the game is the running variable, and the home team losing at halftime is the treatment variable.
 - Winning the game is the outcome variable, the home team losing at halftime is the running variable, and the score at halftime is the treatment variable.
 - The score at halftime is the outcome variable, the home team losing at halftime is the running variable, and winning the game is the treatment variable.
-- Winning the game is the outcome variable, the score at halftime is the running variable, and the home team losing at halftime is the treatment variable.
+- Winning the game is the outcome variable, the score at halftime is the running variable, and the home team winning at halftime is the treatment variable.
 *** =sct
 ```{r}
 msg1 = "Try again"
@@ -72,13 +72,9 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f1b89ac666
 ## Visualizing RD Designs
-Most analyses using the RDD approach graphically show the causal effect at the discontinuity. The graph on the right hand part of your screen displays this for the NBA game data mentioned in a previous exercise of this chapter.
+Most analyses using the RDD approach graphically show the causal effect at the discontinuity. The graph on the right hand part of your screen displays this for the NBA game data mentioned in the last exercise, which suprisingly showed that the team losing at halftime has a better chance to win the game than the team winning at halftime. Along the x-axis is the score margin (the difference in the two teams' scores) at halftime, and the y-axis measures the predicted win probability, which is based on whether the team is currently ahead in the game. Each dot on the plot corresponds to the average margin of victory for the home team taken from a large number of games that all had the same halftime margin. 
 
-Each dot on the plot corresponds to the average margin of victory for the home team taken from a large number of games that had the same halftime margin for the home team. 
-
-As you can see, there is a slight break in the two lines right at a margin of zero, implying that teams who are slightly behind at halftime are slightly more likely (than otherwise expected) to end the game with a positive margin (i.e. win the game).
-
-Why do you think the lines in this graph are sloping upward?
+As you look at the chart, you can see how the line begins at a negative predicted winning chance and moves up into positive values for a predicted win, but with a downward jump when the halftime margin is 0. This implies that teams who are slightly behind at halftime are slightly more likely (than otherwise expected) to end the game with a positive margin (i.e. win the game). Why do you think the lines in this graph are sloping upward?
 
 *** =instructions
 - Because the RDD isn't controlling for team quality in an appropriate way
@@ -215,15 +211,15 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 
 --- type:NormalExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:8dfb92fd8e
 ## Practice Computing Regression Discontinuity Effects
-Let's continue with the NBA research example. On your workspace is a simulated data set, called `NBA`, that closely resembles the data analyzed by Berger and Pope. The data frame `NBA` contains game characteristics for over 18,000 NBA games between 1994 and 2009.
+Let's continue with the NBA research example. On your workspace is a simulated data set, called `NBA`, that closely resembles the data analyzed by Berger and Pope. The data frame `NBA` contains game characteristics for over 18,000 NBA games between 1994 and 2009. Will you get the same results as they did? Let's find out!
 
-The outcome variable we are interested in is called `home.team.final.margin`, which is the final margin of victory (or loss) for the home team. The running variable in this RDD is called `home.team.halftime.margin`, or the margin of victory (or loss) for the home team at halftime. We define treatment as the home team being ahead at halftime, i.e. `home.team.halftime.margin > 0`. (You can also define it as the home team being behind at halftime and you will get the same results, just opposite sign.)
+The outcome variable we are interested in is called `home.team.final.margin`, which is the final margin of victory (or loss) for the home team. The running variable in this RDD is called `home.team.halftime.margin`, which records the scoring difference between the home and visiting teams at halftime. Let's keep things simple and take a look at when the home team is winning at halftime, and define our treatment variable as the home team being ahead at halftime, i.e. when `home.team.halftime.margin > 0`. 
 
 In this exercise, you will compute the treatment effect of being ahead at halftime on the final margin of victory. You will use regression methods as well as nonparametric methods to assess how robust the effect is.
 
 *** =instructions
-- Use OLS regression to estimate the treatment effect of being behind at halftime on the final margin of victory under two different parametric scenarios
-- Estimate the treatment effect using non-parametric methods
+- 1) Use OLS regression to estimate the treatment effect of being behind at halftime on the final margin of victory under two different parametric scenarios
+- 2) Estimate the treatment effect using non-parametric methods
 
 *** =pre_exercise_code
 ```{r}
@@ -2214,51 +2210,51 @@ summary.RD<-function(object,digits=max(3, getOption("digits") - 3),...){
 
 # The dataset contains eight variables: a game identifier, a season identifier, two team identifiers (for home and visitor), the quality of the home and visiting teams (a normalized verison of win percentage), and the halftime and end-of-game margins of victory for the home team.
 
-# Create a dummy variable that equals 1 if the home team is ahead at halftime
-#---- Question 1-------------------------------------#
-      Solution1<-()
-      NBA$home.team.winning.at.half <- Solution1
-#----------------------------------------------------#
+# 1)  Create a dummy variable that equals 1 if the home team is ahead at halftime, then store those results into the variable `home.team.winning.at.half` in the dataframe `NBA`. 
+
+# Note that a logical expression like `x > y` in R will return a value of `true` or `false` by default, but you can convert this into a numeric variable with a value of 1 or 0 by wrapping your variable definition in the `as.numeric()` function, like so: as.numeric(x > y). 
+
+
+    NBA$home.team.winning.at.half <- as.numeric()
+
   
-# Use the lm function to compute the RD estimate of being ahead at halftime on the final margin of victory. Include the following as additional controls in the regression: home team's halftime margin, home team quality, and away team quality.
+# 2) Let's assume that the effect of the halftime margin on the final margin is a linear one. Use the lm function to compute the RD estimate of being ahead at halftime on the final margin of victory. Include the following as additional controls in the regression: home team's halftime margin, home team quality, and away team quality.
 
-#---- Question 2-------------------------------------#
-      Solution2<-summary(lm())
-#----------------------------------------------------#
 
-# As mentioned in earlier videos, there may be a non-linear effect of the halftime margin on the final margin. In the previous question, we assumed the relationship was linear. In the next question, we will relax this assumption.
+    summary(lm())
 
-# In Question 3, estimate the same regression as in Question 2, but this time include a quadratic effect of halftime margin on the final margin. This is done by adding I(home.team.halftime.margin^2) as an additional term in the model statement of lm.
+# Good. Here we tried using a linear model, but what if that effect is nonlinear?
 
-#---- Question 3-------------------------------------#
-      Solution3<-summary(lm())
-#----------------------------------------------------#
+# 3) Let's see what happens to our effect if we allow our model to handle a quadratic effect of halftime margin on the final margin. We can do this by adding I(home.team.halftime.margin^2) as an additional term in the model statement of lm.
+
+    summary(lm())
+
   
-# 4) As a last exercise, let's further relax the quadratic assumption of halftime margin. Instead of estimating an OLS regression using the lm function, we will now use a package called 'rdd' which allows us to examine how sensitive the regression assumptions are for our RD estimate.
+# 4) Nice going. But what if the effect is nonlinear and also not really quadratic? As a last exercise, let's further relax the quadratic assumption of halftime margin. Instead of estimating an OLS regression using the lm function, we will now use a package called 'rdd' which gives us more options to test the sensitivity of the regression assumptions for our RD estimate.
 
-# The function we will use is called RDestimate. Without getting into too many details, copy and paste the following syntax as your answer to Question 4: summary(RDestimate(home.team.final.margin ~ home.team.halftime.margin | home.team.qual+away.team.qual,data=NBA))
+# In this case, the function we will use is called RDestimate. Without getting into too many details, we will look at one of its functions that provides a nonparametric model that we can compare to our linear and quadratic models. run the following syntax as your answer to Question 4, and compare the results to the prior estimate results:
 
-#---- Question 4-------------------------------------#
-      Solution4<-summary(RDestimate(home.team.final.margin ~ home.team.halftime.margin | home.team.qual+away.team.qual,data=NBA))
-#----------------------------------------------------#
 
-# Now compare the results of our three causal effect estimates. Which estimate do you think most closely captures the true causal effect of being behind (or ahead) at halftime on the final margin of victory?
+    summary(RDestimate(home.team.final.margin ~ home.team.halftime.margin | home.team.qual+away.team.qual,data=NBA))
+
+
+# 5) Now compare the results of our three causal effect estimates: the linear model and our two nonlinear models with quadratic and nonparametric functions. Which kind of estimate do you think most closely captures the true causal effect of being behind (or ahead) at halftime on the final margin of victory? Write in "linear" or "nonlinear".
+
+    Solution5<-""
 
 ```
 *** =solution
 ```{r}
-    Solution1<- NBA$home.team.halftime.margin<0
-    Solution2<-summary(lm(home.team.final.margin ~ home.team.winning.at.half+home.team.halftime.margin+home.team.qual+away.team.qual,data=NBA))
-    Solution3<-summary(lm(home.team.final.margin ~ home.team.winning.at.half+home.team.halftime.margin+I(home.team.halftime.margin^2)+home.team.qual+away.team.qual,data=NBA))
-    Solution4<-summary(RDestimate(home.team.final.margin ~ home.team.halftime.margin | home.team.qual+away.team.qual,data=NBA))
+    NBA$home.team.winning.at.half <- as.numeric(NBA$home.team.halftime.margin>0)
+    summary(lm(home.team.final.margin ~ home.team.winning.at.half+home.team.halftime.margin+home.team.qual+away.team.qual,data=NBA))
+    summary(lm(home.team.final.margin ~ home.team.winning.at.half+home.team.halftime.margin+I(home.team.halftime.margin^2)+home.team.qual+away.team.qual,data=NBA))
+    summary(RDestimate(home.team.final.margin ~ home.team.halftime.margin | home.team.qual+away.team.qual,data=NBA))
+    Solution5<-"nonlinear"
 ```
 *** =sct
 ```{r}
-test_object("Solution1")
-test_object("Solution2")
-test_object("Solution3")
-test_object("Solution4")
-success_msg("Good work! From the looks of it, the quadratic specification of halftime margin looks very similar to the nonparametric estimate (4.8 points versus 4.4 points, respectively). The linear specification seems to not capture the true relationship between halftime margin and final margin, as it only estimates an effect of 2.5 points.")
+test_error()
+success_msg("Good work! From the looks of it, the quadratic specification of halftime margin looks very similar to the nonparametric estimate (4.8 points versus 4.4 points, respectively), which suggests that they may be closer to the real effect. The linear specification seems to not capture the true relationship between halftime margin and final margin, as it only estimates an effect of 2.5 points.")
 ```
 
 
@@ -2303,9 +2299,9 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 
 --- type:NormalExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:1de601c34a
 ## Examining Manipulation in Regression Discontinuity Designs
-This is an example of how to visualize manipulation in RD designs. The main idea with RD is that there should not be any difference in the frequency of observations near the cutoff. If there is, this suggests that observations are likely manipulating the cutoff.
+As we have mentioned, the main idea with RD is that there should not be any difference in the people on either side of the cutoff. So a big part of RD analysis is to check whether this is actually true in our data. For example, the distributions of our variables should be the same on both sides of the cutoff. If we find differences in our distributions, then we might need to worry that these differences are due to people choosing which side of the cutoff to be on.
 
-Let's revisit the NBA data we used before. Manipulation in this setting might come about if teams try to be down by 1 or 2 points at halftime (perhaps because they read the research paper published in Management Science!)
+Let's look at this by revisiting the NBA data we used before in previous exercises. In professional basketball games, manipulation might happen if teams try to be down by 1 or 2 points at halftime--perhaps because they read that research paper published in Management Science!
 
 *** =instructions
 - 1) Using the function `DCdensity` which is already on your workspace, plot the distribution of data near the cutoff
@@ -2621,25 +2617,24 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
 
 *** =sample_code
 ```{r}
-# 1) Run the McCrary test with the running variable in the NBA data and the cutoff (score tied)
-#---- Question 1-------------------------------------#
-      Solution1 <- DCdensity(NBA$[running.var],[cutoff],plot=TRUE)
-#----------------------------------------------------#
+# 1) Run the McCrary test with the running variable in the NBA data and the cutoff (score tied). Insert the correct variable names into the placeholder spots below:
+
+      DCdensity(NBA$[running.var],[cutoff],plot=TRUE)
+
   
-# 2) Now issue the command again, but print the p-value output. Put print() around the command
-#---- Question 2-------------------------------------#
-      Solution2 <- DCdensity(NBA$[running.var],[cutoff],plot=FALSE)
-#----------------------------------------------------#
+# 2) Now issue the command again (again by inserting the correct variable names in the placeholder spots), but print the p-value output. You can do this by simply wrapping the command with the print() function:
 
-# 3) Now plot using the variable `home.team.halftime.margin.cheat` which has been manipulated
-#---- Question 3-------------------------------------#
-      Solution3 <- DCdensity(NBA$[new.running.var],[cutoff],plot=TRUE)
-#----------------------------------------------------#
+      DCdensity(NBA$[running.var],[cutoff],plot=FALSE)
 
-# 4) And print its p-value:
-#---- Question 4-------------------------------------#
-      Solution4 <- DCdensity(NBA$[new.running.var],[cutoff],plot=FALSE)
-#----------------------------------------------------#
+
+# 3) Now plot using the variable `home.team.halftime.margin.cheat` which is a version that has been manipulated:
+
+      DCdensity(NBA$[new.running.var],[cutoff],plot=TRUE)
+
+# 4) And now print its p-value to see how it compares to our non-manipulated data:
+  
+      DCdensity(NBA$[new.running.var],[cutoff],plot=FALSE)
+
 
 ```
 *** =solution
