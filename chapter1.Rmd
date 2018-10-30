@@ -14,12 +14,6 @@ description : "This chapter will introduce you to Instrumental Variables (IV) an
 //player.vimeo.com/video/219559011
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:b70179796d
-## The Three Instrumental Variables Assumptions
-*** =video_link
-//player.vimeo.com/video/219559447
-
-
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:8c410956e7
 ## What is the Relationship Between the Instrument and the Outcome?
@@ -95,6 +89,42 @@ msg4 = "That is not exactly the process. We do not add these effects together to
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:3ae8d65d96
+## Some Instrumental Variables Terminology
+*** =video_link
+//player.vimeo.com/video/219565557
+
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:5ad3dddd73
+## Is it Endogenous vs Exogenous Variation? 
+Suppose you are interested in the economic status of new college graduates, and have just gotten access to geographic data on where people live and work after they graduate from college. In your first step of data analysis, you subset this geographic data to categorize both their home and work locations as either urban or rural, giving you a binary treatment variable. Let's say that you then compare what kinds of places (rural vs. urban) where people live versus the kinds of places where they work. What kind of variation would that variable have?
+
+*** =instructions
+- Exogenous
+- Endogenous
+- Both
+
+*** =sct
+```{r}
+msg1 = "Where people choose to live and work are usually affected by at least some shared factors, which means it's not all external forces impacting these--unless they are in the military or in prison! Try again"
+msg2 = "Correct! People who work in urban areas probably live in urban areas, and people that work in rural areas probably live in rural areas, so these choices are being influenced by shared factors, which means they have endogenous variation. The most common exceptions to this would be things like military service (or a prison sentence!)."
+msg3 = "While there might be external reasons that affect people's choice of where to live in ways they cannot change, usually it's the case that people ultimately make the decision on where they want to live. Try again"
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
+```
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:953b93e528
+## Instrumental Variables in Action: Education and Wages (graphs)
+*** =video_link
+//player.vimeo.com/video/219559159
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:116a9fd6fa
+## Instrumental Variables in Action: Education and Wages (tables)
+*** =video_link
+//player.vimeo.com/video/219559305
+
+
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:e48c3917d8
 ## What if Our Data Shows No Clear Correlation Between Treatment and Outcome?
 Suppose we run an Instrumental Variable analysis, and in our initial data exploration, we find that the treatment is uncorrelated with the outcome. But nonetheless, we carry on with the IV analysis and find that it shows a positive causal effect of the treatment on the outcome. How should we interpret these results?
@@ -115,16 +145,11 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 
 ```
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:953b93e528
-## Instrumental Variables in Action: Education and Wages (graphs)
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:b70179796d
+## The Three Instrumental Variables Assumptions
 *** =video_link
-//player.vimeo.com/video/219559159
+//player.vimeo.com/video/219559447
 
-
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:116a9fd6fa
-## Instrumental Variables in Action: Education and Wages (tables)
-*** =video_link
-//player.vimeo.com/video/219559305
 
 
 
@@ -154,27 +179,3 @@ msg4 = "Almost! At least one of the possible assumptions is false."
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
-
-
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:3ae8d65d96
-## Some Instrumental Variables Terminology
-*** =video_link
-//player.vimeo.com/video/219565557
-
-
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:5ad3dddd73
-## Is it Endogenous vs Exogenous Variation? 
-Suppose you are interested in the economic status of new college graduates, and have just gotten access to geographic data on where people live and work after they graduate from college. In your first step of data analysis, you subset this geographic data to categorize both their home and work locations as either urban or rural, giving you a binary treatment variable. Let's say that you then compare what kinds of places (rural vs. urban) where people live versus the kinds of places where they work. What kind of variation would that variable have?
-
-*** =instructions
-- Exogenous
-- Endogenous
-- Both
-
-*** =sct
-```{r}
-msg1 = "Where people choose to live and work are usually affected by at least some shared factors, which means it's not all external forces impacting these--unless they are in the military or in prison! Try again"
-msg2 = "Correct! People who work in urban areas probably live in urban areas, and people that work in rural areas probably live in rural areas, so these choices are being influenced by shared factors, which means they have endogenous variation. The most common exceptions to this would be things like military service (or a prison sentence!)."
-msg3 = "While there might be external reasons that affect people's choice of where to live in ways they cannot change, usually it's the case that people ultimately make the decision on where they want to live. Try again"
-test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
-```
