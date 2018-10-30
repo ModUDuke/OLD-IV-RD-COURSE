@@ -1,6 +1,6 @@
 --- 
-title       : "RDD as Causality: Introduction to Regression Discontinuity Design"
-description : "This chapter will introduce you to regression discontinuity design (RDD)"
+title       : "Regression Discontinuity Design"
+description : "This chapter introduces you to Regression Discontinuity Design (RDD), which is often considered a more flexible relative of Instrumental Variables"
  
 # Notes:
 #--------------
