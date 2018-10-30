@@ -1,6 +1,6 @@
 --- 
 title       : "Introduction to Instrumental Variables"
-description : "This chapter will introduce you to instrumental variables (IV) analysis"
+description : "This chapter will introduce you to Instrumental Variables (IV) analysis, a tricky but powerful method to find causality through indirect inference"
 
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:9c7273586e
