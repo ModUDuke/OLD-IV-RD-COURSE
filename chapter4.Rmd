@@ -1,6 +1,12 @@
 --- 
-title       : "Instrumental Variables Deep Dive"
-description : "This chapter explores deeper concepts and applications related to IV"
+title       : "The Local Average Treatment Effect of IV"
+description : "This chapter explains the treatment effect we are estimating with the instrumental variables method - LATE, or the Local Average Treatment Effect"
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:34850f663a
+## Which Causal Effects Are We Actually Getting with Instrumental Variables?
+*** =video_link
+//player.vimeo.com/video/219560614
 
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:d8ab603518
