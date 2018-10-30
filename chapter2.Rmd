@@ -1,6 +1,6 @@
 --- 
-title       : "Practice with Instrumental Variables"
-description : "This chapter will allow you to practice instrumental variables (IV) analysis"
+title       : "Instrumental Variables in Practice"
+description : "This chapter covers more details about Instrumental Variables Analysis, and allows you to practice instrumental variables for yourself"
  
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:b70179796d
