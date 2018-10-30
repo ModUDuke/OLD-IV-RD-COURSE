@@ -203,10 +203,3 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3,msg4))
 *** =video_link
 //player.vimeo.com/video/219560424
 
-
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:34850f663a
-## Which Causal Effects Are We Actually Getting with Instrumental Variables?
-*** =video_link
-//player.vimeo.com/video/219560614
-
-
