@@ -322,3 +322,504 @@ success_msg("Good work!")
 *** =video_link
 //player.vimeo.com/video/219559617
 
+
+--- type:NormalExercise lang:r xp:100 skills:1 key:415cb190e2
+## Practice Computing Causal Effects Using Two-Stage Least Squares (2SLS): CreditCo
+Now let us repeat the previous CreditCo analysis, but now use 2SLS to compute the causal effect instead of indirect inference.
+
+*** =instructions
+- 1) Using a linear regression, compute the first-stage effect (i.e. correlation between opting in and rain)
+- 2) Compute the predicted values of opting in
+- 3) Compute the causal effect by linear regression (i.e. correlation between credit balance and predicted opt-in rate)
+- 4) Did opting in to the credit offer increase or decrease credit balances?
+
+*** =hint
+- Remember to be aware of selecting the correct subsample
+
+*** =pre_exercise_code
+```{r}
+  set.seed(1)
+  n             <- 9e5
+  frac_treated  <- .5
+  frac_female   <- .5656
+  frac_white    <- .688
+
+# Initialize dataframe
+  CreditCo <- as.data.frame(matrix(0, ncol=11,nrow=n))
+  colnames(CreditCo) <- c("id","offered","opt_in","FICO","age","female","race_white","default_pre","default_post","balance_pre","balance_post")
+
+# Simulate baseline data
+  CreditCo$id         <- seq(1,n,1)
+  CreditCo$offered    <- as.integer(runif(n)<frac_treated)
+  CreditCo$opt_in     <- rep.int(0,n)
+  CreditCo$FICO       <- rnorm(n, mean=736, sd=300)
+  CreditCo$age        <- sample(18:55, n, replace=T)
+  CreditCo$female     <- as.integer(runif(n)<frac_female)
+  CreditCo$race_white <- as.integer(runif(n)<frac_white)
+
+# make FICO score intelligible
+  CreditCo$FICO[CreditCo$FICO>850] <- 850
+  CreditCo$FICO[CreditCo$FICO<300] <- 300
+  CreditCo$FICO                    <- round(CreditCo$FICO)
+
+# simulate pre-experiment default rate
+  draw <- runif(n)
+  xb   <- -1.82-0.2*CreditCo$FICO/100+.046*(CreditCo$FICO^2)/10000-5.1*CreditCo$female-7*CreditCo$race_white
+  p    <- exp(xb)/(1+exp(xb))
+  CreditCo$default_pre <- as.integer(draw<p)
+
+# simulate pre-experiment balance level
+  draw <- rnorm(n, mean=0, sd=0.5)
+  CreditCo$balance_pre <- 8.5-0.2*CreditCo$FICO/100+.046*(CreditCo$FICO^2)/10000-0.15*CreditCo$female-0.85*CreditCo$race_white + draw
+  CreditCo$balance_pre <- exp(CreditCo$balance_pre)
+
+# Simulate opt-in behavior based on weather
+  draw <- runif(n)
+  draw2 <- runif(n)
+  CreditCo$rainy <- draw>0.5
+  xb   <- 1.5-3*CreditCo$rainy+.2*CreditCo$female
+  p    <- exp(xb)/(1+exp(xb))
+  CreditCo$opt_in[CreditCo$offered==1] <- as.integer(draw2[CreditCo$offered==1]<p[CreditCo$offered==1])
+
+# Simulate post outcomes
+  draw <- runif(n)
+  xb   <- -1.82-0.2*CreditCo$FICO/100+.046*(CreditCo$FICO^2)/10000-5.1*CreditCo$female-7*CreditCo$race_white+4*CreditCo$offered*CreditCo$opt_in
+  p    <- exp(xb)/(1+exp(xb))
+  CreditCo$default_post <- as.integer(draw<p)
+
+# balance
+  draw <- rnorm(n, mean=0, sd=0.5)
+  CreditCo$balance_post <- 8.5-0.2*CreditCo$FICO/100+.046*(CreditCo$FICO^2)/10000-0.15*CreditCo$female-0.85*CreditCo$race_white + 1*CreditCo$offered*CreditCo$opt_in + draw
+  CreditCo$balance_post <- exp(CreditCo$balance_post)
+
+# Remove elements and variables from environment
+  rm(draw,frac_female,frac_treated,frac_white,n,p,xb)
+  CreditCo <- CreditCo[CreditCo$offered==1,c("id","opt_in","balance_post","rainy")]
+```
+
+*** =sample_code
+```{r}
+# The dataset `CreditCo` is available in your workspace
+
+# 1) Using a linear regression, compute the first-stage effect (i.e. correlation between `opt_in` and `rainy`)
+
+    Solution1<-lm( ~ ,data=CreditCo)
+
+
+# 2) Compute the predicted opt-in rate for each person and include it as a variable in the `CreditCo` data frame
+
+    Solution2<-predict(Solution1,data=CreditCo)
+    CreditCo$prediction <- Solution2
+
+
+# 3) Compute the causal effect, which is a regression of credit balance on the predicted values
+
+    Solution3<-lm( ~ ,data=CreditCo)
+
+
+# 4) Did opting in to the credit offer increase or decrease credit balances? (type "increased" or "decreased")
+
+    Solution4<-""
+
+
+```
+
+*** =solution
+```{r}
+Solution1 <- lm(opt_in~rainy,data=CreditCo)
+Solution2 <- predict(Solution1,data=CreditCo)
+CreditCo$prediction <- Solution2
+Solution3 <- lm(balance_post ~ prediction,data=CreditCo)
+Solution4 <- "increased"
+```
+
+*** =sct
+```{r}
+test_object("Solution1")
+test_object("Solution2")
+test_object("Solution3")
+test_object("Solution4")
+success_msg("Good work!")
+```
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:458e4ed187
+## Comparing the Estimates from Indirect Inference and 2SLS
+The previous two coding exercises used two separate methods to estimate a causal effect using instrumental variables. The estimate from the indirect inference method yielded an effect of $16,319. The 2SLS method estimate was an identical $16,319.
+
+In general, do you think that these two methods will always yield the same results?
+
+*** =instructions
+- Yes
+- No
+
+*** =sct
+```{r}
+msg1 = "Try again"
+msg2 = "Correct! The previous coding examples happened to yield identical results because of the specific situation. In general, the results should yield numbers that are 'statistically similar': that is, the confidence interval of one should contain the other."
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
+```
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:25532d1a49
+## Solving Noncompliance in Experiments with Instrumental Variables
+*** =video_link
+//player.vimeo.com/video/219559688
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:dc9b5ec411
+## Using IV to Solve Noncompliance in the Oregon Heathcare Insurance Experiment
+*** =video_link
+//player.vimeo.com/video/219559775
+
+
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:23b590892d
+## Balancing Assumptions and Data When Using IV
+In previous videos we said that the relevance assumption is refutable, and in this video we saw that it passed our tests in the Oregon Healthcare experiment. We also said that the other two assumptions, exogeneity and exclusion, are nonrefutable because we would need a world of complete and perfect information to refute them. 
+
+But two data analysts, Alex and Monique, are working together on an IV analysis, and they argue about whether more data can help them build a convincing argument for their instrument. Alex says, "there's no point to changing our model to include more datasets, because these last 2 assumptions are nonrefutable, so we can only use qualitative explanations to defend them." But Monique says that "we can replace our qualitative arguments with data-driven arguments if we add new datasets with the relevant data to our model."
+
+Who is giving better advice for defending the 'nonrefutable' assumptions of IV?
+
+*** =instructions
+- Alex is correct: the assumptions are nonrefutable without perfect information, so more data won't help with them 
+- Monique is correct: it's better to add more datasets to reduce the guesswork about the model
+
+*** =sct
+```{r}
+msg1 = "'Refutability' is defined with respect to a model, which includes a description of the precise set of data which is observable. For example, suppose I observe a dataset with the age of person in the United States. Then the claim that the average age is 26 is refutable—-I can simply compute the true average age and then see if it really is 26 or not. But the claim that the average annual income is $30,000 is not refutable. That’s just because my dataset doesn’t have income in it! If I observed data on income, then that claim would become refutable. Try again."
+msg2 = "Correct. Without more or different kinds of data, typically the exogeneity and exclusion assumptions are not refutable, and Alex would be right. However, if you add more data or change the assumptions in different ways, it is sometimes possible to convert a nonrefutable assumption into a refutable assumption. But you should always be ready with qualitative arguments to strengthen your defense of these assumptions."
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
+```
+
+
+--- type:NormalExercise lang:r xp:100 skills:1 key:834d82578f
+## Practice Using IV to Solve Noncompliance in the OHIE
+In an earlier course, you analyzed data from the Oregon Healthcare Insurance Experiment (OHIE) where you assumed that everyone who was offered Medicaid coverage ended up getting covered. Now let us relax this assumption and instead assume that not everyone who was offered Medicaid coverage actually enrolled.
+
+Instead, we will instrument for Medicaid takeup using assignment to the treatment group as an instrument.
+
+*** =instructions
+- 1) Compute the ITT effect of being offered insurance on having a positive depression screening
+- 2) Estimate the 2SLS effect of taking up the offer on positive depression screening using two separate calls to `lm()`
+
+*** =hint
+- Remember to include additional demographic controls in your regression model
+
+*** =pre_exercise_code
+```{r}
+set.seed(1)
+
+#------------------------------------------
+# Population characteristics for data generation
+#------------------------------------------
+n                          <- 20745
+n_intvw                    <- 12229
+frac_intvw                 <- (n_intvw-.5)/n
+frac_treated               <- (6387-52)/n_intvw
+frac_female                <- .5656
+frac_19_34                 <- .3530
+frac_35_49                 <- .3710
+frac_50_64                 <- .2758
+frac_white                 <- .688
+frac_black                 <- .1033
+frac_other                 <- .144
+frac_hispa                 <- .180
+frac_intv_english          <- .876
+frac_ast_dx_pre_lottery    <- .193065
+frac_dia_dx_pre_lottery    <- .071305
+frac_hbp_dx_pre_lottery    <- .181944
+frac_chl_dx_pre_lottery    <- .126666
+frac_ami_dx_pre_lottery    <- .019789
+frac_chf_dx_pre_lottery    <- .011121
+frac_emp_dx_pre_lottery    <- .022078
+frac_kid_dx_pre_lottery    <- .018562
+frac_cancer_dx_pre_lottery <- .042767
+frac_dep_dx_pre_lottery    <- .340665
+frac_any_dx_pre_lottery    <- .159749
+#------------------------------------------
+# Initialize dataframe
+#------------------------------------------
+OHIE <- as.data.frame(matrix(0, ncol=23,nrow=n))
+
+colnames(OHIE) <- c("id",
+"intvw",
+"lottery",
+"gender_inp",
+"age_19_34_inp",
+"age_35_49_inp",
+"age_50_64_inp",
+"race_white_inp",
+"race_black_inp",
+"race_nwother_inp",
+"hispanic_inp",
+"itvw_english_inp",
+"ast_dx_pre_lottery",
+"dia_dx_pre_lottery",
+"hbp_dx_pre_lottery",
+"chl_dx_pre_lottery",
+"ami_dx_pre_lottery",
+"chf_dx_pre_lottery",
+"emp_dx_pre_lottery",
+"kid_dx_pre_lottery",
+"cancer_dx_pre_lottery",
+"dep_dx_pre_lottery",
+"any_dx_pre_lottery")#Factors=factor(),
+
+#------------------------------------------
+# Simulate pre-lottery data
+#------------------------------------------
+OHIE$id                                                        <- seq(1,n,1)
+OHIE$intvw                                                     <- as.integer(runif(n)<frac_intvw)
+OHIE[OHIE$intvw==0,c("lottery","gender_inp","age_19_34_inp","age_35_49_inp","age_50_64_inp","race_white_inp","race_black_inp","race_nwother_inp","hispanic_inp","itvw_english_inp","ast_dx_pre_lottery","dia_dx_pre_lottery","hbp_dx_pre_lottery","chl_dx_pre_lottery","ami_dx_pre_lottery","chf_dx_pre_lottery","emp_dx_pre_lottery","kid_dx_pre_lottery","cancer_dx_pre_lottery","dep_dx_pre_lottery")] <- NA
+OHIE$lottery[!is.na(OHIE$lottery)]                         <- as.integer(runif(n_intvw)<frac_treated)
+OHIE$gender_inp[!is.na(OHIE$gender_inp)]                       <- as.integer(runif(n_intvw)<frac_female)
+classdraw                                                      <- runif(n_intvw)
+class                                                          <- 1*(classdraw<frac_19_34) + 2*(classdraw<(frac_19_34+frac_35_49) & classdraw>frac_19_34) + 3*(classdraw>(frac_19_34+frac_35_49))
+OHIE$age_19_34_inp[!is.na(OHIE$age_19_34_inp)]                 <- as.integer(class==1)
+OHIE$age_35_49_inp[!is.na(OHIE$age_35_49_inp)]                 <- as.integer(class==2)
+OHIE$age_50_64_inp[!is.na(OHIE$age_50_64_inp)]                 <- as.integer(class==3)
+OHIE$race_white_inp[!is.na(OHIE$race_white_inp)]               <- as.integer(runif(n_intvw)<frac_white)
+OHIE$race_black_inp[!is.na(OHIE$race_black_inp)]               <- as.integer(runif(n_intvw)<frac_black)
+OHIE$race_nwother_inp[!is.na(OHIE$race_nwother_inp)]           <- as.integer(runif(n_intvw)<frac_other)
+OHIE$hispanic_inp[!is.na(OHIE$hispanic_inp)]                   <- as.integer(runif(n_intvw)<frac_hispa)
+OHIE$itvw_english_inp[!is.na(OHIE$itvw_english_inp)]           <- as.integer(runif(n_intvw)<frac_hispa)
+OHIE$ast_dx_pre_lottery[!is.na(OHIE$ast_dx_pre_lottery)]       <- as.integer(runif(n_intvw)<frac_ast_dx_pre_lottery)
+OHIE$dia_dx_pre_lottery[!is.na(OHIE$dia_dx_pre_lottery)]       <- as.integer(runif(n_intvw)<frac_dia_dx_pre_lottery)
+OHIE$hbp_dx_pre_lottery[!is.na(OHIE$hbp_dx_pre_lottery)]       <- as.integer(runif(n_intvw)<frac_hbp_dx_pre_lottery)
+OHIE$chl_dx_pre_lottery[!is.na(OHIE$chl_dx_pre_lottery)]       <- as.integer(runif(n_intvw)<frac_chl_dx_pre_lottery)
+OHIE$ami_dx_pre_lottery[!is.na(OHIE$ami_dx_pre_lottery)]       <- as.integer(runif(n_intvw)<frac_ami_dx_pre_lottery)
+OHIE$chf_dx_pre_lottery[!is.na(OHIE$chf_dx_pre_lottery)]       <- as.integer(runif(n_intvw)<frac_chf_dx_pre_lottery)
+OHIE$emp_dx_pre_lottery[!is.na(OHIE$emp_dx_pre_lottery)]       <- as.integer(runif(n_intvw)<frac_emp_dx_pre_lottery)
+OHIE$kid_dx_pre_lottery[!is.na(OHIE$kid_dx_pre_lottery)]       <- as.integer(runif(n_intvw)<frac_kid_dx_pre_lottery)
+OHIE$cancer_dx_pre_lottery[!is.na(OHIE$cancer_dx_pre_lottery)] <- as.integer(runif(n_intvw)<frac_cancer_dx_pre_lottery)
+OHIE$dep_dx_pre_lottery[!is.na(OHIE$dep_dx_pre_lottery)]       <- as.integer(runif(n_intvw)<frac_dep_dx_pre_lottery)
+OHIE$dep_dx_pre_lottery[!is.na(OHIE$dep_dx_pre_lottery)]       <- as.integer(runif(n_intvw)<frac_any_dx_pre_lottery)
+
+#------------------------------------------
+# Variable labels
+#------------------------------------------
+names(OHIE)[(length(OHIE)-10):length(OHIE)] <- c("asthma pre lottery","diabetes pre lottery","hypertension pre lottery","high cholesterol pre lottery","heart attack pre lottery","congestive heart failure pre lottery","emphysema/COPD pre lottery","kidney failure pre lottery","cancer pre lottery","depression pre lottery","any of diabetes, high bp, high chol, heart attack, or cong heart failure pre lottery")
+
+#------------------------------------------
+# Simulate first stage
+#------------------------------------------
+OHIE$insurance <- 0*(OHIE$lottery)
+OHIE[OHIE$intvw==0,c("insurance")] <- NA
+colnames(OHIE)[length(OHIE)] <- c("insurance")
+
+draw <- runif(n_intvw)
+xb   <- -2.82+1*(OHIE$lottery[!is.na(OHIE$lottery)]==1)+.75*(OHIE$gender_inp[!is.na(OHIE$lottery)]==1)+.5*(OHIE$age_19_34_inp[!is.na(OHIE$lottery)]==1)+1*(OHIE$age_35_49_inp[!is.na(OHIE$lottery)]==1)+2*(OHIE$age_50_64_inp[!is.na(OHIE$lottery)]==1)+1.3*(OHIE$race_white_inp[!is.na(OHIE$lottery)]==1)-.4*(OHIE$race_black_inp[!is.na(OHIE$lottery)]==1)-.2*(OHIE$race_nwother_inp[!is.na(OHIE$lottery)]==1)+.1*(OHIE$hispanic_inp[!is.na(OHIE$lottery)]==1)-.7*(OHIE$itvw_english_inp[!is.na(OHIE$lottery)]==1)
+p    <- exp(xb)/(1+exp(xb))
+OHIE$insurance[!is.na(OHIE$insurance)] <- as.integer(draw<p)
+
+#------------------------------------------
+# Simulate second stage
+#------------------------------------------
+OHIE<-cbind(OHIE,matrix(0,dim(OHIE)[1],19))
+colnames(OHIE)[(length(OHIE)-18):length(OHIE)]             <- c("bp_sar_inp","bp_dar_inp","bp_hyper","hbp_dx_post_insurance","hbp_diure_med_inp","chl_inp","chl_h","hdl_inp","hdl_low","chl_dx_post_insurance","antihyperlip_med_inp","a1c_inp","a1c_dia","dia_dx_post_insurance","diabetes_med_inp","pos_depression_screen","dep_dx_post_insurance","antidep_med_inpbinary","cvd_risk_point")
+OHIE[OHIE$intvw==0,c("bp_sar_inp","bp_dar_inp","bp_hyper","hbp_dx_post_insurance","hbp_diure_med_inp","chl_inp","chl_h","hdl_inp","hdl_low","chl_dx_post_insurance","antihyperlip_med_inp","a1c_inp","a1c_dia","dia_dx_post_insurance","diabetes_med_inp","pos_depression_screen","dep_dx_post_insurance","antidep_med_inpbinary","cvd_risk_point")] <- NA
+
+# # Hypertension diagnosis (should be .056 + .0176)
+# draw <- runif(n_intvw)
+# xb   <- -2.82+.22*(OHIE$insurance[!is.na(OHIE$hbp_dx_post_insurance)]==1)
+# p    <- exp(xb)/(1+exp(xb))
+# OHIE$hbp_dx_post_insurance[!is.na(OHIE$hbp_dx_post_insurance)] <- as.integer(draw<p)
+# print("Hypertension")
+# print(mean(OHIE$hbp_dx_post_insurance[OHIE$insurance==0],na.rm=TRUE))
+# print(mean(OHIE$hbp_dx_post_insurance[OHIE$insurance==1],na.rm=TRUE)-mean(OHIE$hbp_dx_post_insurance[OHIE$insurance==0],na.rm=TRUE))
+
+# # Current use of hypertension medication (should be .139 + .0066)
+# draw <- runif(n_intvw)
+# xb   <- -1.825+.0716*(OHIE$insurance[!is.na(OHIE$hbp_diure_med_inp)]==1)
+# p    <- exp(xb)/(1+exp(xb))
+# OHIE$hbp_diure_med_inp[!is.na(OHIE$hbp_diure_med_inp)] <- as.integer(draw<p)
+# print("Hypertension Meds")
+# print(mean(OHIE$hbp_diure_med_inp[OHIE$insurance==0],na.rm=TRUE))
+# print(mean(OHIE$hbp_diure_med_inp[OHIE$insurance==1],na.rm=TRUE)-mean(OHIE$hbp_diure_med_inp[OHIE$insurance==0],na.rm=TRUE))
+
+# # Hypercholesterolemia diagnosis after insurance (should be .061 + .0239)
+# draw <- runif(n_intvw)
+# xb   <- -2.72+.371*(OHIE$insurance[!is.na(OHIE$chl_dx_post_insurance)]==1)
+# p    <- exp(xb)/(1+exp(xb))
+# OHIE$chl_dx_post_insurance[!is.na(OHIE$chl_dx_post_insurance)] <- as.integer(draw<p)
+# print("Hypercholesterolemia")
+# print(mean(OHIE$chl_dx_post_insurance[OHIE$insurance==0],na.rm=TRUE))
+# print(mean(OHIE$chl_dx_post_insurance[OHIE$insurance==1],na.rm=TRUE)-mean(OHIE$chl_dx_post_insurance[OHIE$insurance==0],na.rm=TRUE))
+
+# # Current use of high cholesterol medication (should be .085 + .0380)
+# draw <- runif(n_intvw)
+# xb   <- -2.36+.384*(OHIE$insurance[!is.na(OHIE$antihyperlip_med_inp)]==1)
+# p    <- exp(xb)/(1+exp(xb))
+# OHIE$antihyperlip_med_inp[!is.na(OHIE$antihyperlip_med_inp)] <- as.integer(draw<p)
+# print("Hypercholesterolemia Meds")
+# print(mean(OHIE$antihyperlip_med_inp[OHIE$insurance==0],na.rm=TRUE))
+# print(mean(OHIE$antihyperlip_med_inp[OHIE$insurance==1],na.rm=TRUE)-mean(OHIE$antihyperlip_med_inp[OHIE$insurance==0],na.rm=TRUE))
+
+# Positive depression screen (should be .3 - .0915)
+draw <- runif(n_intvw)
+xb   <- -.828-.55*(OHIE$insurance[!is.na(OHIE$pos_depression_screen)]==1)-.8*(OHIE$gender_inp[!is.na(OHIE$lottery)]==1)+.5*(OHIE$age_19_34_inp[!is.na(OHIE$lottery)]==1)+1*(OHIE$age_35_49_inp[!is.na(OHIE$lottery)]==1)+2*(OHIE$age_50_64_inp[!is.na(OHIE$lottery)]==1)+1.3*(OHIE$race_white_inp[!is.na(OHIE$lottery)]==1)-.4*(OHIE$race_black_inp[!is.na(OHIE$lottery)]==1)-.2*(OHIE$race_nwother_inp[!is.na(OHIE$lottery)]==1)+.1*(OHIE$hispanic_inp[!is.na(OHIE$lottery)]==1)-.7*(OHIE$itvw_english_inp[!is.na(OHIE$lottery)]==1)
+p    <- exp(xb)/(1+exp(xb))
+OHIE$pos_depression_screen[!is.na(OHIE$pos_depression_screen)] <- as.integer(draw<p)
+# print("Positive depression screen")
+# print(mean(OHIE$pos_depression_screen[OHIE$insurance==0],na.rm=TRUE))
+# print(mean(OHIE$pos_depression_screen[OHIE$insurance==1],na.rm=TRUE)-mean(OHIE$pos_depression_screen[OHIE$insurance==0],na.rm=TRUE))
+
+# # Depression diagnosis after insurance (should be .048 + .0381)
+# draw <- runif(n_intvw)
+# xb   <- -3.22+.571*(OHIE$insurance[!is.na(OHIE$dep_dx_post_insurance)]==1)
+# p    <- exp(xb)/(1+exp(xb))
+# OHIE$dep_dx_post_insurance[!is.na(OHIE$dep_dx_post_insurance)] <- as.integer(draw<p)
+# print("Depression diagnosis after insurance")
+# print(mean(OHIE$dep_dx_post_insurance[OHIE$insurance==0],na.rm=TRUE))
+# print(mean(OHIE$dep_dx_post_insurance[OHIE$insurance==1],na.rm=TRUE)-mean(OHIE$dep_dx_post_insurance[OHIE$insurance==0],na.rm=TRUE))
+
+# # Current use of depression meds (should be .168 + .0549)
+# draw <- runif(n_intvw)
+# xb   <- -1.825+.46*(OHIE$insurance[!is.na(OHIE$antidep_med_inpbinary)]==1)
+# p    <- exp(xb)/(1+exp(xb))
+# OHIE$antidep_med_inpbinary[!is.na(OHIE$antidep_med_inpbinary)] <- as.integer(draw<p)
+# print("Current use of depression meds")
+# print(mean(OHIE$antidep_med_inpbinary[OHIE$insurance==0],na.rm=TRUE))
+# print(mean(OHIE$antidep_med_inpbinary[OHIE$insurance==1],na.rm=TRUE)-mean(OHIE$antidep_med_inpbinary[OHIE$insurance==0],na.rm=TRUE))
+
+# # Diabetes diagnosis after insurance (should be .011 + .0383)
+# draw <- runif(n_intvw)
+# xb   <- -4.44+1.451*(OHIE$insurance[!is.na(OHIE$dia_dx_post_insurance)]==1)
+# p    <- exp(xb)/(1+exp(xb))
+# OHIE$dia_dx_post_insurance[!is.na(OHIE$dia_dx_post_insurance)] <- as.integer(draw<p)
+# print("Diabetes diagnosis after insurance")
+# print(mean(OHIE$dia_dx_post_insurance[OHIE$insurance==0],na.rm=TRUE))
+# print(mean(OHIE$dia_dx_post_insurance[OHIE$insurance==1],na.rm=TRUE)-mean(OHIE$dia_dx_post_insurance[OHIE$insurance==0],na.rm=TRUE))
+
+# # Continuous outcomes
+# OHIE$bp_sar_inp[!is.na(OHIE$bp_sar_inp)]         <- rnorm(n_intvw,mean=119.3,sd=16.9)-.52*(OHIE$insurance[!is.na(OHIE$bp_sar_inp)]==1)
+# OHIE$bp_dar_inp[!is.na(OHIE$bp_dar_inp)]         <- rnorm(n_intvw,mean= 76.0,sd=12.1)-.81*(OHIE$insurance[!is.na(OHIE$bp_dar_inp)]==1)
+# OHIE$bp_hyper[!is.na(OHIE$bp_sar_inp)]           <- as.integer(OHIE$bp_sar_inp[!is.na(OHIE$bp_sar_inp)]>=140 & OHIE$bp_dar_inp[!is.na(OHIE$bp_sar_inp)]>=90)
+# OHIE$chl_inp[!is.na(OHIE$chl_inp)]               <- rnorm(n_intvw,mean=204.1,sd=34.0)+2.2*(OHIE$insurance[!is.na(OHIE$chl_inp)]==1)
+# OHIE$hdl_inp[!is.na(OHIE$hdl_inp)]               <- rnorm(n_intvw,mean= 47.6,sd=13.1)+2.2*(OHIE$insurance[!is.na(OHIE$hdl_inp)]==1)
+# OHIE$chl_h[!is.na(OHIE$chl_inp)]                 <- as.integer(OHIE$chl_inp[!is.na(OHIE$chl_inp)]>=240)
+# OHIE$hdl_low[!is.na(OHIE$hdl_inp)]               <- as.integer(OHIE$hdl_inp[!is.na(OHIE$hdl_inp)]< 40 )
+# OHIE$a1c_inp[!is.na(OHIE$a1c_inp)]               <- rnorm(n_intvw,mean=  5.3,sd= 0.6)+0.1*(OHIE$insurance[!is.na(OHIE$hdl_inp)]==1)
+# OHIE$a1c_dia[!is.na(OHIE$a1c_inp)]               <- as.integer(OHIE$a1c_inp[!is.na(OHIE$a1c_dia)]>=6.5)
+# OHIE$cvd_risk_point[!is.na(OHIE$cvd_risk_point)] <- rnorm(n_intvw,mean=  8.2,sd= 7.5)-0.2*(OHIE$insurance[!is.na(OHIE$cvd_risk_point)]==1)
+
+#------------------------------------------
+# Pare down data
+#------------------------------------------
+OHIE <- OHIE[!is.na(OHIE$pos_depression_screen),c("id","intvw","lottery","gender_inp","age_19_34_inp","age_35_49_inp","age_50_64_inp","race_white_inp","race_black_inp","race_nwother_inp","hispanic_inp","itvw_english_inp","insurance","pos_depression_screen")]
+
+# # Add code for ivreg2 function
+# ivreg2 <- function(form,endog,iv,data,digits=3){
+    # # library(MASS)
+    # # model setup
+    # r1 <- lm(form,data)
+    # y <- r1$fitted.values+r1$resid
+    # x <- model.matrix(r1)
+    # aa <- rbind(endog == colnames(x),1:dim(x)[2])  
+    # z <- cbind(x[,aa[2,aa[1,]==0]],data[,iv])  
+    # colnames(z)[(dim(z)[2]-length(iv)+1):(dim(z)[2])] <- iv  
+    # # iv coefficients and standard errors
+    # z <- as.matrix(z)
+    # pz <- z %*% (solve(crossprod(z))) %*% t(z)
+    # biv <- solve(crossprod(x,pz) %*% x) %*% (crossprod(x,pz) %*% y)
+    # sigiv <- crossprod((y - x %*% biv),(y - x %*% biv))/(length(y)-length(biv))
+    # vbiv <- as.numeric(sigiv)*solve(crossprod(x,pz) %*% x)
+    # res <- cbind(biv,sqrt(diag(vbiv)),biv/sqrt(diag(vbiv)),(1-pnorm(biv/sqrt(diag(vbiv))))*2)
+    # res <- matrix(as.numeric(sprintf(paste("%.",paste(digits,"f",sep=""),sep=""),res)),nrow=dim(res)[1])
+    # rownames(res) <- colnames(x)
+    # colnames(res) <- c("Coef","S.E.","t-stat","p-val")
+    # # First-stage F-test
+    # y1 <- data[,endog]
+    # z1 <- x[,aa[2,aa[1,]==0]]
+    # bet1 <- solve(crossprod(z)) %*% crossprod(z,y1)
+    # bet2 <- solve(crossprod(z1)) %*% crossprod(z1,y1)
+    # rss1 <- sum((y1 - z %*% bet1)^2)
+    # rss2 <- sum((y1 - z1 %*% bet2)^2)
+    # p1 <- length(bet1)
+    # p2 <- length(bet2)
+    # n1 <- length(y)
+    # fs <- abs((rss2-rss1)/(p2-p1))/(rss1/(n1-p1))
+    # firststage <- c(fs)
+    # firststage <- matrix(as.numeric(sprintf(paste("%.",paste(digits,"f",sep=""),sep=""),firststage)),ncol=length(firststage))
+    # colnames(firststage) <- c("First Stage F-test")
+    # # Hausman tests
+    # bols <- solve(crossprod(x)) %*% crossprod(x,y) 
+    # sigols <- crossprod((y - x %*% bols),(y - x %*% bols))/(length(y)-length(bols))
+    # vbols <- as.numeric(sigols)*solve(crossprod(x))
+    # sigml <- crossprod((y - x %*% bols),(y - x %*% bols))/(length(y))
+    # x1 <- x[,!(colnames(x) %in% "(Intercept)")]
+    # z1 <- z[,!(colnames(z) %in% "(Intercept)")]
+    # pz1 <- z1 %*% (solve(crossprod(z1))) %*% t(z1)
+    # biv1 <- biv[!(rownames(biv) %in% "(Intercept)"),]
+    # bols1 <- bols[!(rownames(bols) %in% "(Intercept)"),]
+    # # Durbin-Wu-Hausman chi-sq test:
+    # # haus <- t(biv1-bols1) %*% ginv(as.numeric(sigml)*(solve(crossprod(x1,pz1) %*% x1)-solve(crossprod(x1)))) %*% (biv1-bols1)
+    # # hpvl <- 1-pchisq(haus,df=1)
+    # # Wu-Hausman F test
+    # resids <- NULL
+    # resids <- cbind(resids,y1 - z %*% solve(crossprod(z)) %*% crossprod(z,y1))
+    # x2 <- cbind(x,resids)
+    # bet1 <- solve(crossprod(x2)) %*% crossprod(x2,y)
+    # bet2 <- solve(crossprod(x)) %*% crossprod(x,y)
+    # rss1 <- sum((y - x2 %*% bet1)^2)
+    # rss2 <- sum((y - x %*% bet2)^2)
+    # p1 <- length(bet1)
+    # p2 <- length(bet2)
+    # n1 <- length(y)
+    # fs <- abs((rss2-rss1)/(p2-p1))/(rss1/(n1-p1))
+    # fpval <- 1-pf(fs, p1-p2, n1-p1)
+    # #hawu <- c(haus,hpvl,fs,fpval)
+    # hawu <- c(fs,fpval)
+    # hawu <- matrix(as.numeric(sprintf(paste("%.",paste(digits,"f",sep=""),sep=""),hawu)),ncol=length(hawu))
+    # #colnames(hawu) <- c("Durbin-Wu-Hausman chi-sq test","p-val","Wu-Hausman F-test","p-val")
+    # colnames(hawu) <- c("Wu-Hausman F-test","p-val")  
+    # # Sargan Over-id test
+    # ivres <- y - (x %*% biv)
+    # oid <- solve(crossprod(z)) %*% crossprod(z,ivres)
+    # sstot <- sum((ivres-mean(ivres))^2)
+    # sserr <- sum((ivres - (z %*% oid))^2)
+    # rsq <- 1-(sserr/sstot)
+    # sargan <- length(ivres)*rsq
+    # spval <- 1-pchisq(sargan,df=length(iv)-1)
+    # overid <- c(sargan,spval)
+    # overid <- matrix(as.numeric(sprintf(paste("%.",paste(digits,"f",sep=""),sep=""),overid)),ncol=length(overid))
+    # colnames(overid) <- c("Sargan test of over-identifying restrictions","p-val")
+    # if(length(iv)-1==0){
+      # overid <- t(matrix(c("No test performed. Model is just identified")))
+      # colnames(overid) <- c("Sargan test of over-identifying restrictions")
+    # }
+    # full <- list(results=res, weakidtest=firststage, endogeneity=hawu, overid=overid)
+    # return(full)
+# }
+```
+
+*** =sample_code
+```{r}
+# The dataset `OHIE` and the function `ivreg2` are both available in your workspace.
+
+# 1) Using a linear regression, compute the ITT effect of being assigned to the treatment group ("lottery" variable) on positive depression screening, while also controlling for gender, age, ehtnicity, and interview language. Exclude age 18-34 and white from the set of right hand side dummy variables.
+
+    Solution1<-summary(lm( ~ ,data=OHIE))
+
+
+# 2) Compute the the 2SLS effect of insurance takeup on depression by using "lottery" as an instrument for the endogenous takeup indicator "insurance"
+
+    OHIE$prediction<-predict(lm( ~ ,data=OHIE))
+    Solution2<-summary(lm( ~ prediction+... ,data=OHIE))
+
+```
+
+*** =solution
+```{r}
+Solution1<-summary(lm(pos_depression_screen~lottery+gender_inp+age_35_49_inp+age_50_64_inp+race_black_inp+race_nwother_inp+hispanic_inp+itvw_english_inp,data=OHIE))
+OHIE$prediction<-predict(lm(insurance~lottery+gender_inp+age_35_49_inp+age_50_64_inp+race_black_inp+race_nwother_inp+hispanic_inp+itvw_english_inp,data=OHIE),data=CreditCo)
+Solution2<-summary(lm(pos_depression_screen~prediction+gender_inp+age_35_49_inp+age_50_64_inp+race_black_inp+race_nwother_inp+hispanic_inp+itvw_english_inp,data=OHIE),data=CreditCo)
+```
+
+*** =sct
+```{r}
+test_object("Solution1")
+test_object("Solution2")
+success_msg("Good work!")
+```
