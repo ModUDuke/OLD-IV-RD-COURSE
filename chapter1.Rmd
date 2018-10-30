@@ -118,22 +118,7 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 *** =video_link
 //player.vimeo.com/video/219559305
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:5ad3dddd73
-## Is it Endogenous vs Exogenous Variation? 
-Suppose you are interested in the economic status of new college graduates, and have just gotten access to geographic data on where people live and work after they graduate from college. In your first step of data analysis, you subset this geographic data to categorize both their home and work locations as either urban or rural, giving you a binary treatment variable. Let's say that you then compare what kinds of places (rural vs. urban) where people live versus the kinds of places where they work. What kind of variation would that variable have?
 
-*** =instructions
-- Exogenous
-- Endogenous
-- Both
-
-*** =sct
-```{r}
-msg1 = "Where people choose to live and work are usually affected by at least some shared factors, which means it's not all external forces impacting these--unless they are in the military or in prison! Try again"
-msg2 = "Correct! People who work in urban areas probably live in urban areas, and people that work in rural areas probably live in rural areas, so these choices are being influenced by shared factors, which means they have endogenous variation. The most common exceptions to this would be things like military service (or a prison sentence!)."
-msg3 = "While there might be external reasons that affect people's choice of where to live in ways they cannot change, usually it's the case that people ultimately make the decision on where they want to live. Try again"
-test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
-```
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:01af032fa2
 ## Alan the Egg Farmer Turns to Instrumental Variables
@@ -168,6 +153,23 @@ test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4))
 *** =video_link
 //player.vimeo.com/video/219565557
 
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:5ad3dddd73
+## Is it Endogenous vs Exogenous Variation? 
+Suppose you are interested in the economic status of new college graduates, and have just gotten access to geographic data on where people live and work after they graduate from college. In your first step of data analysis, you subset this geographic data to categorize both their home and work locations as either urban or rural, giving you a binary treatment variable. Let's say that you then compare what kinds of places (rural vs. urban) where people live versus the kinds of places where they work. What kind of variation would that variable have?
+
+*** =instructions
+- Exogenous
+- Endogenous
+- Both
+
+*** =sct
+```{r}
+msg1 = "Where people choose to live and work are usually affected by at least some shared factors, which means it's not all external forces impacting these--unless they are in the military or in prison! Try again"
+msg2 = "Correct! People who work in urban areas probably live in urban areas, and people that work in rural areas probably live in rural areas, so these choices are being influenced by shared factors, which means they have endogenous variation. The most common exceptions to this would be things like military service (or a prison sentence!)."
+msg3 = "While there might be external reasons that affect people's choice of where to live in ways they cannot change, usually it's the case that people ultimately make the decision on where they want to live. Try again"
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
+```
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
 ## The Problem of Weak Instruments
