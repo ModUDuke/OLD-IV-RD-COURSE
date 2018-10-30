@@ -13,6 +13,14 @@ description : "This chapter will introduce you to Instrumental Variables (IV) an
 *** =video_link
 //player.vimeo.com/video/219559011
 
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:b70179796d
+## The Three Instrumental Variables Assumptions
+*** =video_link
+//player.vimeo.com/video/219559447
+
+
+
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:8c410956e7
 ## What is the Relationship Between the Instrument and the Outcome?
 As the videos discussed, there are some strict requirements to use instrumental variables analysis, so we will review the relationship between the instrument and the outcome. Which one of these is the correct assumption for IV analysis?
