@@ -834,7 +834,7 @@ OHIE <- OHIE[!is.na(OHIE$pos_depression_screen),c("id","intvw","lottery","gender
 
 #  `id` - patient ID
 #  `intvw` - was patient interviewed?
-#  `lottery` - did patient win Medicaid lottery?
+#  `lottery` - did patient win in the Medicaid lottery?
 #  `gender_inp` - gender, where 1 is female*
 #  `age_19_34_inp` - 1 if age is between 19 and 34*
 #  `age_35_49_inp` - 1 if age is between 35 and 49*
@@ -844,7 +844,7 @@ OHIE <- OHIE[!is.na(OHIE$pos_depression_screen),c("id","intvw","lottery","gender
 #  `race_nwother_inp` - 1 if race is nonwhite and nonblack*
 #  `hispanic_inp` - 1 if hispanic*
 #  `itvw_english_inp` - 1 if interview was held in english*
-#  `insurance` - did patient have health insurance?
+#  `insurance` - did patient have health insurance at all?
 #  `pos_depression_screen` - 1 if patient tested positive for depression
 #  * `_inp` variable suffix - recorded during in-person interview
 
