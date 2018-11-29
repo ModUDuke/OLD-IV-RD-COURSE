@@ -830,7 +830,7 @@ OHIE <- OHIE[!is.na(OHIE$pos_depression_screen),c("id","intvw","lottery","gender
 ```{r}
 # The dataset `OHIE` and the function `ivreg2` are both available in your workspace. Here is a data dictionary to help you make sense of the variable names and what they are representing:
 
-**Data Dictionary**
+*Data Dictionary*
 
 #  `id` - patient ID
 #  `intvw` - was patient interviewed?
@@ -846,7 +846,7 @@ OHIE <- OHIE[!is.na(OHIE$pos_depression_screen),c("id","intvw","lottery","gender
 #  `itvw_english_inp` - 1 if interview was held in english*
 #  `insurance` - did patient have health insurance at all?
 #  `pos_depression_screen` - 1 if patient tested positive for depression
-#  * `_inp` variable suffix - recorded during in-person interview
+#  *note: `_inp` variable suffix - recorded during in-person interview
 
 # 1) Using a linear regression, compute the ITT effect of being assigned to the treatment group ("lottery" variable) on positive depression screening, while also controlling for gender, age, ehtnicity, and interview language. Exclude age 18-34 and white from the set of right hand side dummy variables.
 
