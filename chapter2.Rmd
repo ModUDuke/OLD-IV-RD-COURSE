@@ -530,24 +530,7 @@ In an earlier course, you analyzed data from the Oregon Healthcare Insurance Exp
 
 Instead, we will instrument for Medicaid takeup using assignment to the treatment group as an instrument.
 
-**Data Dictionary**
-
-  # id - patient ID
-  # intvw - was patient interviewed?
-  # lottery - did patient win Medicaid lottery?
-  # gender_inp - gender, where 1 is female*
-  # age_19_34_inp - 1 if age is between 19 and 34*
-  # age_35_49_inp - 1 if age is between 35 and 49*
-  # age_50_64_inp - 1 if age is between 50 and 64*
-  # race_white_inp -  1 if race is white*
-  # race_black_inp - 1 if race is black*
-  # race_nwother_inp - 1 if race is nonwhite and nonblack*
-  # hispanic_inp - 1 if hispanic*
-  # itvw_english_inp - 1 if interview was held in english*
-  # insurance - did patient have health insurance?
-  # pos_depression_screen - 1 if patient tested positive for depression
-  # * '_inp' variable suffix - recorded during in-person interview
-  
+ 
 *** =instructions
 - 1) Compute the ITT effect of being offered insurance on having a positive depression screening
 - 2) Estimate the 2SLS effect of taking up the offer on positive depression screening using two separate calls to `lm()`
@@ -845,7 +828,25 @@ OHIE <- OHIE[!is.na(OHIE$pos_depression_screen),c("id","intvw","lottery","gender
 
 *** =sample_code
 ```{r}
-# The dataset `OHIE` and the function `ivreg2` are both available in your workspace.
+# The dataset `OHIE` and the function `ivreg2` are both available in your workspace. Here is a data dictionary to help you make sense of the variable names and what they are representing:
+
+**Data Dictionary**
+
+#  `id` - patient ID
+#  `intvw` - was patient interviewed?
+#  `lottery` - did patient win Medicaid lottery?
+#  `gender_inp` - gender, where 1 is female*
+#  `age_19_34_inp` - 1 if age is between 19 and 34*
+#  `age_35_49_inp` - 1 if age is between 35 and 49*
+#  `age_50_64_inp` - 1 if age is between 50 and 64*
+#  `race_white_inp` -  1 if race is white*
+#  `race_black_inp` - 1 if race is black*
+#  `race_nwother_inp` - 1 if race is nonwhite and nonblack*
+#  `hispanic_inp` - 1 if hispanic*
+#  `itvw_english_inp` - 1 if interview was held in english*
+#  `insurance` - did patient have health insurance?
+#  `pos_depression_screen` - 1 if patient tested positive for depression
+#  * `_inp` variable suffix - recorded during in-person interview
 
 # 1) Using a linear regression, compute the ITT effect of being assigned to the treatment group ("lottery" variable) on positive depression screening, while also controlling for gender, age, ehtnicity, and interview language. Exclude age 18-34 and white from the set of right hand side dummy variables.
 
