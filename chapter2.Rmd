@@ -530,6 +530,23 @@ In an earlier course, you analyzed data from the Oregon Healthcare Insurance Exp
 
 Instead, we will instrument for Medicaid takeup using assignment to the treatment group as an instrument.
 
+**Data Dictionary**
+  '_inp' variable suffix - recorded during in-person interview
+  id - patient ID
+  intvw - was patient interviewed?
+  lottery - did patient win Medicaid lottery?
+  gender_inp - gender, where 1 is female (taken from in-person interview)
+  age_19_34_inp - 1 if age is between 19 and 34 (taken from in-person interview)
+  age_35_49_inp - 1 if age is between 35 and 49 (taken from in-person interview)
+  age_50_64_inp - 1 if age is between 50 and 64 (taken from in-person interview)
+  race_white_inp -  1 if race is white (taken from in-person interview)
+  race_black_inp - 1 if race is black (taken from in-person interview)
+  race_nwother_inp - 1 if race is nonwhite and nonblack (taken from in-person interview)
+  hispanic_inp - 1 if hispanic (taken from in-person interview)
+  itvw_english_inp - 1 if interview was held in english (taken from in-person interview)
+  insurance - did patient have health insurance?
+  pos_depression_screen - 1 if patient tested positive for depression
+
 *** =instructions
 - 1) Compute the ITT effect of being offered insurance on having a positive depression screening
 - 2) Estimate the 2SLS effect of taking up the offer on positive depression screening using two separate calls to `lm()`
