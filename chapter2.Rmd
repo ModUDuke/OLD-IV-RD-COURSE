@@ -87,9 +87,10 @@ As you may recall, CreditCo sent out offers in the mail to increase their custom
 Included on the workspace is a dataset from CreditCo. The data are a sample of CreditCo customers who were offered the credit limit increase. We will focus on the variable `rainy`, which we will use as an instrument for `opt_in`, which we suspect is endogenous to our outcomes of interest.
 
 *** =instructions
-- 1) Using a linear regression, compute the correlation between opt-in and rain.
-- 2) Test whether rain satisfies the relevance assumption (i.e. if its correlation with opt-in is significantly different from zero).
-- 3) What is the sign of the correlation between rain and opt-in?
+- 1) Explore the dataset `CreditCo` on your own with basic tools like head(), str(), and summary().
+- 2) Using a linear regression, compute the correlation between opt-in and rain.
+- 3) Test whether rain satisfies the relevance assumption (i.e. if its correlation with opt-in is significantly different from zero).
+- 4) What is the sign of the correlation between rain and opt-in?
 
 *** =hint
 - Remember to be aware of selecting the correct subsample
@@ -157,38 +158,59 @@ Included on the workspace is a dataset from CreditCo. The data are a sample of C
 
 *** =sample_code
 ```{r}
-# The dataset `CreditCo` is available in your workspace.
+# The dataset `CreditCo` is available in your workspace. Here is a data dictionary to help you make sense of the variable names and what they are representing:
 
-# 1) First we need to determine whether our instrument satisfies the Relevance Assumption, and we'll start this process by looking to see if it has any correlation with our outcome variable. Using a linear regression, compute the correlation between rain and opt-in status.
+*Data Dictionary*
 
-    Solution1<-lm( ~ ,data=CreditCo)
+#  `id` - customer ID
+#  `offered` - did customer get the offer for a higher limit?
+#  `opt_in` - did the customer opt into the higher limit?
+#  `FICO` - an industry standard credit rating score per customer
+#  `age` - customer age
+#  `female` - 1 if gender is female
+#  `race_white` -  1 if race is recorded as white, 0 if anything else
+#  `default_pre` - customer's default rate before the offer
+#  `default_post` - customer's default rate after the offer
+#  `balance_pre` - customer's credit balance before the offer
+#  `balance_post` - customer's credit balance after the offer
+#  `rainy` - TRUE if it rained at the customer's house
 
 
-# 2) If it does have a correlation, we need to make sure it's a statistically significant one. What is the p-value associated with the t-test on the coefficient of rain?
-
-    Solution2<-summary(Solution1)$coefficients[2,4]
+# 1) On your own, explore the dataframe and get familiar with the ranges of values and data types it contains. We suggest using commands like head(), str(), and summary() for different variables to get a sense of what the data look like. 
 
 
-# 3) What is the sign of the correlation between rain and opt-in?
 
-    Solution3<-sign(Solution1$coefficients[2])
+
+# 2) First we need to determine whether our instrument satisfies the Relevance Assumption, and we'll start this process by looking to see if it has any correlation with our outcome variable. Using a linear regression, compute the correlation between rain and opt-in status.
+
+    Solution2<-lm( ~ ,data=CreditCo)
+
+
+# 3) If it does have a correlation, we need to make sure it's a statistically significant one. What is the p-value associated with the t-test on the coefficient of rain?
+
+    Solution3<-summary(Solution1)$coefficients[2,4]
+
+
+# 4) What is the sign of the correlation between rain and opt-in?
+
+    Solution4<-sign(Solution1$coefficients[2])
 
 
 ```
 
 *** =solution
 ```{r}
-Solution1 <- lm(opt_in~rainy,data=CreditCo)
-Solution2 <- summary(Solution1)$coefficients[2,4]
-Solution3 <- sign(Solution1$coefficients[2])
+Solution2 <- lm(opt_in~rainy,data=CreditCo)
+Solution3 <- summary(Solution1)$coefficients[2,4]
+Solution4 <- sign(Solution1$coefficients[2])
 ```
 
 *** =sct
 ```{r}
-test_object("Solution1")
 test_object("Solution2")
 test_object("Solution3")
-success_msg("Good work! Our instrument does seem to have a statistically significant negative correlation with our outcome variable. This is one important pillar that supports our argument that we can use the rainy weather as an instrument in this analysis. ")
+test_object("Solution4")
+success_msg("Good work! Our instrument does seem to have a statistically significant negative correlation with our outcome variable. This is one important pillar that supports our argument that we can use the rainy weather as an instrument in this analysis.")
 ```
 
 
@@ -306,7 +328,26 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
 
 *** =sample_code
 ```{r}
-# The dataset `CreditCo` is available in your workspace.
+# The dataset `CreditCo` is available in your workspace. Again, here is a data dictionary to help you make sense of the variable names and what they are representing:
+
+*Data Dictionary*
+
+#  `id` - customer ID
+#  `offered` - did customer get the offer for a higher limit?
+#  `opt_in` - did the customer opt into the higher limit?
+#  `FICO` - an industry standard credit rating score per customer
+#  `age` - customer age
+#  `female` - 1 if gender is female
+#  `race_white` -  1 if race is recorded as white, 0 if anything else
+#  `default_pre` - customer's default rate before the offer
+#  `default_post` - customer's default rate after the offer
+#  `balance_pre` - customer's credit balance before the offer
+#  `balance_post` - customer's credit balance after the offer
+#  `rainy` - TRUE if it rained at the customer's house
+#  `coefficients` - where we will store coefficients from our regressions
+
+
+# In order to see if a higher credit limit will make people buy more things with their credit cards, we  will use indirect inference to calculate the causal effect of getting a credit card offer on the credit balances of the customers. This will take 3 steps: first, we will calculate the correlation between our instrument and our outcome variable, then we will calculate the correlation between our instrument and our treatment, and then we'll find the ratio between these correlations.
 
 # 1) Using a linear regression, compute the reduced-form effect (i.e. correlation between `balance_post` and `rainy`).
 
@@ -318,12 +359,12 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
     Solution2<-lm( ~ ,data=CreditCo)
 
 
-# 3) Compute the causal effect, which is equal to (reduced form)/(first stage)
+# 3) Compute the causal effect, which is equal to (reduced form)/(first stage):
 
     Solution3<-Solution1$coefficients[2]/Solution2$coefficients[2]
 
 
-# 4) Did opting in to the credit offer increase or decrease credit balances? (type "increased" if Solution3 is positive or "decreased" if Solution3 is negative)
+# 4) Did opting in to the credit offer make customer's credit balances increase or decrease? (type "increase" if Solution3 is positive or "decrease" if Solution3 is negative)
 
     Solution4<-""
 
@@ -335,7 +376,7 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
 Solution1 <- lm(balance_post~rainy,data=CreditCo)
 Solution2 <- lm(opt_in~rainy,data=CreditCo)
 Solution3 <- Solution1$coefficients[2]/Solution2$coefficients[2]
-Solution4 <- "increased"
+Solution4 <- "increase"
 ```
 
 *** =sct
@@ -344,7 +385,7 @@ test_object("Solution1")
 test_object("Solution2")
 test_object("Solution3")
 test_object("Solution4")
-success_msg("Good work!")
+success_msg("Good work! Based on this indirect inference analysis, the offer of a higher credit limit does indeed seem to cause people buy more stuff on their credit card. But let's see how this looks with the 2SLS method as well!")
 ```
 
 
@@ -430,25 +471,42 @@ Now let us repeat the previous CreditCo analysis, but now use 2SLS to compute th
 
 *** =sample_code
 ```{r}
-# The dataset `CreditCo` is available in your workspace
+# The dataset `CreditCo` is available in your workspace. Onc again, here is a data dictionary to help you make sense of the variable names and what they are representing:
 
-# 1) Using a linear regression, compute the first-stage effect (i.e. correlation between `opt_in` and `rainy`)
+*Data Dictionary*
+
+#  `id` - customer ID
+#  `offered` - did customer get the offer for a higher limit?
+#  `opt_in` - did the customer opt into the higher limit?
+#  `FICO` - an industry standard credit rating score per customer
+#  `age` - customer age
+#  `female` - 1 if gender is female
+#  `race_white` -  1 if race is recorded as white, 0 if anything else
+#  `default_pre` - customer's default rate before the offer
+#  `default_post` - customer's default rate after the offer
+#  `balance_pre` - customer's credit balance before the offer
+#  `balance_post` - customer's credit balance after the offer
+#  `rainy` - TRUE if it rained at the customer's house
+
+
+# We'll use the 2-Stage Least Squares method to calculate our causal effect through our instrumental variable, `rainy`. The first stage is to find the correlation between the treatment and the instrument, which we will store in the variable `prediction`, and the second stage is to find the correlation between our outcome of interest, `balance_post`, and our adjusted treatment variable `prediction`. This will give us the causal effect of being offered a higher credit limit on our outcome of interest, the credit card balance of CreditCo customers.
+
+# 1) Using a linear regression, compute the first-stage effect (i.e. correlation between `opt_in` and `rainy`), and look at the results with the summary() function:
 
     Solution1<-lm( ~ ,data=CreditCo)
+    summary()
 
-
-# 2) Compute the predicted opt-in rate for each person and include it as a variable in the `CreditCo` data frame
+# 2) We will now take this correlation between our instrument and our treatment and generate a predicted opt-in rate for all of the customers in our database. Compute the predicted opt-in rate for each person, and add them to our dataset through the variable `prediction` in the CreditCo dataframe:
 
     Solution2<-predict(Solution1,data=CreditCo)
     CreditCo$prediction <- Solution2
 
-
-# 3) Compute the causal effect, which is a regression of credit balance on the predicted values
+# 3) Now let's compute our second-stage effect, which is the correlation between our predicted treatment values and our outcome of interest. To do this, compute the causal effect, which is a regression of credit balance on the predicted treatment values:
 
     Solution3<-lm( ~ ,data=CreditCo)
+    summary()
 
-
-# 4) Did opting in to the credit offer increase or decrease credit balances? (type "increased" or "decreased")
+# 4) Based on our use of the instrumental variable of `rainy`, did opting in to the credit offer increase or decrease credit balances of CreditCo's customers? (to Solution 4, type "increased" or "decreased")
 
     Solution4<-""
 
@@ -470,7 +528,7 @@ test_object("Solution1")
 test_object("Solution2")
 test_object("Solution3")
 test_object("Solution4")
-success_msg("Good work!")
+success_msg("Good work! The offer does seem to be effective, and our IV analysis tells us that the credit card offer caused customers to spend more money with their credit cards, which means CreditCo made more money on their interest payments.")
 ```
 
 --- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:458e4ed187
@@ -861,7 +919,7 @@ OHIE <- OHIE[!is.na(OHIE$pos_depression_screen),c("id","intvw","lottery","gender
 
 # Good. If you take a look at Solution1, you'll see that having the option of getting insurance through the lotter seems to have a small downward pressure on our positive depression screen variable, which is good! But is this really a causal effect? Let's try again with IV analysis and see what we get.
 
-# 3) We'll use the 2-Stage Least Squares method to calculate our causal effect through our instrumental variable, `lottery`. The first stage is to find the correlation between the treatment and the instrument, which we will store in the variable `prediction`, and the second stage is to find the correlation between our outcome and our adjusted treatment variable `prediction`, holding the other variables constant. This will give us the causal effect of health insurance on our outcomeof interest, the ratio of people with positive depression screen scores.
+# 3) We'll use the 2-Stage Least Squares method to calculate our causal effect through our instrumental variable, `lottery`. The first stage is to find the correlation between the treatment and the instrument, which we will store in the variable `prediction`, and the second stage is to find the correlation between our outcome and our adjusted treatment variable `prediction`, holding the other variables constant. This will give us the causal effect of health insurance on our outcome of interest, the ratio of people with positive depression screen scores.
 
 # Compute the the 2SLS effect of insurance takeup on depression by using `lottery` as an instrument for the endogenous takeup indicator "insurance".
 
