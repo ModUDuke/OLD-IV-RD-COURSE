@@ -2205,7 +2205,8 @@ summary.RD<-function(object,digits=max(3, getOption("digits") - 3),...){
 ```
 *** =sample_code
 ```{r}
-# Before running a regression model, let's examine the data
+# Before running a regression model, let's examine the data:
+  
     str(NBA)
 
 # The dataset contains eight variables: a game identifier, a season identifier, two team identifiers (for home and visitor), the quality of the home and visiting teams (a normalized verison of win percentage), and the halftime and end-of-game margins of victory for the home team.
@@ -2214,12 +2215,10 @@ summary.RD<-function(object,digits=max(3, getOption("digits") - 3),...){
 
 # Note that a logical expression like `x > y` in R will return a value of `true` or `false` by default, but you can convert this into a numeric variable with a value of 1 or 0 by wrapping your variable definition in the `as.numeric()` function, like so: as.numeric(x > y). 
 
-
     NBA$home.team.winning.at.half <- as.numeric()
 
-  
-# 2) Let's assume that the effect of the halftime margin on the final margin is a linear one. Use the lm function to compute the RD estimate of being ahead at halftime on the final margin of victory. Include the following as additional controls in the regression: home team's halftime margin, home team quality, and away team quality.
 
+# 2) Let's assume that the effect of the halftime margin on the final margin is a linear one. Use the lm function to compute the RD estimate of being ahead at halftime on the final margin of victory. Include the following as additional controls in the regression: home team's halftime margin, home team quality, and away team quality.
 
     summary(lm())
 
@@ -2233,7 +2232,6 @@ summary.RD<-function(object,digits=max(3, getOption("digits") - 3),...){
 # 4) Nice going. But what if the effect is nonlinear and also not really quadratic? As a last exercise, let's further relax the quadratic assumption of halftime margin. Instead of estimating an OLS regression using the lm function, we will now use a package called 'rdd' which gives us more options to test the sensitivity of the regression assumptions for our RD estimate.
 
 # In this case, the function we will use is called RDestimate. Without getting into too many details, we will look at one of its functions that provides a nonparametric model that we can compare to our linear and quadratic models. run the following syntax as your answer to Question 4, and compare the results to the prior estimate results:
-
 
     summary(RDestimate(home.team.final.margin ~ home.team.halftime.margin | home.team.qual+away.team.qual,data=NBA))
 
@@ -2299,18 +2297,21 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 
 --- type:NormalExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:1de601c34a
 ## Examining Manipulation in Regression Discontinuity Designs
-As we have mentioned, the main idea with RD is that there should not be any difference in the people on either side of the cutoff. So a big part of RD analysis is to check whether this is actually true in our data. For example, the distributions of our variables should be the same on both sides of the cutoff. If we find differences in our distributions, then we might need to worry that these differences are due to people choosing which side of the cutoff to be on.
+As we have mentioned, the main idea with Regression Discontinuity is that there should not be any difference in the people on either side of the cutoff. So a big part of RD analysis is to check whether this is actually true in our data. For example, the distributions of our variables should be the same on both sides of the cutoff. If we find differences in our distributions, then we might need to worry that these differences are due to people choosing which side of the cutoff to be on.
 
-Let's look at this by revisiting the NBA data we used before in previous exercises. In professional basketball games, manipulation might happen if teams try to be down by 1 or 2 points at halftime--perhaps because they read that research paper published in Management Science!
+Let's look at this by revisiting the NBA data we used before in previous exercises. In that data, we saw that teams that are losing by 1 or 2 points at halftime end up winning the games a lot more than you would expect. If the coaches and players know this is true, they might try to manipulate the score so that they are the ones losing by 1 or 2 at halftime (perhaps because they read that research paper published in Management Science!). If we look at a density plot of our data, we would see this as a kind of lump in the distribution on one side next to the cutoff, instead of a smooth curve in our data density.
+
+So we will check the data to check our distributions near the cutoff with the statistical McCrary test, which tests whether there is a discontinuity in the data frequency distribution around the cutoff. We will look at plots and at the p-values of the McCrary tests, and if the p-values are at or below .05, then we can be 95% confident that manipulation has occurred. So let's find out if that is true in this NBA data.
 
 *** =instructions
 - 1) Using the function `DCdensity` which is already on your workspace, plot the distribution of data near the cutoff
-- The statistical test to do this is called the McCrary test. It tests whether there is a discontinuity in the data frequency distribution around the cutoff. A p-value of less than 5% implies that the data are manipulated.
 - The syntax for the `DCdensity` function is: `DCdensity(runningvar,discontinuityvalue,plot=TRUE/FALSE)`
+
+*** =hint
+- A p-value less than or equal to .05 means that we can have 95% confidence that the data has actually been manipulated
 
 *** =pre_exercise_code
 ```{r}
-set.seed(1)
 set.seed(1)
 n <- 18060
 
@@ -2360,7 +2361,7 @@ NBA$away.team <- as.factor(NBA$away.team)
 NBA$home.team.halftime.score  <- round(NBA$home.team.qual+rnorm(n, mean=48, sd=4), digits=0)
 NBA$away.team.halftime.score  <- round(NBA$away.team.qual+rnorm(n, mean=47, sd=6), digits=0)
 NBA$home.team.halftime.margin <- NBA$home.team.halftime.score - NBA$away.team.halftime.score
-NBA$home.team.halftime.margin.cheat <- NBA$home.team.halftime.margin-2*(NBA$home.team.halftime.margin==1)-3*(NBA$home.team.halftime.margin==2)
+NBA$home.team.halftime.margin.newdata <- NBA$home.team.halftime.margin-2*(NBA$home.team.halftime.margin==1)-3.001*(NBA$home.team.halftime.margin==2)
 
 # Remove games that are tied at halftime
 print(dim(NBA))
@@ -2375,7 +2376,7 @@ NBA$home.team.win             <- NBA$home.team.final.margin>0
 
 # Clean up data
 NBA$season <- as.factor(NBA$season)
-NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.qual","home.team.halftime.margin","home.team.final.margin","home.team.winning.at.half","home.team.win","home.team.halftime.margin.cheat")]
+NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.qual","home.team.halftime.margin","home.team.final.margin","home.team.winning.at.half","home.team.win","home.team.halftime.margin.newdata")]
 
 
 kernelwts<-function(X,center,bw,kernel="triangular"){
@@ -2617,42 +2618,60 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
 
 *** =sample_code
 ```{r}
-# 1) Run the McCrary test with the running variable in the NBA data and the cutoff (score tied). Insert the correct variable names into the placeholder spots below:
+# 1) The dataframe `NBA` is in your workspace. You can get a quick sense of the variables and some of their values with the str() or head() functions:
+
+
+
+# The R function DCdensity() will generate a density plot of our data, and we can pick what value we want for our RD cutoff. In this case, it makes the most sense for our cutoff to be a tie score at halftime: that will let us easily interpret the plot when the teams are very close in score at halftime. Like in our previous exercises, we'll focus on the home teams to avoid the issue of different team performance at home versus on the road.
+
+# 2) We are hoping that the plot shows a smooth curve on both sides of the cutoff, which is a signal that the units on either side of the cutoff are comparable. Run the McCrary test with the correct running variable in the NBA data and the cutoff at 0, which indicates when the halftime score is tied. Insert the correct variable names into the placeholder spots below and look at the resulting plot. 
 
       DCdensity(NBA$[running.var],[cutoff],plot=TRUE)
 
   
-# 2) Now issue the command again (again by inserting the correct variable names in the placeholder spots), but print the p-value output. You can do this by simply wrapping the command with the print() function:
+# 3) Now issue the command again (again by inserting the correct variable names in the placeholder spots), but print the p-value output for the McCrary test. Remember, if the p-value for the McCrary test is less than or equal to .05, then we can be 95% percent sure that there is manipulation going on in the data. You can easily print the p-value in R by simply wrapping the correctly filled DCdensity() function with the print() function:
 
       DCdensity(NBA$[running.var],[cutoff],plot=FALSE)
+      
 
+# 4) Based on the shape of the plot and the p value of the Mcrary test, would you say that we can run a valid Regression Discontinuity analysis on this data? Answer "Yes" or "No".
+      
+      Solution4 <- ""
+      
 
-# 3) Now plot using the variable `home.team.halftime.margin.cheat` which is a version that has been manipulated:
+# Good job. So we've been looking at our historical data from the NBA, but we also have just gotten access to a new, additional dataset about more recent games. These new results have come in after the research was published in the journal Management Science. Does it show that the teams have read the paper and are now trying to be the team that is losing at halftime? Let's find out by looking at the McCrary test results for the variable `home.team.halftime.margin.newdata`.
+      
+# 5) Let's first plot with the DCdensity function using the variable `home.team.halftime.margin.newdata` which is data from the most recent NBA season. Does it look any different than the previous data?
 
       DCdensity(NBA$[new.running.var],[cutoff],plot=TRUE)
+      
 
-# 4) And now print its p-value to see how it compares to our non-manipulated data:
+# 6) Interesting: it looks like there is now big outlier near the cutoff of 0. But is this statistically signficant? Let's find out by printing the p-value of this McCrary test to see how it compares to the p-value on our initial data. You can do this by simply wrapping the finished command with the print() function:
   
       DCdensity(NBA$[new.running.var],[cutoff],plot=FALSE)
+      
+      
+# 7) Based on this second McCrary test plot and p-value on the current season's data, would you say that we can run a valid Regression Discontinuity analysis on this new data? Answer "Yes" or "No"
+
+      Solution7<-""
 
 
 ```
 *** =solution
 ```{r}
-    Solution1 <- DCdensity(NBA$home.team.halftime.margin,0,plot=TRUE)
-    Solution2 <- print(DCdensity(NBA$home.team.halftime.margin,0,plot=FALSE))
-    Solution3 <- DCdensity(NBA$home.team.halftime.margin.cheat,0,plot=TRUE)
-    Solution4 <- print(DCdensity(NBA$home.team.halftime.margin.cheat,0,plot=FALSE))
+    DCdensity(NBA$home.team.halftime.margin,0,plot=TRUE)
+    print(DCdensity(NBA$home.team.halftime.margin,0,plot=FALSE))
+    Solution4<-"Yes"
+    DCdensity(NBA$home.team.halftime.margin.newdata,0,plot=TRUE)
+    print(DCdensity(NBA$home.team.halftime.margin.newdata,0,plot=FALSE))
+    Solution7<-"No"
 ```
 *** =sct
 ```{r}
-test_object("Solution1")
-test_object("Solution2")
-test_object("Solution3")
-test_object("Solution4")
-success_msg("Good work!")
+test_error()
+test_object("Solution5")
+success_msg("Good work! That outlier just below the cutoff looks like a clear sign that the teams are trying to be losing by about a point at halftime. In fact, the p-value is so small that it is 0, and it's hard to be more obvious than that in statistics! But there's more work to be done before we make any conclusions.  The McCrary test cannot prove manipulation just by itself, but it's a very helpful indicator that we should look closer at the exact mechanics going on in these new NBA teams during their games.")
 ```
-
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:f862652b6e
 ## "Fuzzy" Regression Discontinuity: Addressing Blurry Lines Between Groups
