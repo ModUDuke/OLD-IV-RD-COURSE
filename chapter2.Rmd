@@ -183,17 +183,17 @@ Included on the workspace is a dataset from CreditCo. The data are a sample of C
 
 # 2) First we need to determine whether our instrument satisfies the Relevance Assumption, and we'll start this process by looking to see if it has any correlation with our outcome variable. Using a linear regression, compute the correlation between rain and opt-in status.
 
-    Solution2<-lm( ~ ,data=CreditCo)
+    Solution2 <- lm( ~ ,data=CreditCo)
 
 
 # 3) If it does have a correlation, we need to make sure it's a statistically significant one. What is the p-value associated with the t-test on the coefficient of rain?
 
-    Solution3<-summary(Solution1)$coefficients[2,4]
+    Solution3 <- summary(Solution2)$coefficients[2,4]
 
 
 # 4) What is the sign of the correlation between rain and opt-in?
 
-    Solution4<-sign(Solution1$coefficients[2])
+    Solution4 <- sign(Solution2$coefficients[2])
 
 
 ```
@@ -201,8 +201,8 @@ Included on the workspace is a dataset from CreditCo. The data are a sample of C
 *** =solution
 ```{r}
 Solution2 <- lm(opt_in~rainy,data=CreditCo)
-Solution3 <- summary(Solution1)$coefficients[2,4]
-Solution4 <- sign(Solution1$coefficients[2])
+Solution3 <- summary(Solution2)$coefficients[2,4]
+Solution4 <- sign(Solution2$coefficients[2])
 ```
 
 *** =sct
