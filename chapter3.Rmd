@@ -2236,7 +2236,7 @@ summary.RD<-function(object,digits=max(3, getOption("digits") - 3),...){
     summary(RDestimate(home.team.final.margin ~ home.team.halftime.margin | home.team.qual+away.team.qual,data=NBA))
 
 
-# 5) Now compare the results of our three causal effect estimates: the linear model and our two nonlinear models with quadratic and nonparametric functions. Which kind of estimate do you think most closely captures the true causal effect of being behind (or ahead) at halftime on the final margin of victory? Write in "linear" or "nonlinear" as the answer to Solution5.
+# 5) Now compare the results of our three causal effect estimates: the linear model and our two nonlinear models with quadratic and nonparametric functions. Which kind of estimate do you think most closely captures the true causal effect of being behind (or ahead) at halftime on the final margin of victory: write in "linear" or "nonlinear" as the answer to Solution5.
 
     Solution5<-""
 
