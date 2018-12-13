@@ -637,7 +637,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:9db77c01c7
 ## Let's Code: Practice Computing Regression Discontinuity Effects
 *** =video_link
 //player.vimeo.com/video/306239766
