@@ -3,6 +3,8 @@ title       : "Instrumental Variables in Practice"
 description : "This chapter covers more details about Instrumental Variables Analysis, and allows you to practice instrumental variables for yourself"
  
 
+ 
+
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
 ## The Problem of Weak Instruments
 *** =video_link
@@ -411,6 +413,19 @@ success_msg("Good work! Based on this indirect inference analysis, the offer of 
 ## Two Stage Least Squares (2SLS)
 *** =video_link
 //player.vimeo.com/video/219559617
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
+## Overview of Squatters & Property Rights Experiment
+*** =video_link
+//player.vimeo.com/video/304168081
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
+## Example of IV: Property Rights & Market Beliefs
+*** =video_link
+//player.vimeo.com/video/219560477
+ 
 
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:324a3a8f49
 ## Let's Code: Practice Computing Causal Effects Using 2SLS
