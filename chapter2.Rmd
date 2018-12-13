@@ -32,6 +32,14 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
 
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
+## Overview of Research on Property Rights & Economic Development
+*** =video_link
+//player.vimeo.com/video/305800702
+
+
+
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:90f146a86a
 ## Where Do Instruments Come From?
 *** =video_link
