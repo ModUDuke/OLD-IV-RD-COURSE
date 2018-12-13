@@ -77,6 +77,11 @@ msg4 = "If this were true, it sounds like the instrument would be uncorrelated w
 test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
+## Let's Code: Practice Using Instrumental Variables
+*** =video_link
+//player.vimeo.com/video/306239731
+
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:80186483d8
 ## Practice Using Instrumental Variables: CreditCo
@@ -244,6 +249,11 @@ test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
 *** =video_link
 //player.vimeo.com/video/219559540
 
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
+## Let's Code: Practice Computing Causal Effects Using Indirect Inference
+*** =video_link
+//player.vimeo.com/video/306239739
+
 
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:721d6bc016
@@ -393,6 +403,11 @@ success_msg("Good work! Based on this indirect inference analysis, the offer of 
 ## Two Stage Least Squares (2SLS)
 *** =video_link
 //player.vimeo.com/video/219559617
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
+## Let's Code: Practice Computing Causal Effects Using 2SLS
+*** =video_link
+//player.vimeo.com/video/306239751
 
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:415cb190e2
@@ -555,6 +570,13 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 //player.vimeo.com/video/219559688
 
 
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
+## Overview of the Oregon Healthcare Experiment
+*** =video_link
+//player.vimeo.com/video/304167565
+
+
+
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:dc9b5ec411
 ## Using IV to Solve Noncompliance in the Oregon Heathcare Insurance Experiment
 *** =video_link
@@ -580,6 +602,14 @@ msg1 = "'Refutability' is defined with respect to a model, which includes a desc
 msg2 = "Correct. Without more or different kinds of data, typically the exogeneity and exclusion assumptions are not refutable, and Alex would be right. However, if you add more data or change the assumptions in different ways, it is sometimes possible to convert a nonrefutable assumption into a refutable assumption. But you should always be ready with qualitative arguments to strengthen your defense of these assumptions."
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
+
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
+## Let's Code: Practice Using IV to Solve Noncompliance in the OHIE
+*** =video_link
+//player.vimeo.com/video/306239756
+
 
 
 --- type:NormalExercise lang:r xp:100 skills:1 key:834d82578f
