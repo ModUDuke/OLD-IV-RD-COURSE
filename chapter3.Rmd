@@ -209,6 +209,442 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
 
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
+## Let's Code: Examining Manipulation in Regression Discontinuity Design
+*** =video_link
+//player.vimeo.com/video/306239772
+
+
+
+--- type:NormalExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:1de601c34a
+## Examining Manipulation in Regression Discontinuity Designs
+As we have mentioned, the main idea with Regression Discontinuity is that there should not be any difference in the people on either side of the cutoff. So a big part of RD analysis is to check whether this is actually true in our data. For example, the distributions of our variables should be the same on both sides of the cutoff. If we find differences in our distributions, then we might need to worry that these differences are due to people choosing which side of the cutoff to be on.
+
+Let's look at this by revisiting the NBA data we used before in previous exercises. In that data, we saw that teams that are losing by 1 or 2 points at halftime end up winning the games a lot more than you would expect. If the coaches and players know this is true, they might try to manipulate the score so that they are the ones losing by 1 or 2 at halftime (perhaps because they read that research paper published in Management Science!). If we look at a density plot of our data, we would see this as a kind of lump in the distribution on one side next to the cutoff, instead of a smooth curve in our data density.
+
+So we will check the data to check our distributions near the cutoff with the statistical McCrary test, which tests whether there is a discontinuity in the data frequency distribution around the cutoff. We will look at plots and at the p-values of the McCrary tests, and if the p-values are at or below .05, then we can be 95% confident that manipulation has occurred. So let's find out if that is true in this NBA data.
+
+*** =instructions
+- 1) Using the function `DCdensity` which is already on your workspace, plot the distribution of data near the cutoff
+- The syntax for the `DCdensity` function is: `DCdensity(runningvar,discontinuityvalue,plot=TRUE/FALSE)`
+
+*** =hint
+- A p-value less than or equal to .05 means that we can have 95% confidence that the data has actually been manipulated
+
+*** =pre_exercise_code
+```{r}
+set.seed(1)
+n <- 18060
+
+# Initialize dataframe
+NBA <- as.data.frame(matrix(0, ncol=10,nrow=n))
+colnames(NBA) <- c("id","season","home.team","away.team","home.team.qual","away.team.qual","home.team.halftime.score","away.team.halftime.score","home.team.final.margin","home.team.win")
+
+# Simulate baseline data
+NBA$id         <- seq(1,n,1)
+NBA$season     <- ifelse(NBA$id %in% seq( 0*1204+1, 1*1204,1),1994,
+                  ifelse(NBA$id %in% seq( 1*1204+1, 2*1204,1),1995,
+                  ifelse(NBA$id %in% seq( 2*1204+1, 3*1204,1),1996,
+                  ifelse(NBA$id %in% seq( 3*1204+1, 4*1204,1),1997,
+                  ifelse(NBA$id %in% seq( 4*1204+1, 5*1204,1),1998,
+                  ifelse(NBA$id %in% seq( 5*1204+1, 6*1204,1),1999,
+                  ifelse(NBA$id %in% seq( 6*1204+1, 7*1204,1),2000,
+                  ifelse(NBA$id %in% seq( 7*1204+1, 8*1204,1),2001,
+                  ifelse(NBA$id %in% seq( 8*1204+1, 9*1204,1),2002,
+                  ifelse(NBA$id %in% seq( 9*1204+1,10*1204,1),2003,
+                  ifelse(NBA$id %in% seq(10*1204+1,11*1204,1),2004,
+                  ifelse(NBA$id %in% seq(11*1204+1,12*1204,1),2005,
+                  ifelse(NBA$id %in% seq(12*1204+1,13*1204,1),2006,
+                  ifelse(NBA$id %in% seq(13*1204+1,14*1204,1),2007,
+                  ifelse(NBA$id %in% seq(14*1204+1,15*1204,1),2008,0)))))))))))))))
+teamqual <- cbind(c("BOS","NJN","NYK","PHL","GSW","LAC","LAL","PHX","SAC","CHI","CLE","DET","IND","MIL","DAL","HOU","MEM","SAS","ATL","CHA","MIA","ORL","WSH","DEN","MIN","SEA","POR","UTA"),
+                  matrix(rnorm(28*15,mean=0,sd=1), ncol=15))
+NBA$home.team      <- sample(teamqual[,1],n,replace=TRUE)
+NBA$away.team      <- sample(teamqual[,1],n,replace=TRUE)
+print(paste0('Number of teams playing themselves: ',sum(NBA$home.team==NBA$away.team)/n*100,'%'))
+for (i in 1:n) {
+    if (NBA$home.team[i]==NBA$away.team[i]) {
+        NBA$away.team[i] <- sample(setdiff(teamqual[,1],NBA$home.team[i]),1)
+    }
+}
+print(paste0('Number of teams playing themselves: ',sum(NBA$home.team==NBA$away.team)/n*100,'%'))
+
+# generate team qualities to explain outcomes for each game
+for (i in 1:n) {
+    NBA$away.team.qual[i] <- as.numeric(teamqual[teamqual[,1]==NBA$away.team[i],NBA$season[i]-1992])
+    NBA$home.team.qual[i] <- as.numeric(teamqual[teamqual[,1]==NBA$home.team[i],NBA$season[i]-1992])
+}
+
+NBA$home.team <- as.factor(NBA$home.team)
+NBA$away.team <- as.factor(NBA$away.team)
+
+# Generate halftime scores
+NBA$home.team.halftime.score  <- round(NBA$home.team.qual+rnorm(n, mean=48, sd=4), digits=0)
+NBA$away.team.halftime.score  <- round(NBA$away.team.qual+rnorm(n, mean=47, sd=6), digits=0)
+NBA$home.team.halftime.margin <- NBA$home.team.halftime.score - NBA$away.team.halftime.score
+NBA$home.team.halftime.margin.newdata <- NBA$home.team.halftime.margin-2*(NBA$home.team.halftime.margin==1)-2.25*(NBA$home.team.halftime.margin==2)
+
+# Remove games that are tied at halftime
+print(dim(NBA))
+NBA <- NBA[NBA$home.team.halftime.margin!=0,]
+print(dim(NBA))
+n1 <- dim(NBA)[1]
+
+# Generate final score
+NBA$home.team.winning.at.half <- NBA$home.team.halftime.margin>0
+NBA$home.team.final.margin    <- round(2 - 5*NBA$home.team.winning.at.half + 2*NBA$home.team.halftime.margin -.05*NBA$home.team.halftime.margin^2 + NBA$home.team.qual - NBA$away.team.qual + rnorm(n1, mean=0, sd=10), digits=0)
+NBA$home.team.win             <- NBA$home.team.final.margin>0
+
+# Clean up data
+NBA$season <- as.factor(NBA$season)
+NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.qual","home.team.halftime.margin","home.team.final.margin","home.team.winning.at.half","home.team.win","home.team.halftime.margin.newdata")]
+
+
+kernelwts<-function(X,center,bw,kernel="triangular"){
+  dist<-(X-center)/bw
+  if(kernel=="triangular"){
+    w<-(1-abs(dist))
+  } else if (kernel=="rectangular") {
+    w<-1/2
+  } else if (kernel=="epanechnikov") {
+    w<-3/4*(1-dist^2)
+  } else if (kernel=="quartic" | kernel=="biweight") {
+    w<-15/16*(1-dist^2)^2
+  } else if (kernel=="triweight") {
+    w<-35/32*(1-dist^2)^3
+  } else if (kernel=="tricube") {
+    w<-70/81*(1-abs(dist)^3)^3
+  } else if (kernel=="gaussian") {
+    w<-1/sqrt(2*pi)*exp(-1/2*dist^2)
+  } else if (kernel=="cosine") {
+    w<-pi/4*cos(pi/2 * dist)
+  } else {
+    stop("Invalid kernel selection.")
+  }
+  w<-ifelse(abs(dist)>1&kernel!="gaussian",0,w)
+  w<-w/sum(w)
+  return(w)
+}
+
+
+DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,ext.out=FALSE,htest=FALSE) {
+  runvar <- runvar[complete.cases(runvar)]
+  #Grab some summary vars
+  rn <- length(runvar)
+  rsd <- sd(runvar)
+  rmin <- min(runvar)
+  rmax <- max(runvar)
+  if(missing(cutpoint)) {
+    if(verbose) cat("Assuming cutpoint of zero.\n")
+    cutpoint<-0
+  }
+  
+  if(cutpoint<=rmin | cutpoint>=rmax){
+   stop("Cutpoint must lie within range of runvar") 
+  }
+  
+  if(is.null(bin)) {
+    bin <- 2*rsd*rn^(-1/2)
+    if(verbose) cat("Using calculated bin size: ",sprintf("%.3f",bin),"\n")
+  }
+  
+  l <- floor((rmin - cutpoint)/bin)*bin + bin/2 + cutpoint #Midpoint of lowest bin
+  r <- floor((rmax - cutpoint)/bin)*bin + bin/2 + cutpoint #Midpoint of highest bin
+  lc <- cutpoint-(bin/2) #Midpoint of bin just left of breakpoint
+  rc <- cutpoint+(bin/2) #Midpoint of bin just right of breakpoint
+  j <- floor((rmax - rmin)/bin) + 2
+  
+  binnum <- round((((floor((runvar - cutpoint)/bin)*bin + bin/2 + cutpoint) - l)/bin) + 1)
+
+  cellval <- rep(0,j)
+  for(i in seq(1,rn)){
+   cnum <- binnum[i]
+   cellval[cnum] <- cellval[cnum]+1
+  }
+  cellval <- ( cellval / rn ) / bin
+
+  cellmp <- seq(from=1,to=j,by=1)
+  cellmp <- floor(((l + (cellmp - 1)*bin ) - cutpoint)/bin)*bin + bin/2 + cutpoint
+  
+  #If no bandwidth is given, calc it
+  if(is.null(bw)){
+    #bin number just left of breakpoint
+    leftofc <-  round((((floor((lc - cutpoint)/bin)*bin + bin/2 + cutpoint) - l)/bin) + 1) 
+    #bin number just right of breakpoint
+    rightofc <- round((((floor((rc - cutpoint)/bin)*bin + bin/2 + cutpoint) - l)/bin) + 1)
+    if ( rightofc - leftofc != 1) {
+      stop("Error occurred in bandwidth calculation")
+    }
+    cellmpleft <- cellmp[1:leftofc]
+    cellmpright <- cellmp[rightofc:j]
+    
+    #Estimate 4th order polynomial to the left
+    P.lm <- lm(
+      cellval ~ poly(cellmp,degree=4,raw=T), 
+      subset=cellmp<cutpoint
+    )
+    mse4 <- summary(P.lm)$sigma^2
+    lcoef <- coef(P.lm)
+    fppleft <- 2*lcoef[3] +
+      6*lcoef[4]*cellmpleft + 
+      12*lcoef[5]*cellmpleft*cellmpleft
+    hleft <- 3.348*(mse4*( cutpoint - l ) / sum(fppleft*fppleft))^(1/5)
+
+    #And to the right
+    P.lm <- lm(
+      cellval ~ poly(cellmp,degree=4,raw=T), 
+      subset=cellmp>=cutpoint
+    )
+    mse4 <- summary(P.lm)$sigma^2
+    rcoef <- coef(P.lm)
+    fppright <- 2*rcoef[3] +
+      6*rcoef[4]*cellmpright +
+      12*rcoef[5]*cellmpright*cellmpright
+    hright <- 3.348*(mse4*( r - cutpoint ) / sum(fppright*fppright))^(1/5)
+
+
+    bw = .5*( hleft + hright )
+    if(verbose) cat("Using calculated bandwidth: ",sprintf("%.3f",bw),"\n")
+  } 
+  if( sum(runvar>cutpoint-bw & runvar<cutpoint) ==0 |
+    sum(runvar<cutpoint+bw & runvar>=cutpoint) ==0)
+    stop("Insufficient data within the bandwidth.")
+  if(plot){
+    #estimate density to either side of the cutpoint using a triangular kernel
+    d.l<-data.frame(cellmp=cellmp[cellmp<cutpoint],cellval=cellval[cellmp<cutpoint],dist=NA,est=NA,lwr=NA,upr=NA)
+    pmin<-cutpoint-2*rsd
+    pmax<-cutpoint+2*rsd
+    for(i in 1:nrow(d.l)) {
+      d.l$dist<-d.l$cellmp-d.l[i,"cellmp"]
+      w<-kernelwts(d.l$dist,0,bw,kernel="triangular")
+      newd<-data.frame(dist=0)
+      pred<-predict(lm(cellval~dist,weights=w,data=d.l),interval="confidence",newdata=newd)
+      d.l$est[i]<-pred[1]
+      d.l$lwr[i]<-pred[2]
+      d.l$upr[i]<-pred[3]
+    }
+    d.r<-data.frame(cellmp=cellmp[cellmp>=cutpoint],cellval=cellval[cellmp>=cutpoint],dist=NA,est=NA,lwr=NA,upr=NA)
+    for(i in 1:nrow(d.r)) {
+      d.r$dist<-d.r$cellmp-d.r[i,"cellmp"]
+      w<-kernelwts(d.r$dist,0,bw,kernel="triangular")
+      newd<-data.frame(dist=0)
+      pred<-predict(lm(cellval~dist,weights=w,data=d.r),interval="confidence",newdata=newd)
+      d.r$est[i]<-pred[1]
+      d.r$lwr[i]<-pred[2]
+      d.r$upr[i]<-pred[3]
+    }
+    #plot to the left
+    #return(list(d.l,d.r))
+    plot(d.l$cellmp,d.l$est,
+       lty=1,lwd=2,col="black",type="l",
+       xlim=c(pmin,pmax),
+       ylim=c(min(cellval[cellmp<=pmax&cellmp>=pmin]),
+              max(cellval[cellmp<=pmax&cellmp>=pmin])),
+       xlab=NA,
+       ylab=NA,
+       main=NA
+    )
+    
+    lines(d.l$cellmp,d.l$lwr,
+         lty=2,lwd=1,col="black",type="l"
+    )
+    lines(d.l$cellmp,d.l$upr,
+          lty=2,lwd=1,col="black",type="l"
+    )
+    
+    #plot to the right
+    lines(d.r$cellmp,d.r$est,
+        lty=1,lwd=2,col="black",type="l"
+    )
+    lines(d.r$cellmp,d.r$lwr,
+          lty=2,lwd=1,col="black",type="l"
+    )
+    lines(d.r$cellmp,d.r$upr,
+          lty=2,lwd=1,col="black",type="l"
+    )
+    
+    #plot the histogram as points
+    points(cellmp,cellval,type="p",pch=20)
+  }
+  cmp<-cellmp
+  cval<-cellval
+  padzeros <- ceiling(bw/bin)
+  jp <- j + 2*padzeros
+  if(padzeros>=1) {
+    cval <- c(rep(0,padzeros),
+               cellval,
+               rep(0,padzeros)
+             )
+    cmp <- c(seq(l-padzeros*bin,l-bin,bin),
+              cellmp,
+              seq(r+bin,r+padzeros*bin,bin)
+            )
+  }
+  
+  #Estimate to the left
+  dist <- cmp - cutpoint
+  w <- 1-abs(dist/bw)
+  w <- ifelse(w>0, w*(cmp<cutpoint), 0)
+  w <- (w/sum(w))*jp
+  fhatl <- predict(lm(cval~dist,weights=w),newdata=data.frame(dist=0))[[1]]
+  
+  #Estimate to the right
+  w <- 1-abs(dist/bw)
+  w <- ifelse(w>0, w*(cmp>=cutpoint), 0)
+  w <- (w/sum(w))*jp
+  fhatr<-predict(lm(cval~dist,weights=w),newdata=data.frame(dist=0))[[1]]
+  
+  #Calculate and display dicontinuity estimate
+  thetahat <- log(fhatr) - log(fhatl)
+  sethetahat <- sqrt( (1/(rn*bw)) * (24/5) * ((1/fhatr) + (1/fhatl)) )
+  z<-thetahat/sethetahat
+  p<-2*pnorm(abs(z),lower.tail=FALSE)
+
+  if(verbose) {
+    cat("Log difference in heights is ",
+              sprintf("%.3f",thetahat),
+              " with SE ",
+              sprintf("%.3f",sethetahat),"\n"
+        )
+    cat("  this gives a z-stat of ",sprintf("%.3f",z),"\n")
+    cat("  and a p value of ",sprintf("%.3f",p),"\n")
+  }
+  if(ext.out) 
+    return(list(theta=thetahat,
+                se=sethetahat,
+                z=z,
+                p=p,
+                binsize=bin,
+                bw=bw,
+                cutpoint=cutpoint,
+                data=data.frame(cellmp,cellval)
+               )
+          )
+  else if (htest) {
+      # Return an htest object, for compatibility with base R test output.
+      structure(list(
+          statistic   = c(`z` = z),
+          p.value     = p,
+          method      = "McCrary (2008) sorting test",
+          parameter   = c(`binwidth`  = bin,
+                          `bandwidth` = bw,
+                          `cutpoint`  = cutpoint),
+          alternative = "no apparent sorting"),
+          class = "htest")
+  }
+  else return(p)
+}
+
+```
+
+*** =sample_code
+```{r}
+# 1) The dataframe `NBA` is in your workspace. You can get a quick sense of the variables and some of their values with the str() or head() functions:
+
+
+
+# The R function DCdensity() will generate a density plot of our data, and we can pick what value we want for our RD cutoff. In this case, it makes the most sense for our cutoff to be a tie score at halftime: that will let us easily interpret the plot when the teams are very close in score at halftime. Like in our previous exercises, we'll focus on the home teams to avoid the issue of different team performance at home versus on the road.
+
+# 2) We are hoping that the plot shows a smooth curve on both sides of the cutoff, which is a signal that the units on either side of the cutoff are comparable. The x-axis will be our running variable (point differential at halftime), and the y-axis is our density estimate for that score differential. Now run the McCrary test with the correct running variable in the NBA data and the cutoff at 0, which indicates when the halftime score is tied. Insert the correct variable names into the placeholder spots below and look at the resulting plot. 
+
+      DCdensity(NBA$[running.var],[cutoff],plot=TRUE)
+
+  
+# 3) Now issue the command again (again by inserting the correct variable names in the placeholder spots), but print the p-value output for the McCrary test. Remember, if the p-value for the McCrary test is less than or equal to .05, then we can be 95% percent sure that there is manipulation going on in the data. You can easily print the p-value in R by simply wrapping the correctly filled DCdensity() function with the print() function:
+
+      DCdensity(NBA$[running.var],[cutoff],plot=FALSE)
+      
+
+# 4) Based on the shape of the plot and the p value of the Mcrary test, would you say that we can run a valid Regression Discontinuity analysis on this data? Answer "Yes" or "No".
+      
+      Solution4 <- ""
+      
+
+# Good job. So we've been looking at our historical data from the NBA, but we also have just gotten access to a new, additional dataset about more recent games. These new results have come in after the research was published in the journal Management Science. Does it show that the teams have read the paper and are now trying to be the team that is losing at halftime? Let's find out by looking at the McCrary test results for the variable `home.team.halftime.margin.newdata`.
+      
+# 5) Let's first plot with the DCdensity function using the variable `home.team.halftime.margin.newdata` which is data from the most recent NBA season. Does it look any different than the previous data?
+
+      DCdensity(NBA$[new.running.var],[cutoff],plot=TRUE)
+      
+
+# 6) Interesting: it looks like there is now big outlier near the cutoff of 0. But is this statistically signficant? Let's find out by printing the p-value of this McCrary test to see how it compares to the p-value on our initial data. You can do this by simply wrapping the finished command with the print() function:
+  
+      DCdensity(NBA$[new.running.var],[cutoff],plot=FALSE)
+      
+      
+# 7) Based on this second McCrary test plot and p-value on the current season's data, would you say that we can run a valid Regression Discontinuity analysis on this new data? Answer "Yes" or "No"
+
+      Solution7<-""
+
+
+```
+*** =solution
+```{r}
+    DCdensity(NBA$home.team.halftime.margin,0,plot=TRUE)
+    print(DCdensity(NBA$home.team.halftime.margin,0,plot=FALSE))
+    Solution4<-"Yes"
+    DCdensity(NBA$home.team.halftime.margin.newdata,0,plot=TRUE)
+    print(DCdensity(NBA$home.team.halftime.margin.newdata,0,plot=FALSE))
+    Solution7<-"No"
+```
+
+*** =sct
+```{r}
+test_error()
+test_object("Solution5")
+success_msg("Good work! That outlier just below the cutoff looks like a clear sign that the teams are trying to be losing by about a point at halftime. In fact, the p-value is so small that it is nearly 0, and it's hard to be more obvious than that in statistics! But there's more work to be done before we make any conclusions.  The McCrary test cannot prove manipulation just by itself, but it's a very helpful indicator that we should look closer at the exact mechanics going on in these new NBA teams during their games.")
+```
+
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:5a2a1cae28
+## Using RDD to Study Neighborhoods and Schools
+*** =video_link
+//player.vimeo.com/video/218503634
+
+
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:da321f7194
+## Thinking about confounders in an RD design
+Suppose your friend says "I don’t believe the results in Black (1999) because she doesn't control for whether there is a public park nearby the house. Having a park nearby increases the value of a house. Also, districts that have high test scores also tend to have more parks. So this test score effect might just be because of this unobserved confounder!"
+
+*** =instructions
+- Agree
+- Disagree
+- Partly agree
+*** =sct
+```{r}
+msg1 = "Try again"
+msg2 = "Correct! It's a reasonable point, but the fact that we do NOT have to observe this confounder is precisely the beauty of RDD! When we look only at houses close to the boundary, those houses are close to each other, by definition. Hence they are both close to the park. So, although the park might affect the value of both houses, it should do so equally. Hence any *difference* in house prices cannot be attributed to the park. It must be attributed to the test score difference."
+msg3 = "Try again"
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
+```
+
+
+
+--- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:2781eb8177
+## Using Geographical Borders More Generally in RD Designs
+True or False: If we look at the data used in the Black (1999) paper, even if each school district has different property tax rates, we can still use RDD analysis to learn the causal effect of treatment.
+
+*** =instructions
+- True
+- False
+*** =sct
+```{r}
+msg1 = "Are all the units on both sides of the boundary identical, except for the side of the boundary they are on? Try again"
+msg2 = "Correct! It is true that geographical borders are *often* used to learn about causal effects via RDD. But this requires that the only thing that's different between units on each side of the border is the treatment! This is often not the case. For example, if you look at country borders, there are often many different variables that change as you cross the border, which means it will be hard or impossible to disentangle the effect of just one of these variables."
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
+```
+
+
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
+## Let's Code: Practice Computing Regression Discontinuity Effects
+*** =video_link
+//player.vimeo.com/video/306239766
+
+
+
+
 --- type:NormalExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:8dfb92fd8e
 ## Practice Computing Regression Discontinuity Effects
 Let's continue with the NBA research example. On your workspace is a simulated data set, called `NBA`, that closely resembles the data analyzed by Berger and Pope. The data frame `NBA` contains game characteristics for over 18,000 NBA games between 1994 and 2009. Will you get the same results as they did? Let's find out!
@@ -2256,429 +2692,11 @@ success_msg("Good work! From the looks of it, the quadratic specification of hal
 ```
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:5a2a1cae28
-## Using RDD to Study Neighborhoods and Schools
-*** =video_link
-//player.vimeo.com/video/218503634
-
-
-
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:da321f7194
-## Thinking about confounders in an RD design
-Suppose your friend says "I don’t believe the results in Black (1999) because she doesn't control for whether there is a public park nearby the house. Having a park nearby increases the value of a house. Also, districts that have high test scores also tend to have more parks. So this test score effect might just be because of this unobserved confounder!"
-
-*** =instructions
-- Agree
-- Disagree
-- Partly agree
-*** =sct
-```{r}
-msg1 = "Try again"
-msg2 = "Correct! It's a reasonable point, but the fact that we do NOT have to observe this confounder is precisely the beauty of RDD! When we look only at houses close to the boundary, those houses are close to each other, by definition. Hence they are both close to the park. So, although the park might affect the value of both houses, it should do so equally. Hence any *difference* in house prices cannot be attributed to the park. It must be attributed to the test score difference."
-msg3 = "Try again"
-test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
-```
-
-
-
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:2781eb8177
-## Using Geographical Borders More Generally in RD Designs
-True or False: If we look at the data used in the Black (1999) paper, even if each school district has different property tax rates, we can still use RDD analysis to learn the causal effect of treatment.
-
-*** =instructions
-- True
-- False
-*** =sct
-```{r}
-msg1 = "Are all the units on both sides of the boundary identical, except for the side of the boundary they are on? Try again"
-msg2 = "Correct! It is true that geographical borders are *often* used to learn about causal effects via RDD. But this requires that the only thing that's different between units on each side of the border is the treatment! This is often not the case. For example, if you look at country borders, there are often many different variables that change as you cross the border, which means it will be hard or impossible to disentangle the effect of just one of these variables."
-test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
-```
-
-
---- type:NormalExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:1de601c34a
-## Examining Manipulation in Regression Discontinuity Designs
-As we have mentioned, the main idea with Regression Discontinuity is that there should not be any difference in the people on either side of the cutoff. So a big part of RD analysis is to check whether this is actually true in our data. For example, the distributions of our variables should be the same on both sides of the cutoff. If we find differences in our distributions, then we might need to worry that these differences are due to people choosing which side of the cutoff to be on.
-
-Let's look at this by revisiting the NBA data we used before in previous exercises. In that data, we saw that teams that are losing by 1 or 2 points at halftime end up winning the games a lot more than you would expect. If the coaches and players know this is true, they might try to manipulate the score so that they are the ones losing by 1 or 2 at halftime (perhaps because they read that research paper published in Management Science!). If we look at a density plot of our data, we would see this as a kind of lump in the distribution on one side next to the cutoff, instead of a smooth curve in our data density.
-
-So we will check the data to check our distributions near the cutoff with the statistical McCrary test, which tests whether there is a discontinuity in the data frequency distribution around the cutoff. We will look at plots and at the p-values of the McCrary tests, and if the p-values are at or below .05, then we can be 95% confident that manipulation has occurred. So let's find out if that is true in this NBA data.
-
-*** =instructions
-- 1) Using the function `DCdensity` which is already on your workspace, plot the distribution of data near the cutoff
-- The syntax for the `DCdensity` function is: `DCdensity(runningvar,discontinuityvalue,plot=TRUE/FALSE)`
-
-*** =hint
-- A p-value less than or equal to .05 means that we can have 95% confidence that the data has actually been manipulated
-
-*** =pre_exercise_code
-```{r}
-set.seed(1)
-n <- 18060
-
-# Initialize dataframe
-NBA <- as.data.frame(matrix(0, ncol=10,nrow=n))
-colnames(NBA) <- c("id","season","home.team","away.team","home.team.qual","away.team.qual","home.team.halftime.score","away.team.halftime.score","home.team.final.margin","home.team.win")
-
-# Simulate baseline data
-NBA$id         <- seq(1,n,1)
-NBA$season     <- ifelse(NBA$id %in% seq( 0*1204+1, 1*1204,1),1994,
-                  ifelse(NBA$id %in% seq( 1*1204+1, 2*1204,1),1995,
-                  ifelse(NBA$id %in% seq( 2*1204+1, 3*1204,1),1996,
-                  ifelse(NBA$id %in% seq( 3*1204+1, 4*1204,1),1997,
-                  ifelse(NBA$id %in% seq( 4*1204+1, 5*1204,1),1998,
-                  ifelse(NBA$id %in% seq( 5*1204+1, 6*1204,1),1999,
-                  ifelse(NBA$id %in% seq( 6*1204+1, 7*1204,1),2000,
-                  ifelse(NBA$id %in% seq( 7*1204+1, 8*1204,1),2001,
-                  ifelse(NBA$id %in% seq( 8*1204+1, 9*1204,1),2002,
-                  ifelse(NBA$id %in% seq( 9*1204+1,10*1204,1),2003,
-                  ifelse(NBA$id %in% seq(10*1204+1,11*1204,1),2004,
-                  ifelse(NBA$id %in% seq(11*1204+1,12*1204,1),2005,
-                  ifelse(NBA$id %in% seq(12*1204+1,13*1204,1),2006,
-                  ifelse(NBA$id %in% seq(13*1204+1,14*1204,1),2007,
-                  ifelse(NBA$id %in% seq(14*1204+1,15*1204,1),2008,0)))))))))))))))
-teamqual <- cbind(c("BOS","NJN","NYK","PHL","GSW","LAC","LAL","PHX","SAC","CHI","CLE","DET","IND","MIL","DAL","HOU","MEM","SAS","ATL","CHA","MIA","ORL","WSH","DEN","MIN","SEA","POR","UTA"),
-                  matrix(rnorm(28*15,mean=0,sd=1), ncol=15))
-NBA$home.team      <- sample(teamqual[,1],n,replace=TRUE)
-NBA$away.team      <- sample(teamqual[,1],n,replace=TRUE)
-print(paste0('Number of teams playing themselves: ',sum(NBA$home.team==NBA$away.team)/n*100,'%'))
-for (i in 1:n) {
-    if (NBA$home.team[i]==NBA$away.team[i]) {
-        NBA$away.team[i] <- sample(setdiff(teamqual[,1],NBA$home.team[i]),1)
-    }
-}
-print(paste0('Number of teams playing themselves: ',sum(NBA$home.team==NBA$away.team)/n*100,'%'))
-
-# generate team qualities to explain outcomes for each game
-for (i in 1:n) {
-    NBA$away.team.qual[i] <- as.numeric(teamqual[teamqual[,1]==NBA$away.team[i],NBA$season[i]-1992])
-    NBA$home.team.qual[i] <- as.numeric(teamqual[teamqual[,1]==NBA$home.team[i],NBA$season[i]-1992])
-}
-
-NBA$home.team <- as.factor(NBA$home.team)
-NBA$away.team <- as.factor(NBA$away.team)
-
-# Generate halftime scores
-NBA$home.team.halftime.score  <- round(NBA$home.team.qual+rnorm(n, mean=48, sd=4), digits=0)
-NBA$away.team.halftime.score  <- round(NBA$away.team.qual+rnorm(n, mean=47, sd=6), digits=0)
-NBA$home.team.halftime.margin <- NBA$home.team.halftime.score - NBA$away.team.halftime.score
-NBA$home.team.halftime.margin.newdata <- NBA$home.team.halftime.margin-2*(NBA$home.team.halftime.margin==1)-2.25*(NBA$home.team.halftime.margin==2)
-
-# Remove games that are tied at halftime
-print(dim(NBA))
-NBA <- NBA[NBA$home.team.halftime.margin!=0,]
-print(dim(NBA))
-n1 <- dim(NBA)[1]
-
-# Generate final score
-NBA$home.team.winning.at.half <- NBA$home.team.halftime.margin>0
-NBA$home.team.final.margin    <- round(2 - 5*NBA$home.team.winning.at.half + 2*NBA$home.team.halftime.margin -.05*NBA$home.team.halftime.margin^2 + NBA$home.team.qual - NBA$away.team.qual + rnorm(n1, mean=0, sd=10), digits=0)
-NBA$home.team.win             <- NBA$home.team.final.margin>0
-
-# Clean up data
-NBA$season <- as.factor(NBA$season)
-NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.qual","home.team.halftime.margin","home.team.final.margin","home.team.winning.at.half","home.team.win","home.team.halftime.margin.newdata")]
-
-
-kernelwts<-function(X,center,bw,kernel="triangular"){
-  dist<-(X-center)/bw
-  if(kernel=="triangular"){
-    w<-(1-abs(dist))
-  } else if (kernel=="rectangular") {
-    w<-1/2
-  } else if (kernel=="epanechnikov") {
-    w<-3/4*(1-dist^2)
-  } else if (kernel=="quartic" | kernel=="biweight") {
-    w<-15/16*(1-dist^2)^2
-  } else if (kernel=="triweight") {
-    w<-35/32*(1-dist^2)^3
-  } else if (kernel=="tricube") {
-    w<-70/81*(1-abs(dist)^3)^3
-  } else if (kernel=="gaussian") {
-    w<-1/sqrt(2*pi)*exp(-1/2*dist^2)
-  } else if (kernel=="cosine") {
-    w<-pi/4*cos(pi/2 * dist)
-  } else {
-    stop("Invalid kernel selection.")
-  }
-  w<-ifelse(abs(dist)>1&kernel!="gaussian",0,w)
-  w<-w/sum(w)
-  return(w)
-}
-
-
-DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,ext.out=FALSE,htest=FALSE) {
-  runvar <- runvar[complete.cases(runvar)]
-  #Grab some summary vars
-  rn <- length(runvar)
-  rsd <- sd(runvar)
-  rmin <- min(runvar)
-  rmax <- max(runvar)
-  if(missing(cutpoint)) {
-    if(verbose) cat("Assuming cutpoint of zero.\n")
-    cutpoint<-0
-  }
-  
-  if(cutpoint<=rmin | cutpoint>=rmax){
-   stop("Cutpoint must lie within range of runvar") 
-  }
-  
-  if(is.null(bin)) {
-    bin <- 2*rsd*rn^(-1/2)
-    if(verbose) cat("Using calculated bin size: ",sprintf("%.3f",bin),"\n")
-  }
-  
-  l <- floor((rmin - cutpoint)/bin)*bin + bin/2 + cutpoint #Midpoint of lowest bin
-  r <- floor((rmax - cutpoint)/bin)*bin + bin/2 + cutpoint #Midpoint of highest bin
-  lc <- cutpoint-(bin/2) #Midpoint of bin just left of breakpoint
-  rc <- cutpoint+(bin/2) #Midpoint of bin just right of breakpoint
-  j <- floor((rmax - rmin)/bin) + 2
-  
-  binnum <- round((((floor((runvar - cutpoint)/bin)*bin + bin/2 + cutpoint) - l)/bin) + 1)
-
-  cellval <- rep(0,j)
-  for(i in seq(1,rn)){
-   cnum <- binnum[i]
-   cellval[cnum] <- cellval[cnum]+1
-  }
-  cellval <- ( cellval / rn ) / bin
-
-  cellmp <- seq(from=1,to=j,by=1)
-  cellmp <- floor(((l + (cellmp - 1)*bin ) - cutpoint)/bin)*bin + bin/2 + cutpoint
-  
-  #If no bandwidth is given, calc it
-  if(is.null(bw)){
-    #bin number just left of breakpoint
-    leftofc <-  round((((floor((lc - cutpoint)/bin)*bin + bin/2 + cutpoint) - l)/bin) + 1) 
-    #bin number just right of breakpoint
-    rightofc <- round((((floor((rc - cutpoint)/bin)*bin + bin/2 + cutpoint) - l)/bin) + 1)
-    if ( rightofc - leftofc != 1) {
-      stop("Error occurred in bandwidth calculation")
-    }
-    cellmpleft <- cellmp[1:leftofc]
-    cellmpright <- cellmp[rightofc:j]
-    
-    #Estimate 4th order polynomial to the left
-    P.lm <- lm(
-      cellval ~ poly(cellmp,degree=4,raw=T), 
-      subset=cellmp<cutpoint
-    )
-    mse4 <- summary(P.lm)$sigma^2
-    lcoef <- coef(P.lm)
-    fppleft <- 2*lcoef[3] +
-      6*lcoef[4]*cellmpleft + 
-      12*lcoef[5]*cellmpleft*cellmpleft
-    hleft <- 3.348*(mse4*( cutpoint - l ) / sum(fppleft*fppleft))^(1/5)
-
-    #And to the right
-    P.lm <- lm(
-      cellval ~ poly(cellmp,degree=4,raw=T), 
-      subset=cellmp>=cutpoint
-    )
-    mse4 <- summary(P.lm)$sigma^2
-    rcoef <- coef(P.lm)
-    fppright <- 2*rcoef[3] +
-      6*rcoef[4]*cellmpright +
-      12*rcoef[5]*cellmpright*cellmpright
-    hright <- 3.348*(mse4*( r - cutpoint ) / sum(fppright*fppright))^(1/5)
-
-
-    bw = .5*( hleft + hright )
-    if(verbose) cat("Using calculated bandwidth: ",sprintf("%.3f",bw),"\n")
-  } 
-  if( sum(runvar>cutpoint-bw & runvar<cutpoint) ==0 |
-    sum(runvar<cutpoint+bw & runvar>=cutpoint) ==0)
-    stop("Insufficient data within the bandwidth.")
-  if(plot){
-    #estimate density to either side of the cutpoint using a triangular kernel
-    d.l<-data.frame(cellmp=cellmp[cellmp<cutpoint],cellval=cellval[cellmp<cutpoint],dist=NA,est=NA,lwr=NA,upr=NA)
-    pmin<-cutpoint-2*rsd
-    pmax<-cutpoint+2*rsd
-    for(i in 1:nrow(d.l)) {
-      d.l$dist<-d.l$cellmp-d.l[i,"cellmp"]
-      w<-kernelwts(d.l$dist,0,bw,kernel="triangular")
-      newd<-data.frame(dist=0)
-      pred<-predict(lm(cellval~dist,weights=w,data=d.l),interval="confidence",newdata=newd)
-      d.l$est[i]<-pred[1]
-      d.l$lwr[i]<-pred[2]
-      d.l$upr[i]<-pred[3]
-    }
-    d.r<-data.frame(cellmp=cellmp[cellmp>=cutpoint],cellval=cellval[cellmp>=cutpoint],dist=NA,est=NA,lwr=NA,upr=NA)
-    for(i in 1:nrow(d.r)) {
-      d.r$dist<-d.r$cellmp-d.r[i,"cellmp"]
-      w<-kernelwts(d.r$dist,0,bw,kernel="triangular")
-      newd<-data.frame(dist=0)
-      pred<-predict(lm(cellval~dist,weights=w,data=d.r),interval="confidence",newdata=newd)
-      d.r$est[i]<-pred[1]
-      d.r$lwr[i]<-pred[2]
-      d.r$upr[i]<-pred[3]
-    }
-    #plot to the left
-    #return(list(d.l,d.r))
-    plot(d.l$cellmp,d.l$est,
-       lty=1,lwd=2,col="black",type="l",
-       xlim=c(pmin,pmax),
-       ylim=c(min(cellval[cellmp<=pmax&cellmp>=pmin]),
-              max(cellval[cellmp<=pmax&cellmp>=pmin])),
-       xlab=NA,
-       ylab=NA,
-       main=NA
-    )
-    
-    lines(d.l$cellmp,d.l$lwr,
-         lty=2,lwd=1,col="black",type="l"
-    )
-    lines(d.l$cellmp,d.l$upr,
-          lty=2,lwd=1,col="black",type="l"
-    )
-    
-    #plot to the right
-    lines(d.r$cellmp,d.r$est,
-        lty=1,lwd=2,col="black",type="l"
-    )
-    lines(d.r$cellmp,d.r$lwr,
-          lty=2,lwd=1,col="black",type="l"
-    )
-    lines(d.r$cellmp,d.r$upr,
-          lty=2,lwd=1,col="black",type="l"
-    )
-    
-    #plot the histogram as points
-    points(cellmp,cellval,type="p",pch=20)
-  }
-  cmp<-cellmp
-  cval<-cellval
-  padzeros <- ceiling(bw/bin)
-  jp <- j + 2*padzeros
-  if(padzeros>=1) {
-    cval <- c(rep(0,padzeros),
-               cellval,
-               rep(0,padzeros)
-             )
-    cmp <- c(seq(l-padzeros*bin,l-bin,bin),
-              cellmp,
-              seq(r+bin,r+padzeros*bin,bin)
-            )
-  }
-  
-  #Estimate to the left
-  dist <- cmp - cutpoint
-  w <- 1-abs(dist/bw)
-  w <- ifelse(w>0, w*(cmp<cutpoint), 0)
-  w <- (w/sum(w))*jp
-  fhatl <- predict(lm(cval~dist,weights=w),newdata=data.frame(dist=0))[[1]]
-  
-  #Estimate to the right
-  w <- 1-abs(dist/bw)
-  w <- ifelse(w>0, w*(cmp>=cutpoint), 0)
-  w <- (w/sum(w))*jp
-  fhatr<-predict(lm(cval~dist,weights=w),newdata=data.frame(dist=0))[[1]]
-  
-  #Calculate and display dicontinuity estimate
-  thetahat <- log(fhatr) - log(fhatl)
-  sethetahat <- sqrt( (1/(rn*bw)) * (24/5) * ((1/fhatr) + (1/fhatl)) )
-  z<-thetahat/sethetahat
-  p<-2*pnorm(abs(z),lower.tail=FALSE)
-
-  if(verbose) {
-    cat("Log difference in heights is ",
-              sprintf("%.3f",thetahat),
-              " with SE ",
-              sprintf("%.3f",sethetahat),"\n"
-        )
-    cat("  this gives a z-stat of ",sprintf("%.3f",z),"\n")
-    cat("  and a p value of ",sprintf("%.3f",p),"\n")
-  }
-  if(ext.out) 
-    return(list(theta=thetahat,
-                se=sethetahat,
-                z=z,
-                p=p,
-                binsize=bin,
-                bw=bw,
-                cutpoint=cutpoint,
-                data=data.frame(cellmp,cellval)
-               )
-          )
-  else if (htest) {
-      # Return an htest object, for compatibility with base R test output.
-      structure(list(
-          statistic   = c(`z` = z),
-          p.value     = p,
-          method      = "McCrary (2008) sorting test",
-          parameter   = c(`binwidth`  = bin,
-                          `bandwidth` = bw,
-                          `cutpoint`  = cutpoint),
-          alternative = "no apparent sorting"),
-          class = "htest")
-  }
-  else return(p)
-}
-
-```
-
-*** =sample_code
-```{r}
-# 1) The dataframe `NBA` is in your workspace. You can get a quick sense of the variables and some of their values with the str() or head() functions:
-
-
-
-# The R function DCdensity() will generate a density plot of our data, and we can pick what value we want for our RD cutoff. In this case, it makes the most sense for our cutoff to be a tie score at halftime: that will let us easily interpret the plot when the teams are very close in score at halftime. Like in our previous exercises, we'll focus on the home teams to avoid the issue of different team performance at home versus on the road.
-
-# 2) We are hoping that the plot shows a smooth curve on both sides of the cutoff, which is a signal that the units on either side of the cutoff are comparable. The x-axis will be our running variable (point differential at halftime), and the y-axis is our density estimate for that score differential. Now run the McCrary test with the correct running variable in the NBA data and the cutoff at 0, which indicates when the halftime score is tied. Insert the correct variable names into the placeholder spots below and look at the resulting plot. 
-
-      DCdensity(NBA$[running.var],[cutoff],plot=TRUE)
-
-  
-# 3) Now issue the command again (again by inserting the correct variable names in the placeholder spots), but print the p-value output for the McCrary test. Remember, if the p-value for the McCrary test is less than or equal to .05, then we can be 95% percent sure that there is manipulation going on in the data. You can easily print the p-value in R by simply wrapping the correctly filled DCdensity() function with the print() function:
-
-      DCdensity(NBA$[running.var],[cutoff],plot=FALSE)
-      
-
-# 4) Based on the shape of the plot and the p value of the Mcrary test, would you say that we can run a valid Regression Discontinuity analysis on this data? Answer "Yes" or "No".
-      
-      Solution4 <- ""
-      
-
-# Good job. So we've been looking at our historical data from the NBA, but we also have just gotten access to a new, additional dataset about more recent games. These new results have come in after the research was published in the journal Management Science. Does it show that the teams have read the paper and are now trying to be the team that is losing at halftime? Let's find out by looking at the McCrary test results for the variable `home.team.halftime.margin.newdata`.
-      
-# 5) Let's first plot with the DCdensity function using the variable `home.team.halftime.margin.newdata` which is data from the most recent NBA season. Does it look any different than the previous data?
-
-      DCdensity(NBA$[new.running.var],[cutoff],plot=TRUE)
-      
-
-# 6) Interesting: it looks like there is now big outlier near the cutoff of 0. But is this statistically signficant? Let's find out by printing the p-value of this McCrary test to see how it compares to the p-value on our initial data. You can do this by simply wrapping the finished command with the print() function:
-  
-      DCdensity(NBA$[new.running.var],[cutoff],plot=FALSE)
-      
-      
-# 7) Based on this second McCrary test plot and p-value on the current season's data, would you say that we can run a valid Regression Discontinuity analysis on this new data? Answer "Yes" or "No"
-
-      Solution7<-""
-
-
-```
-*** =solution
-```{r}
-    DCdensity(NBA$home.team.halftime.margin,0,plot=TRUE)
-    print(DCdensity(NBA$home.team.halftime.margin,0,plot=FALSE))
-    Solution4<-"Yes"
-    DCdensity(NBA$home.team.halftime.margin.newdata,0,plot=TRUE)
-    print(DCdensity(NBA$home.team.halftime.margin.newdata,0,plot=FALSE))
-    Solution7<-"No"
-```
-
-*** =sct
-```{r}
-test_error()
-test_object("Solution5")
-success_msg("Good work! That outlier just below the cutoff looks like a clear sign that the teams are trying to be losing by about a point at halftime. In fact, the p-value is so small that it is nearly 0, and it's hard to be more obvious than that in statistics! But there's more work to be done before we make any conclusions.  The McCrary test cannot prove manipulation just by itself, but it's a very helpful indicator that we should look closer at the exact mechanics going on in these new NBA teams during their games.")
-```
-
 --- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:f862652b6e
 ## "Fuzzy" Regression Discontinuity: Addressing Blurry Lines Between Groups
 *** =video_link
 //player.vimeo.com/video/218504968
+
 
 
 
