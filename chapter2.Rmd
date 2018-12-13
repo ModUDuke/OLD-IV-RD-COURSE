@@ -415,13 +415,13 @@ success_msg("Good work! Based on this indirect inference analysis, the offer of 
 //player.vimeo.com/video/219559617
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:3c7eb6ff7d
 ## Overview of Squatters & Property Rights Experiment
 *** =video_link
 //player.vimeo.com/video/304168081
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
+--- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:43960fe668
 ## Example of IV: Property Rights & Market Beliefs
 *** =video_link
 //player.vimeo.com/video/219560477
