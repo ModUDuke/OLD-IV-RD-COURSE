@@ -218,7 +218,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 
 --- type:NormalExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:1de601c34a
 ## Examining Manipulation in Regression Discontinuity Designs
-As we have mentioned, the main idea with Regression Discontinuity is that there should not be any difference in the people on either side of the cutoff. So a big part of RD analysis is to check whether this is actually true in our data. For example, the distributions of our variables should be the same on both sides of the cutoff. If we find differences in our distributions, then we might need to worry that these differences are due to people choosing which side of the cutoff to be on.
+As we have mentioned, the main idea with Regression Discontinuity is that there should not be any difference in the people on either side of the cutoff. So a big part of RD analysis is to check whether this is actually true in our data. For example, the distributions of our variables should be the same on both sides of the cutoff. If people choose which side of the cutoff in order to influence the outcome, then we might worry that people on either side of the cutoff are not comparable.
 
 Let's look at this by revisiting the NBA data we used before in previous exercises. In that data, we saw that teams that are losing by 1 or 2 points at halftime end up winning the games a lot more than you would expect. If the coaches and players know this is true, they might try to manipulate the score so that they are the ones losing by 1 or 2 at halftime (perhaps because they read that research paper published in Management Science!). If we look at a density plot of our data, we would see this as a kind of lump in the distribution on one side next to the cutoff, instead of a smooth curve in our data density.
 
@@ -552,7 +552,7 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
   
 # 3) Now issue the command again (again by inserting the correct variable names in the placeholder spots), but print the p-value output for the McCrary test. Remember, if the p-value for the McCrary test is less than or equal to .05, then we can be 95% percent sure that there is manipulation going on in the data. You can easily print the p-value in R by simply wrapping the correctly filled DCdensity() function with the print() function:
 
-      DCdensity(NBA$[running.var],[cutoff],plot=FALSE)
+      print(DCdensity(NBA$[running.var],[cutoff],plot=FALSE))
       
 
 # 4) Based on the shape of the plot and the p value of the Mcrary test, would you say that we can run a valid Regression Discontinuity analysis on this data? Answer "Yes" or "No".
@@ -569,7 +569,7 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
 
 # 6) Interesting: it looks like there is now big outlier near the cutoff of 0. But is this statistically signficant? Let's find out by printing the p-value of this McCrary test to see how it compares to the p-value on our initial data. You can do this by simply wrapping the finished command with the print() function:
   
-      DCdensity(NBA$[new.running.var],[cutoff],plot=FALSE)
+      print(DCdensity(NBA$[new.running.var],[cutoff],plot=FALSE))
       
       
 # 7) Based on this second McCrary test plot and p-value on the current season's data, would you say that we can run a valid Regression Discontinuity analysis on this new data? Answer "Yes" or "No"
@@ -591,7 +591,8 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
 *** =sct
 ```{r}
 test_error()
-test_object("Solution5")
+test_object("Solution4")
+test_object("Solution7")
 success_msg("Good work! That outlier just below the cutoff looks like a clear sign that the teams are trying to be losing by about a point at halftime. In fact, the p-value is so small that it is nearly 0, and it's hard to be more obvious than that in statistics! But there's more work to be done before we make any conclusions.  The McCrary test cannot prove manipulation just by itself, but it's a very helpful indicator that we should look closer at the exact mechanics going on in these new NBA teams during their games.")
 ```
 
