@@ -196,19 +196,18 @@ Included on the workspace is a dataset from CreditCo. The data are a sample of C
 
 
 
-# 2) First we need to determine whether our instrument satisfies the Relevance Assumption, and we'll start this process by looking to see if it has any correlation with our outcome variable. Using a linear regression, compute the correlation between rain and opt-in status.
+# 2) First we need to determine whether our instrument satisfies the Relevance Assumption, and we'll start this process by looking to see if it has any correlation with our outcome variable. Using a linear regression, compute the correlation coefficient between rain and opt-in status, and then run the summary() command to see if there is a correlation between the instrument and our treatment.
 
     Solution2 <- lm( ~ ,data=CreditCo)
+    summary()
 
+# 3) If that regression does show a correlation between opt-in status and rainy weather, we need to make sure it's a statistically significant one. What is the p-value associated with the t-test on the coefficient of rain? Enter in the p-value for this t-test as Solution3:
 
-# 3) If it does have a correlation, we need to make sure it's a statistically significant one. What is the p-value associated with the t-test on the coefficient of rain?
+    Solution3 <-
 
-    Solution3 <- summary(Solution2)$coefficients[2,4]
+# 4) What is the sign of the correlation between rain and opt-in? You can write "positive", "negative", or "no correlation" into Solution4 as the answer:
 
-
-# 4) What is the sign of the correlation between rain and opt-in?
-
-    Solution4 <- sign(Solution2$coefficients[2])
+    Solution4 <- ""
 
 
 ```
@@ -216,8 +215,9 @@ Included on the workspace is a dataset from CreditCo. The data are a sample of C
 *** =solution
 ```{r}
 Solution2 <- lm(opt_in~rainy,data=CreditCo)
+  summary(Solution2)
 Solution3 <- summary(Solution2)$coefficients[2,4]
-Solution4 <- sign(Solution2$coefficients[2])
+Solution4 <- "negative"
 ```
 
 *** =sct
@@ -369,20 +369,20 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
 
 # In order to see if a higher credit limit will make people buy more things with their credit cards, we  will use indirect inference to calculate the causal effect of getting a credit card offer on the credit balances of the customers. This will take 3 steps: first, we will calculate the correlation between our instrument and our outcome variable, then we will calculate the correlation between our instrument and our treatment, and then we'll find the ratio between these correlations.
 
-# 1) Using a linear regression, compute the reduced-form effect (i.e. correlation between `balance_post` and `rainy`).
+# 1) Using a linear regression, compute the reduced-form effect (i.e. correlation between `balance_post` and `rainy`),and then run the summary() command to look at the correlation coefficient between the outcome and the instrument.
 
     Solution1<-lm( ~ ,data=CreditCo)
+    summary()
 
-
-# 2) Using a linear regression, compute the first-stage effect (i.e. correlation between `opt_in` and `rainy`)
+# 2) Using a linear regression, compute the first-stage effect (i.e. correlation between `opt_in` and `rainy`), and then run the summary() command to look at the correlation coefficient between the treatment and the instrument.
 
     Solution2<-lm( ~ ,data=CreditCo)
+    summary()
 
-
-# 3) Compute the causal effect, which is equal to (reduced form)/(first stage):
+# 3) Compute the causal effect, which is equal to (reduced form)/(first stage), then look at the result :
 
     Solution3<-Solution1$coefficients[2]/Solution2$coefficients[2]
-
+    Solution3
 
 # 4) Did opting in to the credit offer make customer's credit balances increase or decrease? (type "increase" if Solution3 is positive or "decrease" if Solution3 is negative)
 
@@ -394,7 +394,9 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
 *** =solution
 ```{r}
 Solution1 <- lm(balance_post~rainy,data=CreditCo)
+  summary(Solution1)
 Solution2 <- lm(opt_in~rainy,data=CreditCo)
+  summary(Solution2)
 Solution3 <- Solution1$coefficients[2]/Solution2$coefficients[2]
 Solution4 <- "increase"
 ```
