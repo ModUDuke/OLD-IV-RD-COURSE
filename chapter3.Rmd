@@ -293,8 +293,13 @@ Let's look at this by revisiting the NBA data we used before in previous exercis
 So we will check the data to check our distributions near the cutoff with the statistical McCrary test, which tests whether there is a discontinuity in the data frequency distribution around the cutoff. We will look at plots and at the p-values of the McCrary tests, and if the p-values are at or below .05, then we can be 95% confident that manipulation has occurred. So let's find out if that is true in this NBA data.
 
 `@instructions`
-- 1) Using the function `DCdensity` which is already on your workspace, plot the distribution of data near the cutoff
-- The syntax for the `DCdensity` function is: `DCdensity(runningvar,discontinuityvalue,plot=TRUE/FALSE)`
+- 1) Examine the structure of the dataframe `NBA`
+- 2) Using the function `DCdensity` to run a McCrary test and examine the plot the distribution of data near the cutoff
+- 3) Check the statistical significance of the McCrary test through its p-value
+- 4) Decide if the data is suitable for a regression discontinuity analysis
+- 5) Using a new dataset, check updated data for manipulation via a McCrary test
+- 6) Check this new McCrary test for statistical significance
+- 7) Decide if this new data is suitable for a regression discontinuity analysis
 
 `@hint`
 - A p-value less than or equal to .05 means that we can have 95% confidence that the data has actually been manipulated
