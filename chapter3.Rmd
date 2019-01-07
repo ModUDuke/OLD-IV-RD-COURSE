@@ -1,37 +1,63 @@
---- 
-title       : "Regression Discontinuity Design"
-description : "This chapter introduces you to Regression Discontinuity Design (RDD), which is often considered a more flexible relative of Instrumental Variables"
- 
-# Notes:
-#--------------
-# Deciding what constitutes "close" to the cutoff
-#  - want to increase BW to get more data
-#  - want to decrease BW to remove confounding bias
-# Nonparametric (local linear) vs. parametric (separate regressions)
-# RD as DID
-# Sharp vs. Fuzzy: how do you know it's not fuzzy? outcome variable is either 0 or 1
+---
+title: 'Regression Discontinuity Design'
+description: 'This chapter introduces you to Regression Discontinuity Design (RDD), which is often considered a more flexible relative of Instrumental Variables'
+---
 
-
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:efc08cc323
 ## Regression Discontinuity: Looking at People on the Edge
-*** =video_link
-//player.vimeo.com/video/218501284
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:79965f29b5
+```yaml
+type: VideoExercise
+key: efc08cc323
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/218501284
+```
+
+
+---
+
 ## Regression Discontinuity: More Analysis of Thistlethwaite and Campbell
-*** =video_link
-//player.vimeo.com/video/218502333
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f401e635a5
+```yaml
+type: VideoExercise
+key: 79965f29b5
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/218502333
+```
+
+
+---
+
 ## Key Variables in an RD Design
+
+```yaml
+type: MultipleChoiceExercise
+key: f401e635a5
+lang: r
+xp: 50
+skills: 1
+```
+
 Which of the following variables is *not* a key (required) variable in a regression discontinuity design?
 
-*** =instructions
+`@possible_answers`
 - Outcome variable
 - Control variable
 - Treatment variable
 - Running variable
-*** =sct
+
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "The outcome variable is the variable of interest. Try again"
 msg2 = "Correct! While most RD's use at least one control variable, doing so is not strictly necessary for RD analysis. (i.e. it is possible, but not common, to run an RD without any control variables.)"
@@ -40,19 +66,37 @@ msg4 = "The running variable is how the researcher divides the sample into treat
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
+---
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:7977c48f95
 ## Identifying Key Variables in an RD Design
+
+```yaml
+type: MultipleChoiceExercise
+key: 7977c48f95
+lang: r
+xp: 50
+skills: 1
+```
+
 A pair of researchers named Jonah Berger and Devin Pope recently published a study about the results of professional basketball games that found that, surprisingly, sometimes losing can lead to winning. The researchers were looking at the determinants of winning in the National Basketball Association (NBA), and they had compiled a dataset of thousands of NBA games. When they looked at the halftime and final scores of each team, and after controlling for other important factors (like the winning percentage of each team), they found that teams who were slightly ahead at halftime were actually more likely to lose the game than the team that was behind at halftime. One theory to explain this outcome is that the team losing at halftime tries a little harder in the second half, while the team winning at halftime relaxes a little too much and loses the game.
 
 So in this study, which variable is the outcome variable, which is the running variable, and which is the treatment variable?
 
-*** =instructions
+`@possible_answers`
 - The score at halftime is the outcome variable, winning the game is the running variable, and the home team losing at halftime is the treatment variable.
 - Winning the game is the outcome variable, the home team losing at halftime is the running variable, and the score at halftime is the treatment variable.
 - The score at halftime is the outcome variable, the home team losing at halftime is the running variable, and winning the game is the treatment variable.
 - Winning the game is the outcome variable, the score at halftime is the running variable, and the home team winning at halftime is the treatment variable.
-*** =sct
+
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "Try again"
 msg2 = "Try again"
@@ -61,26 +105,45 @@ msg4 = "Correct!"
 test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
+---
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:1a5dfd94ba
 ## How to Compute Causal Effects in a Regression Discontinuity Analysis
-*** =video_link
-//player.vimeo.com/video/218502963
+
+```yaml
+type: VideoExercise
+key: 1a5dfd94ba
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/218502963
+```
 
 
+---
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f1b89ac666
 ## Visualizing RD Designs
+
+```yaml
+type: MultipleChoiceExercise
+key: f1b89ac666
+lang: r
+xp: 50
+skills: 1
+```
+
 Most analyses using the RDD approach graphically show the causal effect at the discontinuity. The graph on the right hand part of your screen displays this for the NBA game data mentioned in the last exercise, which suprisingly showed that the team losing at halftime has a better chance to win the game than the team winning at halftime. Along the x-axis is the score margin (the difference in the two teams' scores) at halftime, and the y-axis measures the predicted win probability, which is based on whether the team is currently ahead in the game. Each dot on the plot corresponds to the average margin of victory for the home team taken from a large number of games that all had the same halftime margin. 
 
 As you look at the chart, you can see how the line begins at a negative predicted winning chance and moves up into positive values for a predicted win, but with a downward jump when the halftime margin is 0. This implies that teams who are slightly behind at halftime are slightly more likely (than otherwise expected) to end the game with a positive margin (i.e. win the game). Why do you think the lines in this graph are sloping upward?
 
-*** =instructions
+`@possible_answers`
 - Because the RDD isn't controlling for team quality in an appropriate way
 - Because we should expect teams that are farther ahead at halftime to have a higher chance of winning, regardless of team quality or any other attribute
 - Because there is an inherent home court advantage in the NBA
 
-*** =pre_exercise_code
+`@hint`
+
+
+`@pre_exercise_code`
 ```{r}
 set.seed(1)
 n <- 18060
@@ -189,17 +252,7 @@ NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.
 
 ```
 
-*** =sample_code
-```{r}
-    ggplot(df, aes(x = margins, y = predicts )) + 
-      geom_vline(aes(xintercept = 0), color = 'grey', size = 1, linetype = 'dashed') +  # verticle line at discontinuity
-      geom_point(size=3) + # adjust point size to your liking
-      geom_segment(aes(x = df$margins[1], xend = 0, y = y1.1, yend = y1.2), size = 1)+
-      geom_segment(aes(x = 0, xend = df$margins[16], y = y2.1, yend = y2.2), size = 1)+
-      labs(x = "Margin of victory")+
-      labs(y = "Probability of winning")
-```
-*** =sct
+`@sct`
 ```{r}
 msg1 = "Almost, try again."
 msg2 = "Good job! This is an example of why conclusions from RDD analyses are only valid at the boundary of the discontinuity! If we get too far away, we will be picking up effects that will confound our causal inference."
@@ -207,30 +260,46 @@ msg3 = "Almost, try again."
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
+---
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
 ## Let's Code: Examining Manipulation in Regression Discontinuity Design
-*** =video_link
-//player.vimeo.com/video/306239772
+
+```yaml
+type: VideoExercise
+key: bf3c9abc64
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/306239772
+```
 
 
+---
 
---- type:NormalExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:1de601c34a
 ## Examining Manipulation in Regression Discontinuity Designs
+
+```yaml
+type: NormalExercise
+key: 1de601c34a
+lang: r
+xp: 100
+skills: 1
+```
+
 As we have mentioned, the main idea with Regression Discontinuity is that there should not be any difference in the people on either side of the cutoff. So a big part of RD analysis is to check whether this is actually true in our data. For example, the distributions of our variables should be the same on both sides of the cutoff. If people choose which side of the cutoff in order to influence the outcome, then we might worry that people on either side of the cutoff are not comparable.
 
 Let's look at this by revisiting the NBA data we used before in previous exercises. In that data, we saw that teams that are losing by 1 or 2 points at halftime end up winning the games a lot more than you would expect. If the coaches and players know this is true, they might try to manipulate the score so that they are the ones losing by 1 or 2 at halftime (perhaps because they read that research paper published in Management Science!). If we look at a density plot of our data, we would see this as a kind of lump in the distribution on one side next to the cutoff, instead of a smooth curve in our data density.
 
 So we will check the data to check our distributions near the cutoff with the statistical McCrary test, which tests whether there is a discontinuity in the data frequency distribution around the cutoff. We will look at plots and at the p-values of the McCrary tests, and if the p-values are at or below .05, then we can be 95% confident that manipulation has occurred. So let's find out if that is true in this NBA data.
 
-*** =instructions
+`@instructions`
 - 1) Using the function `DCdensity` which is already on your workspace, plot the distribution of data near the cutoff
 - The syntax for the `DCdensity` function is: `DCdensity(runningvar,discontinuityvalue,plot=TRUE/FALSE)`
 
-*** =hint
+`@hint`
 - A p-value less than or equal to .05 means that we can have 95% confidence that the data has actually been manipulated
 
-*** =pre_exercise_code
+`@pre_exercise_code`
 ```{r}
 set.seed(1)
 n <- 18060
@@ -536,7 +605,7 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
 
 ```
 
-*** =sample_code
+`@sample_code`
 ```{r}
 # 1) The dataframe `NBA` is in your workspace. You can get a quick sense of the variables and some of their values with the str() or head() functions:
 
@@ -577,7 +646,8 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
 
 
 ```
-*** =solution
+
+`@solution`
 ```{r}
     DCdensity(NBA$home.team.halftime.margin,0,plot=TRUE)
     print(DCdensity(NBA$home.team.halftime.margin,0,plot=FALSE))
@@ -587,7 +657,7 @@ DCdensity <- function(runvar,cutpoint,bin=NULL,bw=NULL,verbose=FALSE,plot=TRUE,e
     Solution7<-"No"
 ```
 
-*** =sct
+`@sct`
 ```{r}
 test_error()
 test_object("Solution4")
@@ -595,24 +665,48 @@ test_object("Solution7")
 success_msg("Good work! That outlier just below the cutoff looks like a clear sign that the teams are trying to be losing by about a point at halftime. In fact, the p-value is so small that it is nearly 0, and it's hard to be more obvious than that in statistics! But there's more work to be done before we make any conclusions.  The McCrary test cannot prove manipulation just by itself, but it's a very helpful indicator that we should look closer at the exact mechanics going on in these new NBA teams during their games.")
 ```
 
+---
 
-
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:5a2a1cae28
 ## Using RDD to Study Neighborhoods and Schools
-*** =video_link
-//player.vimeo.com/video/218503634
+
+```yaml
+type: VideoExercise
+key: 5a2a1cae28
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/218503634
+```
 
 
+---
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:da321f7194
 ## Thinking about confounders in an RD design
+
+```yaml
+type: MultipleChoiceExercise
+key: da321f7194
+lang: r
+xp: 50
+skills: 1
+```
+
 Suppose your friend says "I don’t believe the results in Black (1999) because she doesn't control for whether there is a public park nearby the house. Having a park nearby increases the value of a house. Also, districts that have high test scores also tend to have more parks. So this test score effect might just be because of this unobserved confounder!"
 
-*** =instructions
+`@possible_answers`
 - Agree
 - Disagree
 - Partly agree
-*** =sct
+
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "Try again"
 msg2 = "Correct! It's a reasonable point, but the fact that we do NOT have to observe this confounder is precisely the beauty of RDD! When we look only at houses close to the boundary, those houses are close to each other, by definition. Hence they are both close to the park. So, although the park might affect the value of both houses, it should do so equally. Hence any *difference* in house prices cannot be attributed to the park. It must be attributed to the test score difference."
@@ -620,44 +714,79 @@ msg3 = "Try again"
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
+---
 
-
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:2781eb8177
 ## Using Geographical Borders More Generally in RD Designs
+
+```yaml
+type: MultipleChoiceExercise
+key: 2781eb8177
+lang: r
+xp: 50
+skills: 1
+```
+
 True or False: If we look at the data used in the Black (1999) paper, even if each school district has different property tax rates, we can still use RDD analysis to learn the causal effect of treatment.
 
-*** =instructions
+`@possible_answers`
 - True
 - False
-*** =sct
+
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "Are all the units on both sides of the boundary identical, except for the side of the boundary they are on? Try again"
 msg2 = "Correct! It is true that geographical borders are *often* used to learn about causal effects via RDD. But this requires that the only thing that's different between units on each side of the border is the treatment! This is often not the case. For example, if you look at country borders, there are often many different variables that change as you cross the border, which means it will be hard or impossible to disentangle the effect of just one of these variables."
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
+---
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:9db77c01c7
 ## Let's Code: Practice Computing Regression Discontinuity Effects
-*** =video_link
-//player.vimeo.com/video/306239766
+
+```yaml
+type: VideoExercise
+key: 9db77c01c7
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/306239766
+```
 
 
+---
 
-
---- type:NormalExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:8dfb92fd8e
 ## Practice Computing Regression Discontinuity Effects
+
+```yaml
+type: NormalExercise
+key: 8dfb92fd8e
+lang: r
+xp: 100
+skills: 1
+```
+
 Let's continue with the NBA research example. On your workspace is a simulated data set, called `NBA`, that closely resembles the data analyzed by Berger and Pope. The data frame `NBA` contains game characteristics for over 18,000 NBA games between 1994 and 2009. Will you get the same results as they did? Let's find out!
 
 The outcome variable we are interested in is called `home.team.final.margin`, which is the final margin of victory (or loss) for the home team. The running variable in this RDD is called `home.team.halftime.margin`, which records the scoring difference between the home and visiting teams at halftime. Let's keep things simple and take a look at when the home team is winning at halftime, and define our treatment variable as the home team being ahead at halftime, i.e. when `home.team.halftime.margin > 0`. 
 
 In this exercise, you will compute the treatment effect of being ahead at halftime on the final margin of victory. You will use regression methods as well as nonparametric methods to assess how robust the effect is.
 
-*** =instructions
+`@instructions`
 - 1) Use OLS regression to estimate the treatment effect of being behind at halftime on the final margin of victory under two different parametric scenarios
 - 2) Estimate the treatment effect using non-parametric methods
 
-*** =pre_exercise_code
+`@hint`
+
+
+`@pre_exercise_code`
 ```{r}
 # require(rdd)
 
@@ -2639,7 +2768,8 @@ summary.RD<-function(object,digits=max(3, getOption("digits") - 3),...){
 ##########################################################
     
 ```
-*** =sample_code
+
+`@sample_code`
 ```{r}
 # Before running a regression model, let's examine the data:
   
@@ -2677,7 +2807,8 @@ summary.RD<-function(object,digits=max(3, getOption("digits") - 3),...){
     Solution5<-""
 
 ```
-*** =solution
+
+`@solution`
 ```{r}
     NBA$home.team.winning.at.half <- as.numeric(NBA$home.team.halftime.margin>0)
     summary(lm(home.team.final.margin ~ home.team.winning.at.half+home.team.halftime.margin+home.team.qual+away.team.qual,data=NBA))
@@ -2685,23 +2816,39 @@ summary.RD<-function(object,digits=max(3, getOption("digits") - 3),...){
     summary(RDestimate(home.team.final.margin ~ home.team.halftime.margin | home.team.qual+away.team.qual,data=NBA))
     Solution5<-"nonlinear"
 ```
-*** =sct
+
+`@sct`
 ```{r}
 test_error()
 success_msg("Good work! From the looks of it, the quadratic specification of halftime margin looks very similar to the nonparametric estimate (4.8 points versus 4.4 points, respectively), which suggests that they may be closer to the real effect. The linear specification seems to not capture the true relationship between halftime margin and final margin, as it only estimates an effect of 2.5 points.")
 ```
 
+---
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:f862652b6e
 ## "Fuzzy" Regression Discontinuity: Addressing Blurry Lines Between Groups
-*** =video_link
-//player.vimeo.com/video/218504968
+
+```yaml
+type: VideoExercise
+key: f862652b6e
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/218504968
+```
 
 
+---
 
-
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:88264adef7
 ## Identifying Fuzzy and Sharp RDDs
+
+```yaml
+type: MultipleChoiceExercise
+key: 88264adef7
+lang: r
+xp: 50
+skills: 1
+```
+
 Consider the following examples. Which is an example of a fuzzy RDD and which is a sharp RDD?
 
 1. Running variable: Age. Treatment: You become eligible for senior citizen welfare programs once you are 65 are older.
@@ -2710,7 +2857,7 @@ Consider the following examples. Which is an example of a fuzzy RDD and which is
 
 3. Running variable: Population. Treatment variable: Number of seats per state/province in a national government when each politician represents a different amount of citizens, like in the U.S. House of Representatives.
 
-*** =instructions
+`@possible_answers`
 - All are fuzzy
 - (1) and (3) are sharp; (2) is fuzzy
 - (1) and (2) are sharp; (3) is fuzzy
@@ -2719,7 +2866,16 @@ Consider the following examples. Which is an example of a fuzzy RDD and which is
 - (1) is sharp; (2) and (3) are fuzzy
 - (1) and (3) are fuzzy; (2) is sharp
 - All are sharp
-*** =sct
+
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "Try again"
 msg2 = "Try again"
@@ -2732,11 +2888,15 @@ msg8 = "Try again"
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4,msg5,msg6,msg7,msg8))
 ```
 
+---
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:af9b66df9f
 ## Fuzzy RDD and Swiss Religion: Checking the Numbers
-*** =video_link
-//player.vimeo.com/video/218505946
 
-
-
+```yaml
+type: VideoExercise
+key: af9b66df9f
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/218505946
+```

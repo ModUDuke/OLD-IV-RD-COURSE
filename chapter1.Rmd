@@ -1,38 +1,77 @@
---- 
-title       : "Introduction to Instrumental Variables"
-description : "This chapter will introduce you to Instrumental Variables (IV) analysis, a tricky but powerful method to find causality through indirect inference"
+---
+title: 'Introduction to Instrumental Variables'
+description: 'This chapter will introduce you to Instrumental Variables (IV) analysis, a tricky but powerful method to find causality through indirect inference'
+---
 
-
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
 ## Course Trailer for Causal Inference with R – Instrumental Variables & RDD
-*** =video_link
-//player.vimeo.com/video/306246988
+
+```yaml
+type: VideoExercise
+key: bf3c9abc64
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/306246988
+```
 
 
+---
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:9c7273586e
 ## The Logic of Instrumental Variables
-*** =video_link
-//player.vimeo.com/video/219558904
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:8a1c462927
+```yaml
+type: VideoExercise
+key: 9c7273586e
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/219558904
+```
+
+
+---
+
 ## Visual Logic of Instrumental Variables
-*** =video_link
-//player.vimeo.com/video/219559011
+
+```yaml
+type: VideoExercise
+key: 8a1c462927
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/219559011
+```
 
 
+---
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:8c410956e7
 ## What is the Relationship Between the Instrument and the Outcome?
+
+```yaml
+type: MultipleChoiceExercise
+key: 8c410956e7
+lang: r
+xp: 50
+skills: 1
+```
+
 As the videos discussed, there are some strict requirements to use instrumental variables analysis, so we will review the relationship between the instrument and the outcome. Which one of these is the correct assumption for IV analysis?
 
-*** =instructions
+`@possible_answers`
 - The instrument has a direct causal effect on the outcome, but is only correlated with the treatment.
 - The instrument has a direct causal effect on the treatment, but is only correlated with the outcome.
 - The instrument has no direct causal effect on either the treatment or the outcome.
 - The instrument has a direct causal effect on both the treatment and the outcome.
 
-*** =sct
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "That's not correct. The instrument should only be correlated with the outcome, and must have a causal effect on the treatment variable. Try again."
 msg2 = "Correct! Nice job."
@@ -41,17 +80,35 @@ msg4 = "The instrument should have a causal effect on the treatment, but should 
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:4c7896c749
+---
+
 ## What is the Relationship Between the Instrument and the Treatment?
+
+```yaml
+type: MultipleChoiceExercise
+key: 4c7896c749
+lang: r
+xp: 50
+skills: 1
+```
+
 Now let us review the relationship between the instrument and the treatment.  Which one of these is the correct assumption for IV analysis?
 
-*** =instructions
+`@possible_answers`
 - The instrument is not correlated with the treatment.
 - The treatment has a causal effect on the instrument.
 - The treatment and the outcome have a causal effect on the instrument.
 - The instrument has a causal effect on the treatment.
 
-*** =sct
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "Incorrect. Not only does the instrument need to be correlated with the treatment, it must have a causal effect on the treatment. Try again."
 msg2 = "That is backwards. The instrument needs to have a causal effect on the treatment, so try again."
@@ -60,17 +117,35 @@ msg4 = "Correct!"
 test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:8a1ad925e4
+---
+
 ## What is the Relationship Between the Instrument and the Other Pre-Treatment Variables?
+
+```yaml
+type: MultipleChoiceExercise
+key: 8a1ad925e4
+lang: r
+xp: 50
+skills: 1
+```
+
 The instrument is one of many variables that could be confounding the effect of what we really want to study: the effect of our treatment on the outcome. Let us review the relationship of the instrument to this larger pool of potential confounders. Which of the following statements is correct for an IV analysis?
 
-*** =instructions
+`@possible_answers`
 - The instrument must be correlated with all measured pre-treatment variables.
 - The pre-treatment variables have a causal effect on the instrument.
 - We do not need to worry about unobserved pre-treatment variables, they are by definition not correlated with the instrument.
 - The instrument is uncorrelated with the other pre-treatment variables.
 
-*** =sct
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "This is very incorrect. It should have no correlation to any other pre-treatment variables, a.k.a. is randomly assigned. Try again."
 msg2 = "Incorrect. The other pre-treatment variables should have no correlation with the instrument. Try again."
@@ -79,17 +154,35 @@ msg4 = "Correct!"
 test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:ed73a92806
+---
+
 ## How Do We Calculate a Causal Effect with Instrumental Variables Analysis?
+
+```yaml
+type: MultipleChoiceExercise
+key: ed73a92806
+lang: r
+xp: 50
+skills: 1
+```
+
 So now we can summarize the main purpose of IV analysis. Once again, how does the instrumental variable help us understand the causal effect of the treatment on the outcome?
 
-*** =instructions
+`@possible_answers`
 - The treatment affects the instrument, which affects the outcome. The causal effect of the treatment on the outcome is equal to the correlation of the instrument and the treatment.
 - The treatment affects the outcome, and the instrument is correlated with the outcome. To get the effect of the treatment on the outcome, we calculate the correlation of the instrument on the outcome.
 - The instrument affects the treatment, and the treatment affects the outcome. To get the effect of the treatment on the outcome, we find the correlation of the instrument on the outcome, and subtract out the effect of the instrument on the treatment.
 - The instrument and the treatment combine to create the outcome. So the treatment effect is the sum of the effect of the instrument on the treatment and the effect of the treatment on the outcome.
 
-*** =sct
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "This is not the design of IV analysis. We need to subtract out the effect of the instrument on the treatment from the correlation of the instrument on the outcome. Try again."
 msg2 = "Incorrect. We need to subtract out the effect of the instrument on the treatment from the correlation of the instrument on the outcome. Try again."
@@ -98,22 +191,48 @@ msg4 = "That is not exactly the process. We do not add these effects together to
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:3ae8d65d96
+---
+
 ## Some Instrumental Variables Terminology
-*** =video_link
-//player.vimeo.com/video/219565557
+
+```yaml
+type: VideoExercise
+key: 3ae8d65d96
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/219565557
+```
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:5ad3dddd73
-## Is it Endogenous vs Exogenous Variation? 
+---
+
+## Is it Endogenous vs Exogenous Variation?
+
+```yaml
+type: MultipleChoiceExercise
+key: 5ad3dddd73
+lang: r
+xp: 50
+skills: 1
+```
+
 Suppose you are interested in the economic status of new college graduates, and have just gotten access to geographic data on where people live and work after they graduate from college. In your first step of data analysis, you subset this geographic data to categorize both their home and work locations as either urban or rural, giving you a binary treatment variable. Let's say that you then compare what kinds of places (rural vs. urban) where people live versus the kinds of places where they work. What kind of variation would that variable have?
 
-*** =instructions
+`@possible_answers`
 - Exogenous
 - Endogenous
 - Both
 
-*** =sct
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "Where people choose to live and work are usually affected by at least some shared factors, which means it's not all external forces impacting these--unless they are in the military or in prison! Try again"
 msg2 = "Correct! People who work in urban areas probably live in urban areas, and people that work in rural areas probably live in rural areas, so these choices are being influenced by shared factors, which means they have endogenous variation. The most common exceptions to this would be things like military service (or a prison sentence!)."
@@ -121,30 +240,63 @@ msg3 = "While there might be external reasons that affect people's choice of whe
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
+---
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:953b93e528
 ## Instrumental Variables in Action: Education and Wages (graphs)
-*** =video_link
-//player.vimeo.com/video/219559159
+
+```yaml
+type: VideoExercise
+key: 953b93e528
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/219559159
+```
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:116a9fd6fa
+---
+
 ## Instrumental Variables in Action: Education and Wages (tables)
-*** =video_link
-//player.vimeo.com/video/219559305
+
+```yaml
+type: VideoExercise
+key: 116a9fd6fa
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/219559305
+```
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:e48c3917d8
+---
+
 ## What if Our Data Shows No Clear Correlation Between Treatment and Outcome?
+
+```yaml
+type: MultipleChoiceExercise
+key: e48c3917d8
+lang: r
+xp: 50
+skills: 1
+```
+
 Suppose we run an Instrumental Variable analysis, and in our initial data exploration, we find that the treatment is uncorrelated with the outcome. But nonetheless, we carry on with the IV analysis and find that it shows a positive causal effect of the treatment on the outcome. How should we interpret these results?
 
-*** =instructions
+`@possible_answers`
 - One of the IV assumptions must be violated, thus the IV estimate is wrong.
 - There could be a causal effect, but it must be small.
 - There must be a large amount of measurement error in either the treatment or the instrument.
 - None of the above.
 
-*** =sct
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "If you look back at the required assumptions for IV, the correlation between treatment and the outcome is not mentioned, so try again."
 msg2 = "The causal effect we calculated could be big or small, and it would not change the question we are facing. Try again."
@@ -154,16 +306,31 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 
 ```
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:b70179796d
+---
+
 ## The Three Instrumental Variables Assumptions
-*** =video_link
-//player.vimeo.com/video/219559447
+
+```yaml
+type: VideoExercise
+key: b70179796d
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/219559447
+```
 
 
+---
 
-
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:01af032fa2
 ## Alan the Egg Farmer Turns to Instrumental Variables
+
+```yaml
+type: MultipleChoiceExercise
+key: 01af032fa2
+lang: r
+xp: 50
+skills: 1
+```
 
 Alan the Egg Farmer consistently sells all of his fresh eggs on his island in the South Pacific. Since Alan is the only egg farmer on his island, he has no direct competition, and people seem to buy his eggs no matter what price he sets. Due to his great sales and lack of competition, Alan is considering greatly increasing the prices of his eggs. But how much do egg sales really vary when prices change? Alan wants to find out.
 
@@ -174,13 +341,21 @@ b) The weather and amounts of egg sales are not both caused by another factor
 c) The weather is not correlated with other factors (besides egg prices) that are consequential to egg sales
 d) The weather has no effect on egg sales
 
-*** =instructions
+`@possible_answers`
 - a, c
 - b, d
 - a, b, c 
 - All of the above
 
-*** =sct
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "Almost! These are both assumptions of Alan's model, but there are more. Try again."
 msg2 = "Not quite. b) is an important assumption of Alan's model, but d) is not. Try again."
@@ -188,4 +363,3 @@ msg3 = "Correct! a) is true because the instrument in any IV model must affect t
 msg4 = "Almost! At least one of the possible assumptions is false."
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
-

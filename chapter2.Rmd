@@ -1,18 +1,32 @@
---- 
-title       : "Instrumental Variables in Practice"
-description : "This chapter covers more details about Instrumental Variables Analysis, and allows you to practice instrumental variables for yourself"
- 
+---
+title: 'Instrumental Variables in Practice'
+description: 'This chapter covers more details about Instrumental Variables Analysis, and allows you to practice instrumental variables for yourself'
+---
 
- 
-
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:bf3c9abc64
 ## The Problem of Weak Instruments
-*** =video_link
-//player.vimeo.com/video/219559996
+
+```yaml
+type: VideoExercise
+key: bf3c9abc64
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/219559996
+```
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:02e185272f
-## An Example of a Weak Instrument  
+---
+
+## An Example of a Weak Instrument
+
+```yaml
+type: MultipleChoiceExercise
+key: 02e185272f
+lang: r
+xp: 50
+skills: 1
+```
+
 A public health specialist names Phoebe is interested in how a person's wealth (their assets minus their debts) might effect their health. Phoebe has longitudinal data on people's wealth and health, but she's having trouble determining whether wealth has a causal effect on health with traditional regression models. Phoebe's concern is that a person's health varies endogenously with their weath; a person's wealth might have a positive causal effect on their health, but a person's health could also have a positive causal effect on their wealth. 
 
 To untangle this causal relationship, Phoebe decides to conduct an instrumental variable analysis of wealth's effect on health with inheritance as an exogenous instrument of wealth (that is, inheritance effects a person's wealth but does not have any direct or indirect relationship with a person's health other than through how it might affect wealth). However, Phoebe's analysis yields no statistically significant results. Phoebe also tests the relationship between inheritance and wealth, and finds that there is only a very weak correlation. Which of the following could this imply?    
@@ -21,9 +35,20 @@ To untangle this causal relationship, Phoebe decides to conduct an instrumental 
 - Inheritance has a direct causal effect on health.
 - These results are uninformative about any potential causality between wealth and health.
 - People who inherit money often feel guilty, leading to a decline in health.
-- People are more likely to inherit money when they themselves have poor health. 
+- People are more likely to inherit money when they themselves have poor health.
 
-*** =sct
+`@possible_answers`
+
+
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "Although this instrumental variable would be poor for this analysis (an instrument should not have a direct effect on the dependent variable), this is not an example of a 'weak' instrumental variable."
 msg2 = "Correct! Only a small percentage of people ever inherit a substantial amount of money, and those who do tend to have better wealth to begin with. So despite our theories, the data we have might have very little statistical power on the relationship between wealth and health."
@@ -33,33 +58,62 @@ msg4 = "Although this instrumental variable would be poor for this analysis (an 
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
+---
 
-
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:7b60f7d7c0
 ## Overview of Research on Property Rights & Economic Development
-*** =video_link
-//player.vimeo.com/video/305800702
+
+```yaml
+type: VideoExercise
+key: 7b60f7d7c0
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/305800702
+```
 
 
+---
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:90f146a86a
 ## Where Do Instruments Come From?
-*** =video_link
-//player.vimeo.com/video/219560424
+
+```yaml
+type: VideoExercise
+key: 90f146a86a
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/219560424
+```
 
 
+---
 
-
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:76ab8a34c9
 ## Using IV When There is Measurement Error
+
+```yaml
+type: MultipleChoiceExercise
+key: 76ab8a34c9
+lang: r
+xp: 50
+skills: 1
+```
+
 You're doing some research and plan on using an instrumental variables strategy to help with any noncompliance. But your instrument was hard to measure perfectly, so you think its values have some measurement error. Two of the following statements are valid for an IV analysis, but which one would violate the assumptions of IV analysis and make our results invalid?
 
-*** =instructions
+`@possible_answers`
 - The instrument's measurement error is independent of the values for the treatment and outcome variables
 - The instrument's measurement error is independent of the values of the treatment variable, but not for the outcome variable
 - The instrument's measurement error is independent of the values from the outcome variable, but not for the treatment variable
 
-*** =sct
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "This is perfectly fine with IV analysis. If the measurement error is not affecting the measurement of the treatment and outcome variables, then we're safe. We are looking for the option that would violate the IV assumptions, so try again."
 msg2 = "Correct! This would break our IV analysis, because it would mean that the instrument has some direct effect on the values of theoutcome variable by itself, but to use IV correctly, we need the instrument to only indirectly act on the outcome via the treatment variable."
@@ -67,8 +121,17 @@ msg3 = "This is perfectly fine with IV analysis. We expect the instrument to hav
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:f9981cd29c
+---
+
 ## Logical Arguments About Instrumental Variables
+
+```yaml
+type: MultipleChoiceExercise
+key: f9981cd29c
+lang: r
+xp: 50
+skills: 1
+```
 
 Let's say that you work for the city government of a town that has been rated as having the least happy children in the country. Your town also wants to increase the number of bike lanes on city streets. As a creative data analyst, you think that bike lanes may encourage families to exercise together, and exercising as a family may change the unhappy kids in your town into happy kids. You get your hands on a national dataset that has statistics on bike lanes, family exercise, and child happiness from many cities. You think that you can use bike lanes as an instrumental variable to see if family exercise has an effect on child happiness. Your basic argument is that bike lanes cause families to exercise together, and family exercise is correlated with child happiness, so bike lanes are an instrument for the effect of family exercise on child happiness. What is your best argument that the instrument does not have a direct causal effect on the outcome variable? 
   
@@ -78,7 +141,18 @@ Let's say that you work for the city government of a town that has been rated as
 - Traffic safety with bike lanes always varies, but kids adjust as needed
 - Some kids are happier to ride in bike lanes and happier to bike offroad, but those preferences cancel each other out
 
-*** =sct
+`@possible_answers`
+
+
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "Correct! This is the best argument because, if kids only bike when there are bike lanes, then this argument would suddenly become a very weak one, because simply painting new lines on a road would make kids very happy, independently of whether they actually ride a bike or not."
 msg2 = "This might be true, but that is directed more at whether the treatment (riding with a family) affects the outcome (child happiness), not the instrument on the outcome like the question asks. Try again"
@@ -87,30 +161,48 @@ msg4 = "If this were true, it sounds like the instrument would be uncorrelated w
 test_mc(correct = 1, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:f0833c4db3
+---
+
 ## Let's Code: Practice Using Instrumental Variables
-*** =video_link
-//player.vimeo.com/video/306239731
+
+```yaml
+type: VideoExercise
+key: f0833c4db3
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/306239731
+```
 
 
---- type:NormalExercise lang:r xp:100 skills:1 key:80186483d8
+---
+
 ## Practice Using Instrumental Variables: CreditCo
+
+```yaml
+type: NormalExercise
+key: 80186483d8
+lang: r
+xp: 100
+skills: 1
+```
+
 If you took our Experiments course, you assessed the validity of a natural experiment using data from CreditCo. Let's revisit that analysis, framing it in the logic of instrumental variables.
 
 As you may recall, CreditCo sent out offers in the mail to increase their customers' credit limits. We are worried that the customers who took up the offer might not have randomly done so, which causes an endogeneity problem. We proposed to solve this problem by using the rainy weather on the day the credit offers were delivered as an instrument for treatment. Specifically, you realized that heavy storms across the country hit half the zipcodes in the treatment group, while the other half of customers experienced sunny weather the day the offer arrived. You realize this variation in the weather may have made customers in the rainy zones feel depressed and therefore ignored the offer, while those in the sunny zones felt cheerful, and because of their good mood took up the offer. Because the weather is out of anyone's control, we can argue it is exogenous to any other factors related to credit card offers, and it also seems to be the exclusive source of variation between the treatment and control groups. Let's try using IV analysis to see if it provides a convincing causal explanation.
 
 Included on the workspace is a dataset from CreditCo. The data are a sample of CreditCo customers who were offered the credit limit increase. We will focus on the variable `rainy`, which we will use as an instrument for `opt_in`, which we suspect is endogenous to our outcomes of interest.
 
-*** =instructions
+`@instructions`
 - 1) Explore the dataset `CreditCo` on your own with basic tools like head(), str(), and summary().
 - 2) Using a linear regression, compute the correlation between opt-in and rain.
 - 3) Test whether rain satisfies the relevance assumption (i.e. if its correlation with opt-in is significantly different from zero).
 - 4) What is the sign of the correlation between rain and opt-in?
 
-*** =hint
+`@hint`
 - Remember to be aware of selecting the correct subsample
 
-*** =pre_exercise_code
+`@pre_exercise_code`
 ```{r}
   set.seed(1)
   n             <- 9e5
@@ -171,7 +263,7 @@ Included on the workspace is a dataset from CreditCo. The data are a sample of C
   CreditCo <- CreditCo[CreditCo$offered==1,c("id","opt_in","FICO","female","race_white","default_pre","default_post","balance_pre","balance_post","rainy")]
 ```
 
-*** =sample_code
+`@sample_code`
 ```{r}
 # The dataset `CreditCo` is available in your workspace. Here is a data dictionary to help you make sense of the variable names and what they are representing:
 
@@ -212,7 +304,7 @@ Included on the workspace is a dataset from CreditCo. The data are a sample of C
 
 ```
 
-*** =solution
+`@solution`
 ```{r}
 Solution2 <- lm(opt_in~rainy,data=CreditCo)
   summary(Solution2)
@@ -220,7 +312,7 @@ Solution3 <- summary(Solution2)$coefficients[2,4]
 Solution4 <- "negative"
 ```
 
-*** =sct
+`@sct`
 ```{r}
 test_object("Solution2")
 test_object("Solution3")
@@ -228,25 +320,48 @@ test_object("Solution4")
 success_msg("Good work! Our instrument does seem to have a statistically significant negative correlation with our outcome variable. This is one important pillar that supports our argument that we can use the rainy weather as an instrument in this analysis.")
 ```
 
+---
 
-
-
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:9cc4cfa847
 ## Refutability and Nonrefutability of the Instrumental Variables Assumptions
-*** =video_link
-//player.vimeo.com/video/219559377
+
+```yaml
+type: VideoExercise
+key: 9cc4cfa847
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/219559377
+```
 
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:db21106fcb
+---
+
 ## Questioning the Validity of Instrumental Variables Results
+
+```yaml
+type: MultipleChoiceExercise
+key: db21106fcb
+lang: r
+xp: 50
+skills: 1
+```
+
 Remember back to an earlier video, where we looked at the hyothetical question of whether going to college increases how much money you make, using the travel distance between home and the college as an instrumental variable. Researchers looking at this analysis will be worrying about the nonrefutable Exclusion Restriction and Exogeneity Assumption in this design. What do you think the most valid criticism would be?
 
-*** =instructions
+`@possible_answers`
 - Researchers think the Relevance Assumption does not hold: whether you live close to a college or not doesn't actually affect whether you go to college or not
 - Researchers think the Exclusion Restriction does not hold: employers are willing to pay people more money if students went to high school in a town that was close to a college
 - Researchers think the Exogeneity Assumption does not hold: there are unobserved variables, like ability, which are correlated with distance-to-college and which also affect how much income you'll make
 
-*** =sct
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "Not quite. Remember that relevance is refutable, so people don't usually complain about this because it can be checked in the data. Try again"
 msg2 = "This is probably not the most common complaint, because it would take a long and complex argument to justify this as the single main reason why the IV analysis is invalid. Try again"
@@ -254,20 +369,46 @@ msg3 = "Correct! This would be the most common complaint, and it's a good one. L
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:88c5d08f7e
+---
+
 ## Indirect Inference
-*** =video_link
-//player.vimeo.com/video/219559540
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:26d480f5ba
+```yaml
+type: VideoExercise
+key: 88c5d08f7e
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/219559540
+```
+
+
+---
+
 ## Let's Code: Practice Computing Causal Effects Using Indirect Inference
-*** =video_link
-//player.vimeo.com/video/306239739
+
+```yaml
+type: VideoExercise
+key: 26d480f5ba
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/306239739
+```
 
 
+---
 
---- type:NormalExercise lang:r xp:100 skills:1 key:721d6bc016
 ## Practice Computing Causal Effects Using Indirect Inference: CreditCo
+
+```yaml
+type: NormalExercise
+key: 721d6bc016
+lang: r
+xp: 100
+skills: 1
+```
+
 Now let's repeat the previous CreditCo analysis, but now use indirect inference to compute the causal effect of opting in to a credit limit increase on one's credit balance.
 
 The setting is the same as before. CreditCo sent out offers in the mail to increase their customers' credit limits. But we know that taking up the offer is not randomly determined. We proposed to solve this problem by using the whether it rained on the day the credit offers were delivered as an instrument for takeup. 
@@ -276,16 +417,16 @@ In this exercise, we will restrict our analysis to the set of customers who rece
 
 Included on the workspace is a data set from CreditCo. The data are a sample of CreditCo customers who were offered the credit limit increase. We will focus on the variable `rainy`, which we will use as an instrument for `opt_in`, which we suspect is endogenous to our outcomes of interest.
 
-*** =instructions
+`@instructions`
 - 1) Using a linear regression, compute the reduced-form effect (i.e. correlation between credit balance and rain)
 - 2) Using a linear regression, compute the first-stage effect (i.e. correlation between opting in and rain)
 - 3) Now compute the causal effect, which is equal to (reduced form)/(first stage)
 - 4) Did opting in to the credit offer increase or decrease credit balances?
 
-*** =hint
+`@hint`
 - Remember to be aware of selecting the correct subsample
 
-*** =pre_exercise_code
+`@pre_exercise_code`
 ```{r}
   set.seed(1)
   n             <- 9e5
@@ -346,7 +487,7 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
   CreditCo <- CreditCo[CreditCo$offered==1,c("id","opt_in","balance_post","rainy")]
 ```
 
-*** =sample_code
+`@sample_code`
 ```{r}
 # The dataset `CreditCo` is available in your workspace. Again, here is a data dictionary to help you make sense of the variable names and what they are representing:
 
@@ -391,7 +532,7 @@ Included on the workspace is a data set from CreditCo. The data are a sample of 
 
 ```
 
-*** =solution
+`@solution`
 ```{r}
 Solution1 <- lm(balance_post~rainy,data=CreditCo)
   summary(Solution1)
@@ -401,7 +542,7 @@ Solution3 <- Solution1$coefficients[2]/Solution2$coefficients[2]
 Solution4 <- "increase"
 ```
 
-*** =sct
+`@sct`
 ```{r}
 test_object("Solution1")
 test_object("Solution2")
@@ -410,45 +551,86 @@ test_object("Solution4")
 success_msg("Good work! Based on this indirect inference analysis, the offer of a higher credit limit does indeed seem to cause people buy more stuff on their credit card. But let's see how this looks with the 2SLS method as well!")
 ```
 
+---
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:91d63315da
 ## Two Stage Least Squares (2SLS)
-*** =video_link
-//player.vimeo.com/video/219559617
+
+```yaml
+type: VideoExercise
+key: 91d63315da
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/219559617
+```
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:3c7eb6ff7d
+---
+
 ## Overview of Squatters & Property Rights Experiment
-*** =video_link
-//player.vimeo.com/video/304168081
+
+```yaml
+type: VideoExercise
+key: 3c7eb6ff7d
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/304168081
+```
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:43960fe668
+---
+
 ## Example of IV: Property Rights & Market Beliefs
-*** =video_link
-//player.vimeo.com/video/219560477
- 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:324a3a8f49
+```yaml
+type: VideoExercise
+key: 43960fe668
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/219560477
+```
+
+
+---
+
 ## Let's Code: Practice Computing Causal Effects Using 2SLS
-*** =video_link
-//player.vimeo.com/video/306239751
+
+```yaml
+type: VideoExercise
+key: 324a3a8f49
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/306239751
+```
 
 
---- type:NormalExercise lang:r xp:100 skills:1 key:415cb190e2
+---
+
 ## Practice Computing Causal Effects Using Two-Stage Least Squares (2SLS): CreditCo
+
+```yaml
+type: NormalExercise
+key: 415cb190e2
+lang: r
+xp: 100
+skills: 1
+```
+
 Now let us repeat the previous CreditCo analysis, but now use 2SLS to compute the causal effect instead of indirect inference.
 
-*** =instructions
+`@instructions`
 - 1) Using a linear regression, compute the first-stage effect (i.e. correlation between opting in and rain)
 - 2) Compute the predicted values of opting in
 - 3) Compute the causal effect by linear regression (i.e. correlation between credit balance and predicted opt-in rate)
 - 4) Did opting in to the credit offer increase or decrease credit balances?
 
-*** =hint
+`@hint`
 - Remember to be aware of selecting the correct subsample
 
-*** =pre_exercise_code
+`@pre_exercise_code`
 ```{r}
   set.seed(1)
   n             <- 9e5
@@ -509,7 +691,7 @@ Now let us repeat the previous CreditCo analysis, but now use 2SLS to compute th
   CreditCo <- CreditCo[CreditCo$offered==1,c("id","opt_in","balance_post","rainy")]
 ```
 
-*** =sample_code
+`@sample_code`
 ```{r}
 # The dataset `CreditCo` is available in your workspace. Onc again, here is a data dictionary to help you make sense of the variable names and what they are representing:
 
@@ -553,7 +735,7 @@ Now let us repeat the previous CreditCo analysis, but now use 2SLS to compute th
 
 ```
 
-*** =solution
+`@solution`
 ```{r}
 Solution1 <- lm(opt_in~rainy,data=CreditCo)
 Solution2 <- predict(Solution1,data=CreditCo)
@@ -562,7 +744,7 @@ Solution3 <- lm(balance_post ~ prediction,data=CreditCo)
 Solution4 <- "increased"
 ```
 
-*** =sct
+`@sct`
 ```{r}
 test_object("Solution1")
 test_object("Solution2")
@@ -571,88 +753,159 @@ test_object("Solution4")
 success_msg("Good work! The offer does seem to be effective, and our IV analysis tells us that the credit card offer caused customers to spend more money with their credit cards, which means CreditCo made more money on their interest payments.")
 ```
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:458e4ed187
+---
+
 ## Comparing the Estimates from Indirect Inference and 2SLS
+
+```yaml
+type: MultipleChoiceExercise
+key: 458e4ed187
+lang: r
+xp: 50
+skills: 1
+```
+
 The previous two coding exercises used two separate methods to estimate a causal effect using instrumental variables. The estimate from the indirect inference method yielded an effect of $16,319. The 2SLS method estimate was an identical $16,319.
 
 In general, do you think that these two methods will always yield the same results?
 
-*** =instructions
+`@possible_answers`
 - Yes
 - No
 
-*** =sct
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "Try again"
 msg2 = "Correct! The previous coding examples happened to yield identical results because of the specific situation. In general, the results should yield numbers that are 'statistically similar': that is, the confidence interval of one should contain the other."
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
+---
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:25532d1a49
 ## Solving Noncompliance in Experiments with Instrumental Variables
-*** =video_link
-//player.vimeo.com/video/219559688
+
+```yaml
+type: VideoExercise
+key: 25532d1a49
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/219559688
+```
 
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:22d8b1d707
+---
+
 ## Overview of the Oregon Healthcare Experiment
-*** =video_link
-//player.vimeo.com/video/304167565
+
+```yaml
+type: VideoExercise
+key: 22d8b1d707
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/304167565
+```
 
 
+---
 
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:dc9b5ec411
 ## Using IV to Solve Noncompliance in the Oregon Heathcare Insurance Experiment
-*** =video_link
-//player.vimeo.com/video/219559775
+
+```yaml
+type: VideoExercise
+key: dc9b5ec411
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/219559775
+```
 
 
+---
 
---- type:MultipleChoiceExercise lang:r xp:50 skills:1 key:23b590892d
 ## Balancing Assumptions and Data When Using IV
+
+```yaml
+type: MultipleChoiceExercise
+key: 23b590892d
+lang: r
+xp: 50
+skills: 1
+```
+
 In previous videos we said that the relevance assumption is refutable, and in this video we saw that it passed our tests in the Oregon Healthcare experiment. We also said that the other two assumptions, exogeneity and exclusion, are nonrefutable because we would need a world of complete and perfect information to refute them. 
 
 But two data analysts, Alex and Monique, are working together on an IV analysis, and they argue about whether more data can help them build a convincing argument for their instrument. Alex says, "there's no point to changing our model to include more datasets, because these last 2 assumptions are nonrefutable, so we can only use qualitative explanations to defend them." But Monique says that "we can replace our qualitative arguments with data-driven arguments if we add new datasets with the relevant data to our model."
 
 Who is giving better advice for defending the 'nonrefutable' assumptions of IV?
 
-*** =instructions
+`@possible_answers`
 - Alex is correct: the assumptions are nonrefutable without perfect information, so more data won't help with them 
 - Monique is correct: it's better to add more datasets to reduce the guesswork about the model
 
-*** =sct
+`@hint`
+
+
+`@pre_exercise_code`
+```{r}
+
+```
+
+`@sct`
 ```{r}
 msg1 = "'Refutability' is defined with respect to a model, which includes a description of the precise set of data which is observable. For example, suppose I observe a dataset with the age of person in the United States. Then the claim that the average age is 26 is refutable—-I can simply compute the true average age and then see if it really is 26 or not. But the claim that the average annual income is $30,000 is not refutable. That’s just because my dataset doesn’t have income in it! If I observed data on income, then that claim would become refutable. Try again."
 msg2 = "Correct. Without more or different kinds of data, typically the exogeneity and exclusion assumptions are not refutable, and Alex would be right. However, if you add more data or change the assumptions in different ways, it is sometimes possible to convert a nonrefutable assumption into a refutable assumption. But you should always be ready with qualitative arguments to strengthen your defense of these assumptions."
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2))
 ```
 
+---
 
-
---- type:VideoExercise lang:r aspect_ratio:62.5 xp:50 skills:1 key:1ce6f872eb
 ## Let's Code: Practice Using IV to Solve Noncompliance in the OHIE
-*** =video_link
-//player.vimeo.com/video/306239756
+
+```yaml
+type: VideoExercise
+key: 1ce6f872eb
+lang: r
+xp: 50
+skills: 1
+video_link: //player.vimeo.com/video/306239756
+```
 
 
+---
 
---- type:NormalExercise lang:r xp:100 skills:1 key:834d82578f
 ## Practice Using IV to Solve Noncompliance in the OHIE
+
+```yaml
+type: NormalExercise
+key: 834d82578f
+lang: r
+xp: 100
+skills: 1
+```
+
 In an earlier course, you analyzed data from the Oregon Healthcare Insurance Experiment (OHIE) where you assumed that everyone who was offered Medicaid coverage ended up getting covered. Now let us relax this assumption and instead assume that not everyone who was offered Medicaid coverage actually enrolled.
 
 Instead, we will instrument for Medicaid takeup using assignment to the treatment group as an instrument.
 
- 
-*** =instructions
+`@instructions`
 - 1) Explore the data on your own, using functions like head(), str(), and summary()
 - 2) Compute the Intention-to-Treat effect of being offered insurance on having a positive depression screening
 - 3) Estimate the 2SLS effect of taking up the offer on positive depression screening using two separate calls to `lm()`
 
-*** =hint
+`@hint`
 - Remember to include additional demographic controls in your regression model
 
-*** =pre_exercise_code
+`@pre_exercise_code`
 ```{r}
 set.seed(1)
 
@@ -940,7 +1193,7 @@ OHIE <- OHIE[!is.na(OHIE$pos_depression_screen),c("id","intvw","lottery","gender
 # }
 ```
 
-*** =sample_code
+`@sample_code`
 ```{r}
 # The dataset `OHIE` and the function `ivreg2` are both available in your workspace. Here is a data dictionary to help you make sense of the variable names and what they are representing:
 
@@ -983,14 +1236,14 @@ OHIE <- OHIE[!is.na(OHIE$pos_depression_screen),c("id","intvw","lottery","gender
 
 ```
 
-*** =solution
+`@solution`
 ```{r}
 Solution1<-summary(lm(pos_depression_screen~lottery+gender_inp+age_35_49_inp+age_50_64_inp+race_black_inp+race_nwother_inp+hispanic_inp+itvw_english_inp,data=OHIE))
 OHIE$prediction<-predict(lm(insurance~lottery+gender_inp+age_35_49_inp+age_50_64_inp+race_black_inp+race_nwother_inp+hispanic_inp+itvw_english_inp,data=OHIE),data=OHIE)
 Solution2<-summary(lm(pos_depression_screen~prediction+gender_inp+age_35_49_inp+age_50_64_inp+race_black_inp+race_nwother_inp+hispanic_inp+itvw_english_inp,data=OHIE),data=OHIE)
 ```
 
-*** =sct
+`@sct`
 ```{r}
 test_object("Solution1")
 test_object("Solution2")
