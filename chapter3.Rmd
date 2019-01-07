@@ -8,7 +8,6 @@ description : "This chapter introduces you to Regression Discontinuity Design (R
 #  - want to increase BW to get more data
 #  - want to decrease BW to remove confounding bias
 # Nonparametric (local linear) vs. parametric (separate regressions)
-# Balance checks (McCrary test, etc.)
 # RD as DID
 # Sharp vs. Fuzzy: how do you know it's not fuzzy? outcome variable is either 0 or 1
 
