@@ -26,11 +26,12 @@ description : "This chapter will introduce you to Instrumental Variables (IV) an
 ## What is the Relationship Between the Instrument and the Outcome?
 As the videos discussed, there are some strict requirements to use instrumental variables analysis, so we will review the relationship between the instrument and the outcome. Which one of these is the correct assumption for IV analysis?
 
-  *** =instructions
+*** =instructions
 - The instrument has a direct causal effect on the outcome, but is only correlated with the treatment.
 - The instrument has a direct causal effect on the treatment, but is only correlated with the outcome.
 - The instrument has no direct causal effect on either the treatment or the outcome.
 - The instrument has a direct causal effect on both the treatment and the outcome.
+
 *** =sct
 ```{r}
 msg1 = "That's not correct. The instrument should only be correlated with the outcome, and must have a causal effect on the treatment variable. Try again."
@@ -44,11 +45,12 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ## What is the Relationship Between the Instrument and the Treatment?
 Now let us review the relationship between the instrument and the treatment.  Which one of these is the correct assumption for IV analysis?
 
-  *** =instructions
+*** =instructions
 - The instrument is not correlated with the treatment.
 - The treatment has a causal effect on the instrument.
 - The treatment and the outcome have a causal effect on the instrument.
 - The instrument has a causal effect on the treatment.
+
 *** =sct
 ```{r}
 msg1 = "Incorrect. Not only does the instrument need to be correlated with the treatment, it must have a causal effect on the treatment. Try again."
@@ -62,7 +64,7 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ## What is the Relationship Between the Instrument and the Other Pre-Treatment Variables?
 The instrument is one of many variables that could be confounding the effect of what we really want to study: the effect of our treatment on the outcome. Let us review the relationship of the instrument to this larger pool of potential confounders. Which of the following statements is correct for an IV analysis?
 
-  *** =instructions
+*** =instructions
 - The instrument must be correlated with all measured pre-treatment variables.
 - The pre-treatment variables have a causal effect on the instrument.
 - We do not need to worry about unobserved pre-treatment variables, they are by definition not correlated with the instrument.
@@ -81,7 +83,7 @@ test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ## How Do We Calculate a Causal Effect with Instrumental Variables Analysis?
 So now we can summarize the main purpose of IV analysis. Once again, how does the instrumental variable help us understand the causal effect of the treatment on the outcome?
 
-  *** =instructions
+*** =instructions
 - The treatment affects the instrument, which affects the outcome. The causal effect of the treatment on the outcome is equal to the correlation of the instrument and the treatment.
 - The treatment affects the outcome, and the instrument is correlated with the outcome. To get the effect of the treatment on the outcome, we calculate the correlation of the instrument on the outcome.
 - The instrument affects the treatment, and the treatment affects the outcome. To get the effect of the treatment on the outcome, we find the correlation of the instrument on the outcome, and subtract out the effect of the instrument on the treatment.
@@ -136,7 +138,7 @@ test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 ## What if Our Data Shows No Clear Correlation Between Treatment and Outcome?
 Suppose we run an Instrumental Variable analysis, and in our initial data exploration, we find that the treatment is uncorrelated with the outcome. But nonetheless, we carry on with the IV analysis and find that it shows a positive causal effect of the treatment on the outcome. How should we interpret these results?
 
-  *** =instructions
+*** =instructions
 - One of the IV assumptions must be violated, thus the IV estimate is wrong.
 - There could be a causal effect, but it must be small.
 - There must be a large amount of measurement error in either the treatment or the instrument.
@@ -177,6 +179,7 @@ d) The weather has no effect on egg sales
 - b, d
 - a, b, c 
 - All of the above
+
 *** =sct
 ```{r}
 msg1 = "Almost! These are both assumptions of Alan's model, but there are more. Try again."
