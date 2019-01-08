@@ -98,9 +98,9 @@ So in this study, which variable is the outcome variable, which is the running v
 
 `@sct`
 ```{r}
-msg1 = "Try again"
-msg2 = "Try again"
-msg3 = "Try again"
+msg1 = "The outcome we are ultimately interested in is winning the game, so that is our outcome variable. Try again"
+msg2 = "This is close but not quite right. The running variable has to do with the halftime score, but it is not whether the home team is losing. Try again"
+msg3 = "The outcome we are ultimately interested in is winning the game, so that is our outcome variable. Try again"
 msg4 = "Correct!"
 test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
@@ -254,9 +254,9 @@ NBA <- NBA[,c("id","season","home.team","away.team","home.team.qual","away.team.
 
 `@sct`
 ```{r}
-msg1 = "Almost, try again."
+msg1 = "We have a pretty healthy sample of NBA games, all teams are included both at home and away, and we are looking at games that are within 1 or 2 points at halftime, so in theory the teams are going to be of roughly equal quality on that day. Try again."
 msg2 = "Good job! This is an example of why conclusions from RDD analyses are only valid at the boundary of the discontinuity! If we get too far away, we will be picking up effects that will confound our causal inference."
-msg3 = "Almost, try again."
+msg3 = "This actually has a basis in fact, but we are avoiding the home/road differential in team performance by looking at just the results of the home games for a team, not of both home and road games. Try again."
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
@@ -713,9 +713,9 @@ Suppose your friend says "I don’t believe the results in Black (1999) because 
 
 `@sct`
 ```{r}
-msg1 = "Try again"
+msg1 = "It's a reasonable point, but with RDD we do NOT have to observe this confounder across our whole sample. That's because we are just looking at statistically similar houses right next to a boundary. Try again"
 msg2 = "Correct! It's a reasonable point, but the fact that we do NOT have to observe this confounder is precisely the beauty of RDD! When we look only at houses close to the boundary, those houses are close to each other, by definition. Hence they are both close to the park. So, although the park might affect the value of both houses, it should do so equally. Hence any *difference* in house prices cannot be attributed to the park. It must be attributed to the test score difference."
-msg3 = "Try again"
+msg3 = "While this is a reasonable point, there is a more clear answer to this question. Try again"
 test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 ```
 
@@ -2882,14 +2882,14 @@ Consider the following examples. Which is an example of a fuzzy RDD and which is
 
 `@sct`
 ```{r}
-msg1 = "Try again"
-msg2 = "Try again"
+msg1 = "At least one of them is a sharp regression discontinuity design. Try again"
+msg2 = "This is not entirely correct: for example, in (3) the treatment boundary varies a bit across units, so it is fuzzy. Try again"
 msg3 = "Correct! Often the distinction between sharp and fuzzy hinges on the definition of treatment. For (1) and (2), treatment is defined as **eligibility** rather than takeup. In contrast (3) is fuzzy because the treatment boundary varies a bit across units. Rural districts may get 1 representative for every 200,000 people, but in urban districts, 1 politician may represent 600,000 people. In a way, the way that governments create districts often means they are not reacting proportionally to the changes in the population in particular regions, and it's often helpful to think of fuzzy RDDs as having a non-compliance problem."
-msg4 = "Try again"
-msg5 = "Try again"
-msg6 = "Try again"
-msg7 = "Try again"
-msg8 = "Try again"
+msg4 = "This is not entirely correct: for example, in (1) the treatment is defined as **eligibility** rather than takeup, so it is a sharp regression discontinuity design. Try again"
+msg5 = "This is not entirely correct: for example, in (2) the treatment is defined as **eligibility** rather than takeup, so it is a sharp regression discontinuity design. Try again"
+msg6 = "This is not entirely correct: for example, in (2) the treatment is defined as **eligibility** rather than takeup, so it is a sharp regression discontinuity design. Try again"
+msg7 = "This is not entirely correct: for example, in (3) the treatment boundary varies a bit across units, so it is fuzzy. Try again"
+msg8 = "At least one of them is a fuzzy regression discontinuity design. Try again"
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4,msg5,msg6,msg7,msg8))
 ```
 
