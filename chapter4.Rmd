@@ -59,10 +59,10 @@ LATE is defined as the average treatment effect for the compliers. Why don't we 
 
 `@sct`
 ```{r}
-msg1 = "Not quite. Try again."
-msg2 = "Not quite. Try again."
-msg3 = "Not quite. Try again."
-msg4 = "None of the above. The reason is that we are able to compute LATE from the data, (a.k.a. we can show it is 'identified'.) But the average treatment effect for always takers is not nearly as easy to get, or indeed could be impossible to learn: a necessary condition to calculate treatment effects is to observe outcomes for individuals in a population who do and don’t receive treatment. Since always takers always get treated, we don’t have any data about when they don’t take treatment.So we focus on LATE no so much because of intrinsic interest (although that is often the case) but also because it is something we are able to learn from the data."
+msg1 = "That's not necessarily true, because the always takers are also going to be treated, so we probably want to know about their outcomes as well. Try again."
+msg2 = "This is not always possible, actually, since we don't have any data about when they don't take treatment (because they always get treated). Try again."
+msg3 = "We would only be able to test this if we could always calculate the treatment effect for always takers, but we don't have their counterfactual outcomes (by definition), so we don't know if they have the same treatment effect as the compliers. Try again."
+msg4 = "Correc, it's none of the above. The reason is that we are able to compute LATE from the data, (i.e. we can show it is 'identified'.) But the average treatment effect for always takers is not nearly as easy to get, or indeed could be impossible to learn: a necessary condition to calculate treatment effects is to observe outcomes for individuals in a population who do and don’t receive treatment. Since always takers always get treated, we don’t have any data about when they don’t take treatment. So we focus on LATE not so much because of intrinsic interest, although that is often the case, but also because it is something we are able to learn from the data."
 test_mc(correct = 4, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
@@ -169,7 +169,7 @@ Suppose you run an experiment where individuals are randomly selected to receive
 msg1 = "Remember that bounds analysis only gives you a range of values, but the other three methods will provide a single point estimate, so they can't all be identical. Try again."
 msg2 = "Even if we get answers that are statistically similar (within each other's confidence intervals), the interpretations of each result are slightly different depending on the method. Try again."
 msg3 = "Correct! First, the bounds analysis did not require any assumptions, so the true ATE will be within the bounds we derived there. And remember that bounds analysis always gives, well, a bound! And as long as there is some noncompliance, that bound will always be positive. So it can’t possible give the same result as using IV, assuming random compliance, or doing intention-to-treat analysis. That’s because all three of those methods deliver a single point. Moreover, each of those methods will typically deliver different answers. Which one is more credible depends on what you think about the assumptions used to compute those numbers."
-msg4 = "Instrumental variables are not the best method just because they are hard! Try again,"
+msg4 = "Instrumental variables are not the best method just because they are hard! Try again."
 test_mc(correct = 3, feedback_msgs = c(msg1,msg2,msg3,msg4))
 ```
 
@@ -216,9 +216,8 @@ In this video, we saw many different ways to divide up the population of units. 
 
 `@sct`
 ```{r}
-msg1 = "Not quite. Try again"
-msg2 = "Definitely false! First, we know from very early on in these videos that learning causality is rarely as easy as just computing a single average. At the least we need to compute the *difference* in two averages, like in a randomized experiment. Beyond that, however, we have discussed in other videos that we do not actually know who is or is not a complier in our dataset, for example. So—in our data—we cannot actually split people up as seen in this module. The split we discussed here is done “as if” we knew things about people which we cannot possibly know with an actual dataset."
-msg3 = "Not quite. Try again"
-msg4 = "Not quite. Try again"
-test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3,msg4))
+msg1 = "Remember that in reality, we don't get data with units divided so clearly into these neat groups. We can't actually tell which units are in each group, so we can't just calculate averages. Try again."
+msg2 = "Correct, it's definitely false! First, we know from very early on in these videos that learning causality is rarely as easy as just computing a single average. At the least we need to compute the *difference* in two averages, like in a randomized experiment. Beyond that, however, we have discussed in other videos that we do not actually know who is or is not a complier in our dataset, for example. So, in our data, we cannot actually split people up as seen in this module. The split we discussed here is done as if we knew things about people which we cannot possibly know with an actual dataset."
+msg3 = "There is a clear answer to this question. Try again."
+test_mc(correct = 2, feedback_msgs = c(msg1,msg2,msg3))
 ```
