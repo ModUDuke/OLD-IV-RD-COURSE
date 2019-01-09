@@ -6,7 +6,6 @@ instructors:
 - ransom@ou.edu
 - bdaronson@gmail.com
 - cooper@duke.edu
-- paul.diegert@duke.edu
 description      : A look at using Instrumental Variables and Regression Discontinuity to estimate causal effects
 university       : DataCamp
 difficulty_level : 4
